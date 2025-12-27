@@ -5,10 +5,11 @@ import {CommonModule} from '@angular/common';
 import {TooltipModule} from 'primeng/tooltip';
 import {RippleModule} from 'primeng/ripple';
 import {ExcelCacheService} from '../services/excel-cache.service';
+import {HeaderComponent} from '../components/header/header.component';
 
 @Component({
     selector: 'app-root',
-    imports: [ButtonModule, CardModule, CommonModule, TooltipModule, RippleModule],
+    imports: [ButtonModule, CardModule, CommonModule, TooltipModule, RippleModule, HeaderComponent],
     templateUrl: './app.html',
     styleUrl: './app.css'
 })
@@ -17,10 +18,6 @@ export class App implements OnInit {
     protected readonly isDarkMode = signal(false);
     excelData: any[] = [];
     loading = true;
-
-    toggleDarkMode() {
-        this.isDarkMode.set(!this.isDarkMode());
-    }
 
     constructor(private excelCache: ExcelCacheService) {
     }

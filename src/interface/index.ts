@@ -1,23 +1,15 @@
-
-export interface Index {
-    id: string;   // indicates the issue number of the magazine
-    releaseYearMonth: string;
-    section: string;
-    title: string;
-    authors: string;
-    scoreIn100: string;
-    scoreIn10: string;
-    scoreIn5: string;
-}
-
-
 export interface DetailedIndex {
     id: number;
-    releaseMonthYear: Map<Set<string>, string>;
+    releaseMonthYear: ReleaseMonth;
     section: string;
     title: string;
-    authors?: Set<string>;
+    authors?: string[];
     scoreIn100?: number;
     scoreIn10?: number;
     scoreIn5?: number;
+}
+
+export interface ReleaseMonth {
+    year: string;
+    months: string[];  // This is an array because of 2023/02-03
 }

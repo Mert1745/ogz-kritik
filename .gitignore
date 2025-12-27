@@ -43,4 +43,4 @@ __screenshots__/
 Thumbs.db
 
 # Environment files
-/src/constants
+/src/constants/aws.ts

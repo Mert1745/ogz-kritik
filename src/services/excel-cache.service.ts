@@ -2,14 +2,10 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import * as XLSX from 'xlsx';
 import {S3_URL} from '../constants/aws';
-import { headObject, getObjectArrayBuffer } from '../client/aws-client';
-
-interface CachedExcelData {
-    data: any[];
-    etag: string;
-    lastModified: string;
-    timestamp: number;
-}
+import {getObjectArrayBuffer, headObject} from '../client/aws-client';
+import {CachedExcelData} from '../interface/excel';
+import {mapIndexToDetailedIndex} from '../util/index-mapper';
+import {DetailedIndexService} from './detailed-index.service';
 
 @Injectable({
     providedIn: 'root'
@@ -19,8 +15,11 @@ export class ExcelCacheService {
     private STORE_NAME = 'excelData';
     private db: IDBDatabase | null = null;
 
-    constructor(private http: HttpClient) {
-        this.initDB();
+    constructor(
+        private http: HttpClient,
+        private detailedIndexService: DetailedIndexService
+    ) {
+        this.initDB().then();
     }
 
     private async initDB(): Promise<void> {
@@ -61,14 +60,18 @@ export class ExcelCacheService {
         } else {
             // Return cached data
             const cached = await this.getCachedData();
-            return cached ? cached.data : await this.downloadAndCacheExcel();
+            if (cached) {
+                this.detailedIndexService.detailedIndex = mapIndexToDetailedIndex(cached.data);
+                return cached.data;
+            }
+            return await this.downloadAndCacheExcel();
         }
     }
 
     private async checkIfFileChanged(): Promise<boolean> {
         try {
             // Use helper that performs HEAD and returns metadata
-            const { etag: newEtag, lastModified: newLastModified } = await headObject(this.http, S3_URL);
+            const {etag: newEtag, lastModified: newLastModified} = await headObject(this.http, S3_URL);
 
             const cached = await this.getCachedData();
 
@@ -87,7 +90,7 @@ export class ExcelCacheService {
     private async downloadAndCacheExcel(): Promise<any[]> {
         try {
             // Use helper to download file as arraybuffer and metadata
-            const { arrayBuffer, etag, lastModified } = await getObjectArrayBuffer(this.http, S3_URL);
+            const {arrayBuffer, etag, lastModified} = await getObjectArrayBuffer(this.http, S3_URL);
 
             if (!arrayBuffer) throw new Error('Downloaded empty arrayBuffer');
 
@@ -103,6 +106,8 @@ export class ExcelCacheService {
                 lastModified,
                 timestamp: Date.now()
             });
+
+            this.detailedIndexService.detailedIndex = mapIndexToDetailedIndex(data);
 
             return data;
         } catch (error) {

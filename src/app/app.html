@@ -1,27 +1,19 @@
 <!-- PrimeNG Application Template -->
 <style>
-  main {
-    padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
+    main {
+        padding: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
 </style>
 
 <main>
-  <!-- Header Section -->
-  <div class="header">
-    <div>
-      <h1>{{ title() }}</h1>
-      <p>PrimeNG Components Demo</p>
-    </div>
-    <button
-      pButton
-      pRipple
-      (click)="toggleDarkMode()"
-      [icon]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"
-      class="p-button-rounded"
-      [attr.aria-label]="isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
-    ></button>
-  </div>
+    <app-header [title]="title()"></app-header>
+
+    <section>
+        <div>
+            <p>Loaded {{ excelData.length }} rows</p>
+        </div>
+    </section>
 </main>
 
