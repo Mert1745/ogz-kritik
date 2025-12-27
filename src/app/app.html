@@ -1,53 +1,9 @@
 <!-- PrimeNG Application Template -->
 <style>
-  :host {
-    display: block;
-    font-family: var(--font-family);
-  }
-
   main {
     padding: 2rem;
     max-width: 1400px;
     margin: 0 auto;
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    gap: 1rem;
-  }
-
-  .header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-  }
-
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
-  }
-
-  .demo-section {
-    margin-top: 3rem;
-    padding: 2rem;
-    border: 1px solid var(--surface-border);
-    border-radius: 8px;
-  }
-
-  .demo-section h2 {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-  }
-
-  .button-group {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
   }
 </style>
 
@@ -66,62 +22,6 @@
       class="p-button-rounded"
       [attr.aria-label]="isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'"
     ></button>
-  </div>
-
-  <!-- Cards Grid -->
-  <div class="cards-grid">
-    <p-card header="Button Component">
-      <p>PrimeNG provides various button styles and sizes</p>
-      <div class="button-group">
-        <button pButton label="Default" class="p-button-raised"></button>
-        <button pButton label="Success" class="p-button-success p-button-raised"></button>
-        <button pButton label="Warning" class="p-button-warning p-button-raised"></button>
-        <button pButton label="Danger" class="p-button-danger p-button-raised"></button>
-      </div>
-    </p-card>
-
-    <p-card header="Card Component">
-      <p>Cards are used to group content with similar information.</p>
-      <p-button label="Learn More" icon="pi pi-arrow-right" iconPos="right"></p-button>
-    </p-card>
-
-    <p-card header="Icons">
-      <p>PrimeIcons provides a comprehensive icon library</p>
-      <div class="button-group">
-        <button pButton icon="pi pi-home" class="p-button-rounded p-button-outlined"></button>
-        <button pButton icon="pi pi-star" class="p-button-rounded p-button-outlined"></button>
-        <button pButton icon="pi pi-heart" class="p-button-rounded p-button-outlined"></button>
-        <button pButton icon="pi pi-download" class="p-button-rounded p-button-outlined"></button>
-      </div>
-    </p-card>
-  </div>
-
-  <!-- Demo Section -->
-  <div class="demo-section">
-    <h2>Interactive Components</h2>
-
-    <!-- Button Demo -->
-    <div>
-      <h3>Button Variants</h3>
-      <div class="button-group">
-        <button pButton label="Primary" class="p-button-raised"></button>
-        <button pButton label="Secondary" class="p-button-secondary p-button-raised"></button>
-        <button pButton label="Info" class="p-button-info p-button-raised"></button>
-        <button pButton label="Text" class="p-button-text"></button>
-        <button pButton label="Plain" class="p-button-plain"></button>
-      </div>
-    </div>
-
-    <!-- Icon Buttons -->
-    <div style="margin-top: 2rem">
-      <h3>Icon Buttons</h3>
-      <div class="button-group">
-        <button pButton icon="pi pi-check" class="p-button-success p-button-rounded" pTooltip="Confirm" tooltipPosition="top"></button>
-        <button pButton icon="pi pi-trash" class="p-button-danger p-button-rounded" pTooltip="Delete" tooltipPosition="top"></button>
-        <button pButton icon="pi pi-pencil" class="p-button-warning p-button-rounded" pTooltip="Edit" tooltipPosition="top"></button>
-        <button pButton icon="pi pi-search" class="p-button-info p-button-rounded" pTooltip="Search" tooltipPosition="top"></button>
-      </div>
-    </div>
   </div>
 </main>
 
