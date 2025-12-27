@@ -2,9 +2,13 @@
     <div class="review-grid">
         @for (item of paginatedItems(); track $index) {
             <p-card [header]="item.title" class="review-card">
-                <p><strong>Yazar:</strong> {{ item.authors?.join(', ') }}</p>
-                <p><strong>Sayı:</strong> {{ item.releaseMonthYear.year }}/{{ item.releaseMonthYear.months.join('-') }}</p>
-                <p><strong>Puan:</strong> {{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5 }}</p>
+                <div class="score-circle">
+                    <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>
+                </div>
+                <div>
+                    <p><strong>{{ item.authors?.join(', ') }}</strong></p>
+                    <p>{{ item.releaseMonthYear.year }}/{{ item.releaseMonthYear.months.join('-') }}</p>
+                </div>
             </p-card>
         }
     </div>
