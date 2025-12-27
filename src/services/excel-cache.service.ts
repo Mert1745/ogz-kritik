@@ -130,7 +130,7 @@ export class ExcelCacheService {
     private async cacheData(data: CachedExcelData): Promise<void> {
         return new Promise((resolve, reject) => {
             if (!this.db) {
-                reject(new Error('DB not initialized'));
+                console.warn('DB not initialized');
                 return;
             }
 
