@@ -1,4 +1,5 @@
 import {Component, OnInit, signal} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
 import {CommonModule} from '@angular/common';
@@ -6,11 +7,10 @@ import {TooltipModule} from 'primeng/tooltip';
 import {RippleModule} from 'primeng/ripple';
 import {ExcelCacheService} from '../services/excel-cache.service';
 import {HeaderComponent} from '../components/header/header.component';
-import {DashboardComponent} from '../components/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-root',
-    imports: [ButtonModule, CardModule, CommonModule, TooltipModule, RippleModule, HeaderComponent, DashboardComponent],
+    imports: [ButtonModule, CardModule, CommonModule, TooltipModule, RippleModule, HeaderComponent, RouterOutlet],
     templateUrl: './app.html',
     styleUrl: './app.css'
 })
