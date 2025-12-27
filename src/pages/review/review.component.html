@@ -1,10 +1,19 @@
 <div class="review-page">
-    @for (item of itemsReview(); track $index) {
-        <div class="review-item">
-            <h3>{{ item.title }}</h3>
-            <p>Section: {{ item.section }}</p>
-            <p>Score: {{ item.scoreIn100 }}</p>
-        </div>
-    }
+    <div class="review-grid">
+        @for (item of paginatedItems(); track $index) {
+            <p-card [header]="item.title" class="review-card">
+                <p><strong>Yazar:</strong> {{ item.authors?.join(', ') }}</p>
+                <p><strong>Sayı:</strong> {{ item.releaseMonthYear.year }}/{{ item.releaseMonthYear.months.join('-') }}</p>
+                <p><strong>Puan:</strong> {{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5 }}</p>
+            </p-card>
+        }
+    </div>
+
+    <p-paginator
+        [first]="first()"
+        [rows]="rows"
+        [totalRecords]="itemsReview().length"
+        (onPageChange)="onPageChange($event)">
+    </p-paginator>
 </div>
 

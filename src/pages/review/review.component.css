@@ -1,12 +1,39 @@
 .review-page {
-    padding: 1rem;
+    padding: 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
 }
 
-.review-item {
-    margin-left: 5rem;
-    margin-right: 5rem;
+.review-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 1200px;
+    justify-items: center;
+}
+
+:host ::ng-deep .review-card {
+    width: 100%;
+    max-width: 350px;
+}
+
+:host ::ng-deep .review-card .p-card-body {
+    padding: 1rem;
+}
+
+:host ::ng-deep .review-card .p-card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+:host ::ng-deep .review-card p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+}
+
+p-paginator {
+    margin-top: 2rem;
 }
 
