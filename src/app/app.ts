@@ -15,7 +15,6 @@ import {HeaderComponent} from '../components/header/header.component';
 })
 export class App implements OnInit {
     protected readonly title = signal('ogz-kritik');
-    protected readonly isDarkMode = signal(false);
     excelData: any[] = [];
     loading = true;
 

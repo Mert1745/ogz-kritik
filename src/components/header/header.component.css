@@ -1,9 +1,14 @@
 .app-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 1rem 0;
   border-bottom: 1px solid #e5e7eb;
+}
+
+.header-logo {
+  max-height: 60px;
+  object-fit: contain;
 }
 
 .app-header h1 {
