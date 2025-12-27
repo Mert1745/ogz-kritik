@@ -6,10 +6,11 @@ import {TooltipModule} from 'primeng/tooltip';
 import {RippleModule} from 'primeng/ripple';
 import {ExcelCacheService} from '../services/excel-cache.service';
 import {HeaderComponent} from '../components/header/header.component';
+import {DashboardComponent} from '../components/dashboard/dashboard.component';
 
 @Component({
     selector: 'app-root',
-    imports: [ButtonModule, CardModule, CommonModule, TooltipModule, RippleModule, HeaderComponent],
+    imports: [ButtonModule, CardModule, CommonModule, TooltipModule, RippleModule, HeaderComponent, DashboardComponent],
     templateUrl: './app.html',
     styleUrl: './app.css'
 })
