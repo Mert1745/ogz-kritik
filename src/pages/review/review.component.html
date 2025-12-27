@@ -1,4 +1,10 @@
 <div class="review-page">
-  <h1>Review</h1>
+    @for (item of itemsReview(); track $index) {
+        <div class="review-item">
+            <h3>{{ item.title }}</h3>
+            <p>Section: {{ item.section }}</p>
+            <p>Score: {{ item.scoreIn100 }}</p>
+        </div>
+    }
 </div>
 

@@ -1,22 +1,18 @@
-import {Injectable} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {DetailedIndex} from '../interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DetailedIndexService {
-    private _detailedIndex: DetailedIndex[] = [];
+    readonly detailedIndex = signal<DetailedIndex[]>([]);
 
-    get detailedIndex(): DetailedIndex[] {
-        return this._detailedIndex;
-    }
-
-    set detailedIndex(value: DetailedIndex[]) {
-        this._detailedIndex = value;
+    setDetailedIndex(value: DetailedIndex[]): void {
+        this.detailedIndex.set(value);
     }
 
     clear(): void {
-        this._detailedIndex = [];
+        this.detailedIndex.set([]);
     }
 }
 

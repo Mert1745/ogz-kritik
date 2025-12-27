@@ -61,7 +61,7 @@ export class ExcelCacheService {
             // Return cached data
             const cached = await this.getCachedData();
             if (cached) {
-                this.detailedIndexService.detailedIndex = mapIndexToDetailedIndex(cached.data);
+                this.detailedIndexService.setDetailedIndex(mapIndexToDetailedIndex(cached.data));
                 return cached.data;
             }
             return await this.downloadAndCacheExcel();
@@ -107,7 +107,7 @@ export class ExcelCacheService {
                 timestamp: Date.now()
             });
 
-            this.detailedIndexService.detailedIndex = mapIndexToDetailedIndex(data);
+            this.detailedIndexService.setDetailedIndex(mapIndexToDetailedIndex(data));
 
             return data;
         } catch (error) {

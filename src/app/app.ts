@@ -17,7 +17,6 @@ import {HeaderComponent} from '../components/header/header.component';
 export class App implements OnInit {
     protected readonly title = signal('ogz-kritik');
     excelData: any[] = [];
-    loading = true;
 
     constructor(private excelCache: ExcelCacheService) {
     }
@@ -25,10 +24,8 @@ export class App implements OnInit {
     async ngOnInit() {
         try {
             this.excelData = await this.excelCache.getExcelData();
-            this.loading = false;
         } catch (error) {
             console.error('Failed to load Excel data:', error);
-            this.loading = false;
         }
     }
 }
