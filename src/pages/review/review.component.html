@@ -15,6 +15,53 @@
         </div>
     </div>
 
+    <div class="filter-section">
+        <div class="filter-row">
+            <div class="filter-field">
+                <label for="authorFilter">Yazar</label>
+                <input
+                    id="authorFilter"
+                    type="text"
+                    pInputText
+                    placeholder="Yazar adı..."
+                    [ngModel]="authorFilter()"
+                    (ngModelChange)="onAuthorFilterChange($event)" />
+            </div>
+            <div class="filter-field">
+                <label for="titleFilter">Başlık</label>
+                <input
+                    id="titleFilter"
+                    type="text"
+                    pInputText
+                    placeholder="Başlık..."
+                    [ngModel]="titleFilter()"
+                    (ngModelChange)="onTitleFilterChange($event)" />
+            </div>
+        </div>
+        <div class="filter-row">
+            <div class="filter-field slider-field">
+                <label>Puan Aralığı: {{ scoreRange()[0] }} - {{ scoreRange()[1] }}</label>
+                <p-slider
+                    [ngModel]="scoreRange()"
+                    (ngModelChange)="onScoreRangeChange($event)"
+                    [range]="true"
+                    [min]="0"
+                    [max]="10"
+                    [step]="0.5" />
+            </div>
+            <div class="filter-field slider-field">
+                <label>Yıl Aralığı: {{ yearRange()[0] }} - {{ yearRange()[1] }}</label>
+                <p-slider
+                    [ngModel]="yearRange()"
+                    (ngModelChange)="onYearRangeChange($event)"
+                    [range]="true"
+                    [min]="minYear()"
+                    [max]="maxYear()"
+                    [step]="1" />
+            </div>
+        </div>
+    </div>
+
     <div class="review-grid">
         @for (item of paginatedItems(); track $index) {
             <p-card [header]="item.title" class="review-card">
@@ -32,7 +79,7 @@
     <p-paginator
         [first]="first()"
         [rows]="rows"
-        [totalRecords]="itemsReview().length"
+        [totalRecords]="filteredItems().length"
         (onPageChange)="onPageChange($event)">
     </p-paginator>
 </div>

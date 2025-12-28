@@ -40,6 +40,54 @@
     color: var(--p-primary-400);
 }
 
+.filter-section {
+    width: 100%;
+    max-width: 1200px;
+    background: var(--p-surface-0);
+    border: 1px solid var(--p-surface-200);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.filter-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.filter-row:last-child {
+    margin-bottom: 0;
+}
+
+.filter-field {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filter-field label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--p-surface-600);
+}
+
+.filter-field input {
+    width: 100%;
+}
+
+.slider-field {
+    padding-right: 1rem;
+}
+
+:host ::ng-deep .filter-field .p-slider {
+    width: 100%;
+}
+
 .review-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
