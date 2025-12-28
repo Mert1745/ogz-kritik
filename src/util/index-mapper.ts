@@ -33,17 +33,17 @@ export function mapIndexToDetailedIndex(index: any[]): DetailedIndex[] {
         }
 
         if (item[SCORE_100] && item[SCORE_100] !== '-') {
-            detailedIndex.scoreIn100 = parseFloat(item[SCORE_100]);
+            detailedIndex.scoreIn100 = parseFloat(item[SCORE_100].replace(',', '.'));
         }
 
         if (item[SCORE_10] && !INVALID_VALUES_IN_SCORE_10.includes(item[SCORE_10]))
         {
-            const withoutPlus = item[SCORE_10].toString().replace('+', ''); // Remove plus sign if exists
+            const withoutPlus = item[SCORE_10].toString().replace('+', '').replace(',', '.'); // Remove plus sign if exists
             detailedIndex.scoreIn10 = parseFloat(withoutPlus);
         }
 
         if (item[SCORE_5] && item[SCORE_5] !== '-') {
-            detailedIndex.scoreIn5 = parseFloat(item[SCORE_5]);
+            detailedIndex.scoreIn5 = parseFloat(item[SCORE_5].toString().replace(',', '.'));
         }
 
         return detailedIndex;
