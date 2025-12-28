@@ -44,3 +44,4 @@ Thumbs.db
 
 # Environment files
 /src/constants/aws.ts
+/src/constants/magazine.ts

@@ -64,7 +64,7 @@
 
     <div class="review-grid">
         @for (item of paginatedItems(); track $index) {
-            <p-card [header]="item.title" class="review-card">
+            <p-card [header]="item.title" class="review-card" (click)="openMagazine(item.id)">
                 <div class="score-circle">
                     <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>
                 </div>

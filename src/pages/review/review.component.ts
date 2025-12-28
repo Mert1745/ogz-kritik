@@ -7,6 +7,7 @@ import {PaginatorModule, PaginatorState} from 'primeng/paginator';
 import {CardModule} from 'primeng/card';
 import {InputTextModule} from 'primeng/inputtext';
 import {SliderModule} from 'primeng/slider';
+import {MAGAZINE_URL} from '../../constants/magazine';
 
 @Component({
     selector: 'app-review',
@@ -154,6 +155,13 @@ export class ReviewComponent {
 
     onPageChange(event: PaginatorState) {
         this.first.set(event.first ?? 0);
+    }
+
+    openMagazine(itemId: number): void {
+        const magazine = MAGAZINE_URL.find(m => m.index === itemId);
+        if (magazine?.url) {
+            window.open(magazine.url, '_blank');
+        }
     }
 }
 
