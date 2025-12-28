@@ -96,6 +96,13 @@ export class ReviewComponent {
 
                 // Score filter (normalize to 0-10 scale)
                 const score = this.normalizeScore(item);
+                const isScoreRangeModified = minScore !== 0 || maxScore !== 10;
+
+                // If score range is modified, filter out items without scores
+                if (isScoreRangeModified && score === null) {
+                    return false;
+                }
+
                 if (score !== null && (score < minScore || score > maxScore)) {
                     return false;
                 }
