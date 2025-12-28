@@ -1,10 +1,12 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import { definePreset } from '@primeng/themes';
 import Aura from '@primeng/themes/aura';
 
 import { routes } from './app.routes';
+import { loadingInterceptor } from '../interceptors/loading.interceptor';
 import { provideClientHydration, withEventReplay, withIncrementalHydration } from '@angular/platform-browser';
 
 const MyPreset = definePreset(Aura, {
@@ -64,6 +66,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
+    provideHttpClient(withInterceptors([loadingInterceptor])),
     provideClientHydration(withEventReplay(), withIncrementalHydration()),
     providePrimeNG({
       theme: {
