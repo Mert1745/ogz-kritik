@@ -19,6 +19,11 @@ export class ReviewComponent {
 
     paginatedItems: Signal<DetailedIndex[]>;
 
+    // Stats
+    totalReviews: Signal<number>;
+    totalAuthors: Signal<number>;
+    averageScore: Signal<number | null>;
+
     constructor(private detailedIndexService: DetailedIndexService) {
         this.itemsReview = computed(() =>
             this.detailedIndexService.detailedIndex()
@@ -28,6 +33,31 @@ export class ReviewComponent {
         this.paginatedItems = computed(() =>
             this.itemsReview().slice(this.first(), this.first() + this.rows)
         );
+
+        this.totalReviews = computed(() => this.itemsReview().length);
+
+        this.totalAuthors = computed(() => {
+            const authors = new Set<string>();
+            this.itemsReview().forEach(item => {
+                item.authors?.forEach(author => authors.add(author));
+            });
+            return authors.size;
+        });
+
+        this.averageScore = computed(() => {
+            const items = this.itemsReview();
+            const scores: number[] = [];
+
+            items.forEach(item => {
+                const score = item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5;
+                if (score !== undefined) {
+                    scores.push(score);
+                }
+            });
+
+            if (scores.length === 0) return null;
+            return scores.reduce((sum, s) => sum + s, 0) / scores.length;
+        });
     }
 
     onPageChange(event: PaginatorState) {

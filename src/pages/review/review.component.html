@@ -1,4 +1,20 @@
 <div class="review-page">
+
+    <div class="stats-section">
+        <div class="stat-card">
+            <span class="stat-label">Toplam İnceleme Sayısı</span>
+            <span class="stat-value">{{ totalReviews() }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Toplam Yazar Sayısı</span>
+            <span class="stat-value">{{ totalAuthors() }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Ortalama Puan</span>
+            <span class="stat-value">{{ averageScore() !== null ? (averageScore() | number:'1.1-1') : '-' }}</span>
+        </div>
+    </div>
+
     <div class="review-grid">
         @for (item of paginatedItems(); track $index) {
             <p-card [header]="item.title" class="review-card">
@@ -7,7 +23,7 @@
                 </div>
                 <div>
                     <p><strong>{{ item.authors?.join(', ') }}</strong></p>
-                    <p>{{ item.releaseMonthYear.year }}/{{ item.releaseMonthYear.months.join('-') }}</p>
+                    <p>#{{ item.id }} {{ item.releaseMonthYear.year }}/{{ item.releaseMonthYear.months.join('-') }}</p>
                 </div>
             </p-card>
         }
