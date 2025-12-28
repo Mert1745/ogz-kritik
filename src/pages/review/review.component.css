@@ -16,7 +16,7 @@
 }
 
 .stat-card {
-    background: var(--p-surface-0);
+    background: #fbfbfb;
     border: 1px solid var(--p-surface-200);
     border-radius: 8px;
     padding: 1.5rem 2rem;
@@ -37,13 +37,13 @@
 .stat-value {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--p-primary-400);
+    color: #9BA89F;
 }
 
 .filter-section {
     width: 100%;
     max-width: 1200px;
-    background: var(--p-surface-0);
+    background: #fbfbfb;
     border: 1px solid var(--p-surface-200);
     border-radius: 8px;
     padding: 1.5rem;
@@ -114,6 +114,7 @@
 }
 
 :host ::ng-deep .review-card .p-card-body {
+    background: #fbfbfb;
     padding: 1rem;
 }
 
