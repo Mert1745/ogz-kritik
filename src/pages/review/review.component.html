@@ -19,13 +19,15 @@
         <div class="filter-row">
             <div class="filter-field">
                 <label for="authorFilter">Yazar</label>
-                <input
+                <p-autoComplete
                     id="authorFilter"
-                    type="text"
-                    pInputText
-                    placeholder="Yazar adı..."
+                    [suggestions]="authorSuggestions()"
                     [ngModel]="authorFilter()"
-                    (ngModelChange)="onAuthorFilterChange($event)" />
+                    (ngModelChange)="onAuthorFilterChange($event)"
+                    (completeMethod)="searchAuthors($event)"
+                    placeholder="Yazar adı..."
+                    [dropdown]="true"
+                    [forceSelection]="false" />
             </div>
             <div class="filter-field">
                 <label for="titleFilter">Başlık</label>

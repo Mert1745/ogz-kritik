@@ -7,12 +7,13 @@ import {PaginatorModule, PaginatorState} from 'primeng/paginator';
 import {CardModule} from 'primeng/card';
 import {InputTextModule} from 'primeng/inputtext';
 import {SliderModule} from 'primeng/slider';
+import {AutoCompleteModule, AutoCompleteCompleteEvent} from 'primeng/autocomplete';
 import {MAGAZINE_URL} from '../../constants/magazine';
 
 @Component({
     selector: 'app-review',
     standalone: true,
-    imports: [CommonModule, FormsModule, PaginatorModule, CardModule, InputTextModule, SliderModule],
+    imports: [CommonModule, FormsModule, PaginatorModule, CardModule, InputTextModule, SliderModule, AutoCompleteModule],
     templateUrl: './review.component.html',
     styleUrls: ['./review.component.css']
 })
@@ -23,9 +24,13 @@ export class ReviewComponent {
 
     // Filters
     authorFilter = signal('');
+    authorSuggestions = signal<string[]>([]);
     titleFilter = signal('');
     scoreRange = signal<[number, number]>([0, 10]);
     yearRange = signal<[number, number]>([2000, new Date().getFullYear()]);
+
+    // All unique authors for autocomplete
+    allAuthors: Signal<string[]>;
 
     // Year bounds
     minYear: Signal<number>;
@@ -45,6 +50,15 @@ export class ReviewComponent {
             this.detailedIndexService.detailedIndex()
                 .filter(item => item.section === 'İnceleme')
         );
+
+        // Extract unique authors for autocomplete
+        this.allAuthors = computed(() => {
+            const authors = new Set<string>();
+            this.allReviewItems().forEach(item => {
+                item.authors?.forEach(author => authors.add(author));
+            });
+            return [...authors].sort();
+        });
 
         // Calculate year bounds from data
         this.minYear = computed(() => {
@@ -136,6 +150,13 @@ export class ReviewComponent {
     onAuthorFilterChange(value: string) {
         this.authorFilter.set(value);
         this.first.set(0);
+    }
+
+    searchAuthors(event: AutoCompleteCompleteEvent) {
+        const query = event.query.toLowerCase();
+        this.authorSuggestions.set(
+            this.allAuthors().filter(author => author.toLowerCase().includes(query))
+        );
     }
 
     onTitleFilterChange(value: string) {
