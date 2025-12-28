@@ -149,13 +149,13 @@ export class ReviewComponent {
 
     private normalizeScore(item: DetailedIndex): number | null {
         if (item.scoreIn10 !== undefined) return item.scoreIn10;
-        if (item.scoreIn100 !== undefined) return item.scoreIn100 / 10;
+        if (item.scoreIn100 !== undefined) return item.scoreIn100;
         if (item.scoreIn5 !== undefined) return item.scoreIn5 * 2;
         return null;
     }
 
-    onAuthorFilterChange(value: string) {
-        this.authorFilter.set(value);
+    onAuthorFilterChange(value: string | null) {
+        this.authorFilter.set(value ?? '');
         this.first.set(0);
     }
 
