@@ -39,6 +39,7 @@ export class ReviewComponent {
     // Filtered items
     filteredItems: Signal<DetailedIndex[]>;
     paginatedItems: Signal<DetailedIndex[]>;
+    groupedPaginatedItems: Signal<{ year: string; items: DetailedIndex[] }[]>;
 
     // Stats (based on filtered items)
     totalReviews: Signal<number>;
@@ -120,6 +121,24 @@ export class ReviewComponent {
         this.paginatedItems = computed(() =>
             this.filteredItems().slice(this.first(), this.first() + this.rows)
         );
+
+        this.groupedPaginatedItems = computed(() => {
+            const items = this.paginatedItems();
+            const groups = new Map<string, DetailedIndex[]>();
+
+            items.forEach(item => {
+                const year = item.releaseMonthYear.year;
+                if (!groups.has(year)) {
+                    groups.set(year, []);
+                }
+                groups.get(year)!.push(item);
+            });
+
+            // Convert to array and sort by year descending
+            return Array.from(groups.entries())
+                .map(([year, items]) => ({ year, items }))
+                .sort((a, b) => parseInt(b.year, 10) - parseInt(a.year, 10));
+        });
 
         this.totalReviews = computed(() => this.filteredItems().length);
 

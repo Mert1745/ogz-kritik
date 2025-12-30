@@ -65,16 +65,22 @@
     </div>
 
     <div class="review-grid">
-        @for (item of paginatedItems(); track $index) {
-            <p-card [header]="item.title" class="review-card" (click)="openMagazine(item.id)">
-                <div class="score-circle">
-                    <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>
-                </div>
-                <div>
-                    <p><strong>{{ item.authors?.join(', ') }}</strong></p>
-                    <p>#{{ item.id }} {{ item.releaseMonthYear.year }}/{{ item.releaseMonthYear.months.join('-') }}</p>
-                </div>
-            </p-card>
+
+        @for (group of groupedPaginatedItems(); track group.year) {
+            <div class="year-divider">
+                <h2>{{ group.year }}</h2>
+            </div>
+            @for (item of group.items; track item.id) {
+                <p-card [header]="item.title" class="review-card" (click)="openMagazine(item.id)">
+                    <div class="score-circle">
+                        <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>
+                    </div>
+                    <div>
+                        <p><strong>{{ item.authors?.join(', ') }}</strong></p>
+                        <p>#{{ item.id }} {{ item.releaseMonthYear.year }}/{{ item.releaseMonthYear.months.join('-') }}</p>
+                    </div>
+                </p-card>
+            }
         }
     </div>
 
