@@ -2,15 +2,15 @@
 
     <div class="stats-section">
         <div class="stat-card">
-            <span class="stat-label">Toplam İnceleme Sayısı</span>
+            <span class="stat-label">TOPLAM İNCELEME</span>
             <span class="stat-value">{{ totalReviews() }}</span>
         </div>
         <div class="stat-card">
-            <span class="stat-label">Toplam Yazar Sayısı</span>
+            <span class="stat-label">TOPLAM YAZAR</span>
             <span class="stat-value">{{ totalAuthors() }}</span>
         </div>
         <div class="stat-card">
-            <span class="stat-label">Ortalama Puan</span>
+            <span class="stat-label">ORTALAMA PUAN</span>
             <span class="stat-value">{{ averageScore() !== null ? (averageScore() | number:'1.1-1') : '-' }}</span>
         </div>
     </div>
@@ -25,20 +25,20 @@
     <div class="filter-section" [class.visible]="isFilterVisible()">
         <div class="filter-row">
             <div class="filter-field">
-                <label for="authorFilter">Yazar</label>
+                <label for="authorFilter">Yazar Seçin</label>
                 <p-autoComplete
                     id="authorFilter"
                     [suggestions]="authorSuggestions()"
                     [ngModel]="authorFilter()"
                     (ngModelChange)="onAuthorFilterChange($event)"
                     (completeMethod)="searchAuthors($event)"
-                    placeholder="Yazar adı..."
+                    placeholder="Tüm Yazarlar"
                     [dropdown]="true"
                     [showClear]="true"
                     [forceSelection]="false"></p-autoComplete>
             </div>
             <div class="filter-field">
-                <label for="titleFilter">Başlık</label>
+                <label for="titleFilter">Oyun adı yazın..</label>
                 <input
                     id="titleFilter"
                     type="text"
