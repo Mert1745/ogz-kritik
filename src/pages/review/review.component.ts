@@ -22,6 +22,9 @@ export class ReviewComponent {
     first = signal(0);
     rows = 50;
 
+    // Filter visibility for mobile
+    isFilterVisible = signal(false);
+
     // Filters
     authorFilter = signal('');
     authorSuggestions = signal<string[]>([]);
@@ -199,6 +202,10 @@ export class ReviewComponent {
 
     onPageChange(event: PaginatorState) {
         this.first.set(event.first ?? 0);
+    }
+
+    toggleFilter() {
+        this.isFilterVisible.set(!this.isFilterVisible());
     }
 
     openMagazine(itemId: number): void {

@@ -15,7 +15,14 @@
         </div>
     </div>
 
-    <div class="filter-section">
+    <div class="filter-toggle-wrapper">
+        <div class="filter-toggle" (click)="toggleFilter()">
+            <span>Filtrele</span>
+            <span class="toggle-icon">{{ isFilterVisible() ? '▲' : '▼' }}</span>
+        </div>
+    </div>
+
+    <div class="filter-section" [class.visible]="isFilterVisible()">
         <div class="filter-row">
             <div class="filter-field">
                 <label for="authorFilter">Yazar</label>

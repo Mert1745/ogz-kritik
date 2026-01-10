@@ -64,6 +64,34 @@
     }
 }
 
+.filter-toggle-wrapper {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.filter-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    color: #4d6481;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.filter-toggle span {
+    font-size: 0.95rem;
+}
+
+.toggle-icon {
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+}
+
 .filter-section {
     width: 100%;
     max-width: 1200px;
@@ -71,8 +99,24 @@
     border: 1px solid var(--p-surface-200);
     border-radius: 8px;
     padding: 1.5rem;
-    margin-bottom: 2rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: none;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.filter-section.visible {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .filter-toggle-wrapper {
+        display: none;
+    }
+
+    .filter-section {
+        display: block !important;
+    }
 }
 
 .filter-row {
