@@ -78,13 +78,16 @@
                 <h2>{{ group.year }}</h2>
             </div>
             @for (item of group.items; track $index) {
-                <p-card [header]="item.title" class="review-card" (click)="openMagazine(item.id)">
-                    <div class="score-circle">
-                        <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>
-                    </div>
-                    <div>
-                        <p><strong>{{ item.authors?.join(', ') }}</strong></p>
-                        <p>#{{ item.id }} {{ item.releaseMonthYear.year }}/{{ item.releaseMonthYear.months.join('-') }}</p>
+                <p-card class="review-card" (click)="openMagazine(item.id)">
+                    <div class="card-content-wrapper">
+                        <div class="score-circle" [attr.data-score]="item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5">
+                            <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>
+                        </div>
+                        <div class="card-details">
+                            <h3 class="card-title">{{ item.title }}</h3>
+                            <p class="card-author"><span class="icon">👤</span> {{ item.authors?.join(', ') }}</p>
+                            <p class="card-issue"><span class="icon">📅</span> #{{ item.id }} {{ item.releaseMonthYear.year }}/{{ item.releaseMonthYear.months.join('-') }}</p>
+                        </div>
                     </div>
                 </p-card>
             }

@@ -158,8 +158,8 @@
 
 .review-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
     width: 100%;
     max-width: 1200px;
     justify-items: stretch;
@@ -171,11 +171,6 @@
     }
 }
 
-@media (min-width: 1024px) {
-    .review-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
 
 .year-divider {
     grid-column: 1 / -1;
@@ -198,31 +193,121 @@
 
 :host ::ng-deep .review-card {
     width: 100%;
+    height: 100%;
     border: 1px solid #e0e0e0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
-    text-align: center;
+    overflow: hidden;
 }
 
 :host ::ng-deep .review-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 :host ::ng-deep .review-card .p-card-body {
-    /*background: #fbfbfb;*/
-    background-image:  linear-gradient(to bottom right, #d7e9ff, white);;
-    padding: 0.75rem;
+    background: white;
+    padding: 0;
+    height: 100%;
 }
 
-:host ::ng-deep .review-card .p-card-title {
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
-    /*color: #8e8a8a;*/
-    color: #3a3e5a;
+:host ::ng-deep .review-card .p-card-content {
+    padding: 0;
+    height: 100%;
+}
+
+.card-content-wrapper {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    height: 160px;
+}
+
+@media (max-width: 767px) {
+    .card-content-wrapper {
+        height: 140px;
+    }
+}
+
+.score-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    width: 80px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 12px 0 0 12px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+    .score-circle {
+        min-width: 70px;
+        width: 70px;
+        font-size: 1.3rem;
+    }
+}
+
+/* Score color variations based on score value */
+.score-circle[data-score="10"],
+.score-circle[data-score="9.5"],
+.score-circle[data-score="9"],
+.score-circle[data-score="8.5"],
+.score-circle[data-score="8"] {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+}
+
+.score-circle[data-score="7.5"],
+.score-circle[data-score="7"],
+.score-circle[data-score="6.5"] {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+}
+
+.score-circle[data-score="6"],
+.score-circle[data-score="5.5"],
+.score-circle[data-score="5"] {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+.score-circle[data-score="4.5"],
+.score-circle[data-score="4"],
+.score-circle[data-score="3.5"],
+.score-circle[data-score="3"] {
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+}
+
+.score-circle:not([data-score]),
+.score-circle[data-score=""],
+.score-circle[data-score="-"] {
+    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+}
+
+.card-details {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+@media (max-width: 767px) {
+    .card-details {
+        padding: 0.75rem;
+        gap: 0.4rem;
+    }
+}
+
+.card-title {
+    font-size: 1rem;
     font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.3;
     height: 2.6rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -230,31 +315,38 @@
     overflow: hidden;
 }
 
-:host ::ng-deep .review-card p {
-    margin: 0.25rem 0;
+@media (max-width: 767px) {
+    .card-title {
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+        height: 2.4rem;
+    }
+}
+
+.card-author,
+.card-issue {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-author {
+    font-weight: 500;
+    min-height: 2.2rem;
+    align-items: flex-start;
+}
+
+.card-issue {
     font-size: 0.8rem;
+    color: #9ca3af;
 }
 
-:host ::ng-deep .review-card p:first-of-type {
-    min-height: 2.4rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.score-circle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ea9897 0%, #ef7570 100%);
-    color: white;
-    font-size: 0.95rem;
-    font-weight: bold;
-    margin: 0 auto 0.75rem auto;
-    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+.icon {
+    font-size: 0.9rem;
+    flex-shrink: 0;
 }
 
 p-paginator {
