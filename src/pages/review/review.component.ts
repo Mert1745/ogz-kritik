@@ -9,6 +9,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {SliderModule} from 'primeng/slider';
 import {AutoCompleteModule, AutoCompleteCompleteEvent} from 'primeng/autocomplete';
 import {MAGAZINE_URL} from '../../constants/magazine';
+import {REVIEW} from '../../constants';
 
 @Component({
     selector: 'app-review',
@@ -52,7 +53,7 @@ export class ReviewComponent {
     constructor(private detailedIndexService: DetailedIndexService) {
         this.allReviewItems = computed(() =>
             this.detailedIndexService.detailedIndex()
-                .filter(item => item.section === 'İnceleme')
+                .filter(item => item.section === REVIEW)
         );
 
         // Extract unique authors for autocomplete

@@ -1,0 +1,31 @@
+.author-page {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.chart-container {
+    width: 100%;
+    height: 800px;
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .author-page {
+        padding: 1rem;
+    }
+
+    .chart-container {
+        height: 700px;
+        padding: 1rem;
+    }
+}
+
+
