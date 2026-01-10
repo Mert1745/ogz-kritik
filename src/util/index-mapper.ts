@@ -14,7 +14,7 @@ import {
 
 export function mapIndexToDetailedIndex(index: any[]): DetailedIndex[] {
     return index.map((item) => {
-        const monthsYear = item[DATE]?.split('/')
+        const monthsYear = item[DATE]?.replaceAll(" ", "").split('/')
         const year = monthsYear && monthsYear[0]
         const months = monthsYear && monthsYear[1].split('-')
 

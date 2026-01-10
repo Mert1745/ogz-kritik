@@ -97,6 +97,23 @@
     justify-items: center;
 }
 
+.year-divider {
+    grid-column: 1 / -1;
+    width: 100%;
+    text-align: center;
+    margin: 1rem 0;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid #9BA89F;
+}
+
+.year-divider h2 {
+    color: #9BA89F;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+}
+
 :host ::ng-deep .review-card {
     width: 100%;
     max-width: 350px;
