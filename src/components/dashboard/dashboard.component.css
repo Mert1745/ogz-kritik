@@ -1,16 +1,57 @@
 .dashboard {
     cursor: pointer;
-    padding: 1rem;
-    display: flex;
-    flex-direction: row;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(200px, 300px));
+    gap: 2rem;
     justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .dashboard-card {
-    padding-right: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dashboard-card a {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-card a:hover {
+    transform: translateY(-5px);
 }
 
 .review {
     background: #fbfbfb;
-    height: 219px;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    .dashboard-card a {
+        max-width: 250px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .dashboard {
+        grid-template-columns: repeat(2, minmax(200px, 300px));
+        gap: 1.5rem;
+    }
+}
+
+
