@@ -235,6 +235,13 @@
     font-size: 0.8rem;
 }
 
+:host ::ng-deep .review-card p:first-of-type {
+    min-height: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .score-circle {
     display: flex;
     align-items: center;
