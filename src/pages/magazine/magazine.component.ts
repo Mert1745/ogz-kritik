@@ -5,6 +5,7 @@ import {DetailedIndex} from '../../interface';
 import {PaginatorModule, PaginatorState} from 'primeng/paginator';
 import {CardModule} from 'primeng/card';
 import {MAGAZINE_URL} from '../../constants/magazine';
+import {formatMonths} from '../../util/index-mapper';
 
 @Component({
     selector: 'app-magazine',
@@ -81,6 +82,6 @@ export class MagazineComponent {
         if (item.scoreIn5) return item.scoreIn5 * 2;
         return null;
     }
+
+    protected readonly formatMonths = formatMonths;
 }
-
-

@@ -10,6 +10,7 @@ import {SliderModule} from 'primeng/slider';
 import {AutoCompleteModule, AutoCompleteCompleteEvent} from 'primeng/autocomplete';
 import {MAGAZINE_URL} from '../../constants/magazine';
 import {REVIEW} from '../../constants';
+import {formatMonths} from '../../util/index-mapper';
 
 @Component({
     selector: 'app-review',
@@ -215,5 +216,7 @@ export class ReviewComponent {
             window.open(magazine.url, '_blank');
         }
     }
+
+    protected readonly formatMonths = formatMonths;
 }
 

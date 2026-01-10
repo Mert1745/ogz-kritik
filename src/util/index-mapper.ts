@@ -8,7 +8,8 @@ import {
     SCORE_5,
     SCORE_10,
     SCORE_100,
-    INVALID_VALUES_IN_SCORE_10
+    INVALID_VALUES_IN_SCORE_10,
+    getMonthName
 } from '../constants';
 
 
@@ -48,4 +49,8 @@ export function mapIndexToDetailedIndex(index: any[]): DetailedIndex[] {
 
         return detailedIndex;
     });
+}
+
+export function formatMonths(months: string[]): string {
+    return months.map(m => getMonthName(parseInt(m, 10))).join('-');
 }

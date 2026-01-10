@@ -3,8 +3,7 @@
     align-items: center;
     justify-content: center;
     padding: 1rem 0;
-    border-bottom: 1px solid #e5e7eb;
-    background: linear-gradient(to bottom, #D9D7D7FF, white)
+    background: linear-gradient(to bottom, #d4ddf7, white)
 }
 
 .header-logo {

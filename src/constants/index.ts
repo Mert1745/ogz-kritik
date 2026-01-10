@@ -10,3 +10,12 @@ export const SCORE_5 = "Puan (5'lik)";
 export const INVALID_VALUES_IN_SCORE_10 = ['Co-op', 'EE', 'FUO', 'Upd.', '-', ''];
 
 export const REVIEW = "İnceleme";
+
+export function getMonthName(monthNumber: number): string {
+    const months = [
+        'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+        'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
+    ];
+    return months[monthNumber - 1] || '';
+}
+

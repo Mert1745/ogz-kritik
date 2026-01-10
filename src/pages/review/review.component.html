@@ -86,7 +86,7 @@
                         <div class="card-details">
                             <h3 class="card-title">{{ item.title }}</h3>
                             <p class="card-author"><span class="icon">👤</span> {{ item.authors?.join(', ') }}</p>
-                            <p class="card-issue"><span class="icon">📅</span> #{{ item.id }} {{ item.releaseMonthYear.year }}/{{ item.releaseMonthYear.months.join('-') }}</p>
+                            <p class="card-issue"><span class="icon">📅</span> #{{ item.id }} - {{ formatMonths(item.releaseMonthYear.months) }} {{ item.releaseMonthYear.year }}</p>
                         </div>
                     </div>
                 </p-card>
