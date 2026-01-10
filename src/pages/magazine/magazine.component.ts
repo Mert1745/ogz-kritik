@@ -1,4 +1,4 @@
-import {Component, computed, Signal} from '@angular/core';
+import {Component, computed, signal, Signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DetailedIndexService} from '../../services/detailed-index.service';
 import {DetailedIndex} from '../../interface';
@@ -7,15 +7,15 @@ import {CardModule} from 'primeng/card';
 import {MAGAZINE_URL} from '../../constants/magazine';
 
 @Component({
-    selector: 'app-author',
+    selector: 'app-magazine',
     standalone: true,
     imports: [CommonModule, PaginatorModule, CardModule],
-    templateUrl: './author.component.html',
-    styleUrls: ['./author.component.css']
+    templateUrl: './magazine.component.html',
+    styleUrls: ['./magazine.component.css']
 })
-export class AuthorComponent {
-    allAuthorItems: Signal<DetailedIndex[]>;
-    first = 0;
+export class MagazineComponent {
+    allMagazineItems: Signal<DetailedIndex[]>;
+    first = signal(0);
     rows = 50;
 
     // Paginated items
@@ -23,13 +23,13 @@ export class AuthorComponent {
     groupedPaginatedItems: Signal<{ year: string; items: DetailedIndex[] }[]>;
 
     constructor(private detailedIndexService: DetailedIndexService) {
-        this.allAuthorItems = this.detailedIndexService.detailedIndex;
+        this.allMagazineItems = this.detailedIndexService.detailedIndex;
 
         // Paginated items based on current page
         this.paginatedItems = computed(() => {
-            const items = this.allAuthorItems();
-            const start = this.first;
-            const end = this.first + this.rows;
+            const items = this.allMagazineItems();
+            const start = this.first();
+            const end = this.first() + this.rows;
             return items.slice(start, end);
         });
 
@@ -53,7 +53,7 @@ export class AuthorComponent {
     }
 
     onPageChange(event: PaginatorState): void {
-        this.first = event.first ?? 0;
+        this.first.set(event.first ?? 0);
         this.rows = event.rows ?? 50;
     }
 
@@ -82,4 +82,5 @@ export class AuthorComponent {
         return null;
     }
 }
+
 
