@@ -27,7 +27,7 @@ export class ReviewComponent {
     authorSuggestions = signal<string[]>([]);
     titleFilter = signal('');
     scoreRange = signal<[number, number]>([0, 10]);
-    yearRange = signal<[number, number]>([2007, new Date().getFullYear()]);
+    yearRange = signal<[number, number]>([2007, 2025]);
 
     // All unique authors for autocomplete
     allAuthors: Signal<string[]>;
@@ -110,11 +110,8 @@ export class ReviewComponent {
 
                 // Year filter
                 const year = parseInt(item.releaseMonthYear.year, 10);
-                if (!isNaN(year) && (year < minYr || year > maxYr)) {
-                    return false;
-                }
 
-                return true;
+                return !(!isNaN(year) && (year < minYr || year > maxYr));
             });
         });
 
