@@ -34,6 +34,7 @@
                     (completeMethod)="searchAuthors($event)"
                     placeholder="Yazar adı..."
                     [dropdown]="true"
+                    [showClear]="true"
                     [forceSelection]="false"></p-autoComplete>
             </div>
             <div class="filter-field">
@@ -76,7 +77,7 @@
             <div class="year-divider">
                 <h2>{{ group.year }}</h2>
             </div>
-            @for (item of group.items; track item.id) {
+            @for (item of group.items; track $index) {
                 <p-card [header]="item.title" class="review-card" (click)="openMagazine(item.id)">
                     <div class="score-circle">
                         <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>
