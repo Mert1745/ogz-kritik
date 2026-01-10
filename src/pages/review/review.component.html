@@ -38,12 +38,12 @@
                     [forceSelection]="false"></p-autoComplete>
             </div>
             <div class="filter-field">
-                <label for="titleFilter">Oyun adı yazın..</label>
+                <label for="titleFilter">Başlık ile Ara</label>
                 <input
                     id="titleFilter"
                     type="text"
                     pInputText
-                    placeholder="Başlık..."
+                    placeholder="Oyun adı yazın.."
                     [ngModel]="titleFilter()"
                     (ngModelChange)="onTitleFilterChange($event)" />
             </div>
