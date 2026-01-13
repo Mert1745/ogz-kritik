@@ -53,12 +53,12 @@ export class AuthorComponent {
             return authorStats;
         });
 
-        // Calculate top 10 authors from "İnceleme" section only
+        // Calculate top 10 authors from Review section only
         this.topReviewAuthors = computed(() => {
             const items = this.allItems();
             const authorCounts = new Map<string, number>();
 
-            // Count items per author, only for "İnceleme" section
+            // Count items per author, only for review section
             items.forEach(item => {
                 if (item.section === REVIEW && item.authors && item.authors.length > 0) {
                     item.authors.forEach(author => {
@@ -185,14 +185,6 @@ export class AuthorComponent {
                             size: 14
                         }
                     },
-                    // title: {
-                    //     display: true,
-                    //     text: 'Yazı Sayısı',
-                    //     font: {
-                    //         size: 16,
-                    //         weight: 'bold'
-                    //     }
-                    // }
                 },
                 y: {
                     ticks: {
@@ -200,14 +192,6 @@ export class AuthorComponent {
                             size: 14
                         }
                     },
-                    // title: {
-                    //     display: true,
-                    //     text: 'Yazar',
-                    //     font: {
-                    //         size: 16,
-                    //         weight: 'bold'
-                    //     }
-                    // }
                 }
             }
         };
@@ -242,14 +226,6 @@ export class AuthorComponent {
                             size: 14
                         }
                     },
-                    // title: {
-                    //     display: true,
-                    //     text: 'İnceleme Sayısı',
-                    //     font: {
-                    //         size: 16,
-                    //         weight: 'bold'
-                    //     }
-                    // }
                 },
                 y: {
                     ticks: {
@@ -257,14 +233,6 @@ export class AuthorComponent {
                             size: 14
                         }
                     },
-                    // title: {
-                    //     display: true,
-                    //     text: 'Yazar',
-                    //     font: {
-                    //         size: 16,
-                    //         weight: 'bold'
-                    //     }
-                    // }
                 }
             }
         };

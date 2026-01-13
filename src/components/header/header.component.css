@@ -16,3 +16,12 @@
     font-size: 1.25rem;
 }
 
+@media (max-width: 767px) {
+    .app-header {
+        padding: 0.7rem 0;
+    }
+
+    .header-logo {
+        max-height: 40px;
+    }
+}
