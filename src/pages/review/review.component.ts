@@ -217,6 +217,22 @@ export class ReviewComponent {
         }
     }
 
+    getScoreColorClass(score: number | undefined): string {
+        if (score === undefined || score === null) {
+            return 'score-none';
+        }
+
+        if (score >= 8) {
+            return 'score-excellent';
+        } else if (score >= 6.5) {
+            return 'score-good';
+        } else if (score >= 5) {
+            return 'score-average';
+        } else {
+            return 'score-poor';
+        }
+    }
+
     protected readonly formatMonths = formatMonths;
 }
 

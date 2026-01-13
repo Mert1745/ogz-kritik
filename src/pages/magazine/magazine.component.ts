@@ -83,5 +83,23 @@ export class MagazineComponent {
         return null;
     }
 
+    getScoreColorClass(item: DetailedIndex): string {
+        const score = this.getNormalizedScore(item);
+
+        if (score === null || score === undefined) {
+            return 'score-none';
+        }
+
+        if (score >= 8) {
+            return 'score-excellent';
+        } else if (score >= 6.5) {
+            return 'score-good';
+        } else if (score >= 5) {
+            return 'score-average';
+        } else {
+            return 'score-poor';
+        }
+    }
+
     protected readonly formatMonths = formatMonths;
 }

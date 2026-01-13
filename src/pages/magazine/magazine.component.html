@@ -8,7 +8,7 @@
                 <p-card class="review-card" (click)="openMagazine(item.id)">
                     <div class="card-content-wrapper">
                         @if (hasScore(item)) {
-                            <div class="score-circle" [attr.data-score]="getNormalizedScore(item)">
+                            <div class="score-circle" [ngClass]="getScoreColorClass(item)">
                                 <span>{{ getDisplayScore(item) }}</span>
                             </div>
                         }
