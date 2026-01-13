@@ -195,6 +195,10 @@
     color: #9ca3af;
 }
 
+.card-section .icon {
+    filter: saturate(1.2) brightness(1.1);
+}
+
 .card-issue {
     font-size: 0.8rem;
     color: #9ca3af;
