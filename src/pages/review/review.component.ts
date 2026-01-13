@@ -22,7 +22,7 @@ import {formatMonths} from '../../util/index-mapper';
 export class ReviewComponent {
     allReviewItems: Signal<DetailedIndex[]>;
     first = signal(0);
-    rows = 50;
+    rows = signal(50);
 
     // Filter visibility for mobile
     isFilterVisible = signal(false);
@@ -121,7 +121,7 @@ export class ReviewComponent {
         });
 
         this.paginatedItems = computed(() =>
-            this.filteredItems().slice(this.first(), this.first() + this.rows)
+            this.filteredItems().slice(this.first(), this.first() + this.rows())
         );
 
         this.groupedPaginatedItems = computed(() => {
@@ -204,6 +204,10 @@ export class ReviewComponent {
 
     onPageChange(event: PaginatorState) {
         this.first.set(event.first ?? 0);
+        if (event.rows) {
+            this.rows.set(event.rows);
+        }
+        window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     toggleFilter() {

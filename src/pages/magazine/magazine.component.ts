@@ -17,7 +17,7 @@ import {formatMonths} from '../../util/index-mapper';
 export class MagazineComponent {
     allMagazineItems: Signal<DetailedIndex[]>;
     first = signal(0);
-    rows = 50;
+    rows = signal(50);
 
     // Paginated items
     paginatedItems: Signal<DetailedIndex[]>;
@@ -30,7 +30,7 @@ export class MagazineComponent {
         this.paginatedItems = computed(() => {
             const items = this.allMagazineItems();
             const start = this.first();
-            const end = this.first() + this.rows;
+            const end = this.first() + this.rows();
             return items.slice(start, end);
         });
 
@@ -55,7 +55,8 @@ export class MagazineComponent {
 
     onPageChange(event: PaginatorState): void {
         this.first.set(event.first ?? 0);
-        this.rows = event.rows ?? 50;
+        this.rows.set(event.rows ?? 50);
+        window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     openMagazine(id: number): void {
