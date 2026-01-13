@@ -8,10 +8,12 @@ import {RippleModule} from 'primeng/ripple';
 import {ExcelCacheService} from '../services/excel-cache.service';
 import {HeaderComponent} from '../components/header/header.component';
 import {LoadingComponent} from '../components/loading/loading.component';
+import {FooterComponent} from '../components/footer/footer.component';
 
 @Component({
     selector: 'app-root',
-    imports: [ButtonModule, CardModule, CommonModule, TooltipModule, RippleModule, HeaderComponent, RouterOutlet, LoadingComponent],
+    standalone: true,
+    imports: [ButtonModule, CardModule, CommonModule, TooltipModule, RippleModule, HeaderComponent, RouterOutlet, LoadingComponent, FooterComponent],
     templateUrl: './app.html',
     styleUrl: './app.css'
 })

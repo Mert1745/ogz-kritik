@@ -6,17 +6,26 @@
         min-height: 100vh;
     }
 
+    main > router-outlet + * {
+        flex: 1 0 auto;
+    }
+
+    main > app-footer {
+        margin-top: auto;
+    }
+
     main::before {
         content: '';
-        position: fixed;
-        top: -10%;
-        left: -10%;
-        width: 120%;
-        height: 120%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        min-height: 100%;
         background-image: url('/assets/images/background.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        background-attachment: fixed;
         z-index: -1;
     }
 </style>
@@ -25,5 +34,6 @@
 <main>
     <app-header [title]="title()"></app-header>
     <router-outlet></router-outlet>
+    <app-footer></app-footer>
 </main>
 
