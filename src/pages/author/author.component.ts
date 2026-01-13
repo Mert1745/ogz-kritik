@@ -167,7 +167,7 @@ export class AuthorComponent {
                     display: true,
                     text: 'En Çok Yazı Yazanlar',
                     font: {
-                        size: 24,
+                        size: 20,
                         weight: 'bold'
                     },
                     padding: {
@@ -208,7 +208,7 @@ export class AuthorComponent {
                     display: true,
                     text: 'En Çok Oyun İnceleyenler',
                     font: {
-                        size: 24,
+                        size: 20,
                         weight: 'bold'
                     },
                     padding: {

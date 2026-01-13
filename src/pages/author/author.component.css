@@ -19,12 +19,13 @@
 
 @media (max-width: 768px) {
     .author-page {
-        padding: 1rem;
+        padding: 0.8rem;
+        gap: 2.4rem;
     }
 
     .chart-container {
-        height: 700px;
-        padding: 1rem 1rem 1rem 0;
+        height: 560px;
+        padding: 0.8rem 0.8rem 0.8rem 0;
     }
 }
 
