@@ -84,7 +84,7 @@ export class AuthorComponent {
                 labels: authors.map(a => a.author),
                 datasets: [
                     {
-                        label: 'Number of Items',
+                        label: 'Yazı Sayısı',
                         data: authors.map(a => a.count),
                         backgroundColor: [
                             'rgba(75, 192, 192, 0.6)',
@@ -122,7 +122,7 @@ export class AuthorComponent {
                 labels: authors.map(a => a.author),
                 datasets: [
                     {
-                        label: 'Number of Items',
+                        label: 'İnceleme Sayısı',
                         data: authors.map(a => a.count),
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.6)',
@@ -165,7 +165,7 @@ export class AuthorComponent {
                 },
                 title: {
                     display: true,
-                    text: 'En Çok Yazı Yazmış 10 Yazar',
+                    text: 'En Çok Yazı Yazanlar',
                     font: {
                         size: 24,
                         weight: 'bold'
@@ -185,14 +185,14 @@ export class AuthorComponent {
                             size: 14
                         }
                     },
-                    title: {
-                        display: true,
-                        text: 'Yazı Sayısı',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        }
-                    }
+                    // title: {
+                    //     display: true,
+                    //     text: 'Yazı Sayısı',
+                    //     font: {
+                    //         size: 16,
+                    //         weight: 'bold'
+                    //     }
+                    // }
                 },
                 y: {
                     ticks: {
@@ -200,14 +200,14 @@ export class AuthorComponent {
                             size: 14
                         }
                     },
-                    title: {
-                        display: true,
-                        text: 'Yazar',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        }
-                    }
+                    // title: {
+                    //     display: true,
+                    //     text: 'Yazar',
+                    //     font: {
+                    //         size: 16,
+                    //         weight: 'bold'
+                    //     }
+                    // }
                 }
             }
         };
@@ -222,7 +222,7 @@ export class AuthorComponent {
                 },
                 title: {
                     display: true,
-                    text: 'En Çok Oyun İncelemiş 10 Yazar',
+                    text: 'En Çok Oyun İnceleyenler',
                     font: {
                         size: 24,
                         weight: 'bold'
@@ -242,14 +242,14 @@ export class AuthorComponent {
                             size: 14
                         }
                     },
-                    title: {
-                        display: true,
-                        text: 'İnceleme Sayısı',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        }
-                    }
+                    // title: {
+                    //     display: true,
+                    //     text: 'İnceleme Sayısı',
+                    //     font: {
+                    //         size: 16,
+                    //         weight: 'bold'
+                    //     }
+                    // }
                 },
                 y: {
                     ticks: {
@@ -257,14 +257,14 @@ export class AuthorComponent {
                             size: 14
                         }
                     },
-                    title: {
-                        display: true,
-                        text: 'Yazar',
-                        font: {
-                            size: 16,
-                            weight: 'bold'
-                        }
-                    }
+                    // title: {
+                    //     display: true,
+                    //     text: 'Yazar',
+                    //     font: {
+                    //         size: 16,
+                    //         weight: 'bold'
+                    //     }
+                    // }
                 }
             }
         };
