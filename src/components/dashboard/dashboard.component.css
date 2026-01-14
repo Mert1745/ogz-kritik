@@ -15,7 +15,8 @@
     justify-content: center;
 }
 
-.dashboard-row-secondary {
+.dashboard-row-secondary:first-of-type .dashboard-card .image {
+    max-width: 225px;
 }
 
 .dashboard-card {
@@ -32,17 +33,29 @@
 
 }
 
+.goyun {
+    background: none;
+}
+
 .dashboard-card a:hover {
     transform: translateY(-15px);
 }
 
-.review {
+.image {
     background: #fbfbfb;
     width: 100%;
     max-width: 100%;
     height: auto;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-secondary {
+    width: 75%;
+}
+
+.image-goyun {
+    background: none;
 }
 
 @media (max-width: 768px) {
@@ -52,7 +65,7 @@
     }
 
     .dashboard-row {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1.2rem;
     }
 
@@ -70,6 +83,6 @@
 
 @media (min-width: 1025px) {
     .dashboard {
-        margin-top: 5%;
+        margin-top: 2%;
     }
 }
