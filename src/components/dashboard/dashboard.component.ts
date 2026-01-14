@@ -10,5 +10,13 @@ import {RouterLink} from '@angular/router';
     styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
+    showModal = false;
 
+    openModal() {
+        this.showModal = true;
+    }
+
+    closeModal() {
+        this.showModal = false;
+    }
 }
