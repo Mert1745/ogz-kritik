@@ -15,9 +15,6 @@
     justify-content: center;
 }
 
-.dashboard-row-secondary:first-of-type .dashboard-card .image {
-    max-width: 225px;
-}
 
 .dashboard-card {
     display: flex;
