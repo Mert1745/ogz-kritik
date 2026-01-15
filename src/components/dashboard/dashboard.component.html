@@ -45,13 +45,5 @@
     </div>
 </div>
 
-@if (showModal) {
-    <div class="modal-overlay" (click)="closeModal()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
-            <button class="modal-close" (click)="closeModal()">&times;</button>
-            <p class="modal-text">OGZ Kritik, Oyungezer'in bugüne kadar çıkmış tüm sayılarını çeşitli metriklerle sunan,
-                sadece bilgilendirme amaçlı bir platformdur.</p>
-        </div>
-    </div>
-}
+<app-info-modal [showModal]="showModal" (closeModalEvent)="closeModal()"></app-info-modal>
 
