@@ -46,3 +46,46 @@
     padding-right: 2rem;
 }
 
+.modal-close-button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 0.5rem 2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.modal-close-button:hover {
+    background-color: #000;
+    transform: translateY(-2px);
+}
+
+.modal-close-button:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 1.5rem;
+        max-width: 95%;
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto;
+        margin: 1rem;
+    }
+
+    .modal-text {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        padding-right: 1rem;
+    }
+
+    .modal-close {
+        top: 0.5rem;
+        right: 0.5rem;
+        font-size: 1.5rem;
+    }
+}
+
