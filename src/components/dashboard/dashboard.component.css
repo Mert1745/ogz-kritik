@@ -18,8 +18,37 @@
 
 .dashboard-card {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+}
+
+.score-card {
+    background: #fbfbfb;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.score-card-issue {
+    max-height: 200px;
+    margin: auto;
+}
+
+.score-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #646464;
+    text-align: center;
+    user-select: none;
+    margin-top: -15px;
+    opacity: 90%;
 }
 
 .dashboard-card a {
@@ -43,7 +72,6 @@
     max-width: 100%;
     height: auto;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .image-secondary {
@@ -75,6 +103,18 @@
 
     .dashboard-card a {
         max-width: 200px;
+    }
+
+    .score-card {
+        padding: 1rem;
+    }
+
+    .score-content {
+        margin-top: 0.5rem;
+    }
+
+    .score-value {
+        font-size: 2rem;
     }
 }
 

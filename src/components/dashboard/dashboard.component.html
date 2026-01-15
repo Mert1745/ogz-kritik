@@ -7,7 +7,7 @@
         </div>
         <div class="dashboard-card">
             <a routerLink="/magazine">
-                <img ngSrc="/assets/images/magazine.png" alt="Magazine" class="image" height="219" width="219"/>
+                <img ngSrc="/assets/images/magazine.png" alt="Magazine" class="image" height="219" width="219" priority/>
             </a>
         </div>
         <div class="dashboard-card">
@@ -33,14 +33,23 @@
         </div>
     </div>
     <div class="dashboard-row dashboard-row-secondary">
-        <div class="dashboard-card">
+        <div class="dashboard-card score-card">
             <img ngSrc="/assets/images/average-score.png" alt="Average Score" class="image" height="226" width="293"/>
+            <div class="score-content">
+                <div class="score-value">{{ averageScore() || '...' }}</div>
+            </div>
         </div>
-        <div class="dashboard-card">
+        <div class="dashboard-card score-card score-card-issue">
             <img ngSrc="/assets/images/year.png" alt="Year" class="image" height="212" width="446"/>
+            <div class="score-content" style="margin-left: 5px">
+                <div class="score-value">{{ currentYear - 2007 + 1 }}</div>
+            </div>
         </div>
-        <div class="dashboard-card">
+        <div class="dashboard-card score-card score-card-issue">
             <img ngSrc="/assets/images/issue-number.png" alt="Number of Issues" class="image" height="212" width="446"/>
+            <div class="score-content">
+                <div class="score-value">#{{ latestIssue() || '...' }}</div>
+            </div>
         </div>
     </div>
 </div>
