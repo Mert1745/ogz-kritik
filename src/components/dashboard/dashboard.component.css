@@ -43,7 +43,6 @@
 
 .score-value {
     font-size: 1.5rem;
-    font-weight: bold;
     color: #646464;
     text-align: center;
     user-select: none;
@@ -52,7 +51,8 @@
 }
 
 .dashboard-card a {
-    display: block;
+    display: flex;
+    justify-content: center;
     width: 100%;
     max-width: 300px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -105,8 +105,9 @@
         max-width: 200px;
     }
 
-    .score-card {
-        padding: 1rem;
+    .score-card-issue {
+        max-height: 250px;
+        margin: auto;
     }
 
     .score-content {
@@ -114,7 +115,7 @@
     }
 
     .score-value {
-        font-size: 2rem;
+        font-size: 0.8rem;
     }
 }
 
