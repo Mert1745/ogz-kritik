@@ -1,4 +1,79 @@
 <div class="magazine-page">
+
+    <div class="filter-toggle-wrapper">
+        <div class="filter-toggle" (click)="toggleFilter()">
+            <span>Filtrele</span>
+            <span class="toggle-icon">{{ isFilterVisible() ? '▲' : '▼' }}</span>
+        </div>
+    </div>
+
+    <div class="filter-section" [class.visible]="isFilterVisible()">
+        <div class="filter-row">
+            <div class="filter-field">
+                <label for="sectionFilter">Bölüm Seçin</label>
+                <p-autoComplete
+                    id="sectionFilter"
+                    [suggestions]="sectionSuggestions()"
+                    [ngModel]="sectionFilter()"
+                    (ngModelChange)="onSectionFilterChange($event)"
+                    (completeMethod)="searchSections($event)"
+                    placeholder="Tüm Bölümler"
+                    [multiple]="true"
+                    [dropdown]="true"
+                    [showClear]="true"
+                    [forceSelection]="false"></p-autoComplete>
+            </div>
+            <div class="filter-field">
+                <label for="titleFilter">Başlık ile Ara</label>
+                <p-autoComplete
+                    id="titleFilter"
+                    [suggestions]="titleSuggestions()"
+                    [ngModel]="titleFilter()"
+                    (ngModelChange)="onTitleFilterChange($event)"
+                    (completeMethod)="searchTitles($event)"
+                    placeholder="Başlık yazın.."
+                    [dropdown]="true"
+                    [showClear]="true"
+                    [forceSelection]="false"></p-autoComplete>
+            </div>
+        </div>
+        <div class="filter-row">
+            <div class="filter-field">
+                <label for="authorFilter">Yazar Seçin</label>
+                <p-autoComplete
+                    id="authorFilter"
+                    [suggestions]="authorSuggestions()"
+                    [ngModel]="authorFilter()"
+                    (ngModelChange)="onAuthorFilterChange($event)"
+                    (completeMethod)="searchAuthors($event)"
+                    placeholder="Tüm Yazarlar"
+                    [dropdown]="true"
+                    [showClear]="true"
+                    [forceSelection]="false"></p-autoComplete>
+            </div>
+            <div class="filter-field slider-field">
+                <label>Yıl Aralığı: {{ yearRange()[0] }} - {{ yearRange()[1] }}</label>
+                <p-slider
+                    [ngModel]="yearRange()"
+                    (ngModelChange)="onYearRangeChange($event)"
+                    [range]="true"
+                    [min]="minYear()"
+                    [max]="maxYear()"
+                    [step]="1"></p-slider>
+            </div>
+        </div>
+        <div class="filter-row">
+            <div class="filter-field checkbox-field">
+                <p-checkbox
+                    [ngModel]="excludeReviews()"
+                    (ngModelChange)="onExcludeReviewsChange($event)"
+                    [binary]="true"
+                    inputId="excludeReviews"></p-checkbox>
+                <label for="excludeReviews">İncelemeleri dahil etme</label>
+            </div>
+        </div>
+    </div>
+
     <div class="review-grid">
         @for (group of groupedPaginatedItems(); track group.year) {
             <div class="year-divider">
@@ -29,7 +104,7 @@
     <p-paginator
         [first]="first()"
         [rows]="rows()"
-        [totalRecords]="allMagazineItems().length"
+        [totalRecords]="filteredItems().length"
         (onPageChange)="onPageChange($event)"
     ></p-paginator>
 </div>
