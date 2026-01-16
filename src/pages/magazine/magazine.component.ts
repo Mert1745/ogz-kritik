@@ -27,6 +27,9 @@ export class MagazineComponent {
     // Filter visibility for mobile
     isFilterVisible = signal(false);
 
+    // View mode: 'article' or 'magazine'
+    viewMode = signal<'article' | 'magazine'>('magazine');
+
     // Filters
     sectionFilter = signal<string[]>([]);
     sectionSuggestions = signal<string[]>([]);
@@ -50,6 +53,11 @@ export class MagazineComponent {
     filteredItems: Signal<DetailedIndex[]>;
     paginatedItems: Signal<DetailedIndex[]>;
     groupedPaginatedItems: Signal<{ year: string; items: DetailedIndex[] }[]>;
+
+    // Magazine view - unique items by id
+    uniqueMagazineItems: Signal<DetailedIndex[]>;
+    paginatedMagazineItems: Signal<DetailedIndex[]>;
+    groupedPaginatedMagazineItems: Signal<{ year: string; items: DetailedIndex[] }[]>;
 
     constructor(private detailedIndexService: DetailedIndexService) {
         this.allMagazineItems = this.detailedIndexService.detailedIndex;
@@ -157,10 +165,54 @@ export class MagazineComponent {
                 .map(([year, items]) => ({year, items}))
                 .sort((a, b) => parseInt(b.year) - parseInt(a.year));
         });
+
+        // Magazine view - get unique items by id (one per magazine issue)
+        this.uniqueMagazineItems = computed(() => {
+            const items = this.filteredItems();
+            const seen = new Set<number>();
+            return items.filter(item => {
+                if (seen.has(item.id)) {
+                    return false;
+                }
+                seen.add(item.id);
+                return true;
+            });
+        });
+
+        // Paginated magazine items
+        this.paginatedMagazineItems = computed(() => {
+            const items = this.uniqueMagazineItems();
+            const start = this.first();
+            const end = this.first() + this.rows();
+            return items.slice(start, end);
+        });
+
+        // Group magazine items by year
+        this.groupedPaginatedMagazineItems = computed(() => {
+            const items = this.paginatedMagazineItems();
+            const grouped = new Map<string, DetailedIndex[]>();
+
+            items.forEach(item => {
+                const year = item.releaseMonthYear.year;
+                if (!grouped.has(year)) {
+                    grouped.set(year, []);
+                }
+                grouped.get(year)!.push(item);
+            });
+
+            return Array.from(grouped.entries())
+                .map(([year, items]) => ({year, items}))
+                .sort((a, b) => parseInt(b.year) - parseInt(a.year));
+        });
     }
 
     toggleFilter() {
         this.isFilterVisible.set(!this.isFilterVisible());
+    }
+
+    toggleViewMode() {
+        this.viewMode.set(this.viewMode() === 'article' ? 'magazine' : 'article');
+        this.first.set(0);
     }
 
     // Section filter methods

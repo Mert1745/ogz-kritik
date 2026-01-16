@@ -74,37 +74,79 @@
         </div>
     </div>
 
-    <div class="review-grid">
-        @for (group of groupedPaginatedItems(); track group.year) {
-            <div class="year-divider">
-                <h2>{{ group.year }}</h2>
-            </div>
-            @for (item of group.items; track $index) {
-                <p-card class="review-card" (click)="openMagazine(item.id)">
-                    <div class="card-content-wrapper">
-                        @if (hasScore(item)) {
-                            <div class="score-circle" [ngClass]="getScoreColorClass(item)">
-                                <span>{{ getDisplayScore(item) }}</span>
-                            </div>
-                        }
-                        <div class="card-details" [class.no-score]="!hasScore(item)">
-                            <h3 class="card-title">{{ item.title }}</h3>
-                            @if (item.authors && item.authors.length > 0) {
-                                <p class="card-author"><span class="icon">👤</span> {{ item.authors.join(', ') }}</p>
-                            }
-                            <p class="card-section"><span class="icon">🗂️</span> {{ item.section }}</p>
-                            <p class="card-issue"><span class="icon">📅</span> #{{ item.id }} - {{ formatMonths(item.releaseMonthYear.months) }} {{ item.releaseMonthYear.year }}</p>
-                        </div>
-                    </div>
-                </p-card>
-            }
-        }
+    <div class="view-toggle-wrapper">
+        <div class="view-toggle">
+            <button
+                class="view-toggle-btn"
+                [class.active]="viewMode() === 'magazine'"
+                (click)="toggleViewMode()">
+                📖 Dergi Görünümü
+            </button>
+            <button
+                class="view-toggle-btn"
+                [class.active]="viewMode() === 'article'"
+                (click)="toggleViewMode()">
+                📄 Makale Görünümü
+            </button>
+        </div>
     </div>
+
+    <!-- Magazine View -->
+    @if (viewMode() === 'magazine') {
+        <div class="magazine-grid">
+            @for (group of groupedPaginatedMagazineItems(); track group.year) {
+                <div class="year-divider">
+                    <h2>{{ group.year }}</h2>
+                </div>
+                @for (item of group.items; track item.id) {
+                    <p-card class="magazine-card" (click)="openMagazine(item.id)">
+                        <div class="magazine-card-content">
+                            <img
+                                [src]="'https://storage.oyungezer.com.tr/ogz-public/images/covers/' + item.id + '.jpg'"
+                                [alt]="'Magazine Cover ' + item.id"
+                                class="magazine-cover-img" />
+                            <p class="magazine-issue">#{{ item.id }} - {{ formatMonths(item.releaseMonthYear.months) }} {{ item.releaseMonthYear.year }}</p>
+                        </div>
+                    </p-card>
+                }
+            }
+        </div>
+    }
+
+    <!-- Article View -->
+    @if (viewMode() === 'article') {
+        <div class="review-grid">
+            @for (group of groupedPaginatedItems(); track group.year) {
+                <div class="year-divider">
+                    <h2>{{ group.year }}</h2>
+                </div>
+                @for (item of group.items; track $index) {
+                    <p-card class="review-card" (click)="openMagazine(item.id)">
+                        <div class="card-content-wrapper">
+                            @if (hasScore(item)) {
+                                <div class="score-circle" [ngClass]="getScoreColorClass(item)">
+                                    <span>{{ getDisplayScore(item) }}</span>
+                                </div>
+                            }
+                            <div class="card-details" [class.no-score]="!hasScore(item)">
+                                <h3 class="card-title">{{ item.title }}</h3>
+                                @if (item.authors && item.authors.length > 0) {
+                                    <p class="card-author"><span class="icon">👤</span> {{ item.authors.join(', ') }}</p>
+                                }
+                                <p class="card-section"><span class="icon">🗂️</span> {{ item.section }}</p>
+                                <p class="card-issue"><span class="icon">📅</span> #{{ item.id }} - {{ formatMonths(item.releaseMonthYear.months) }} {{ item.releaseMonthYear.year }}</p>
+                            </div>
+                        </div>
+                    </p-card>
+                }
+            }
+        </div>
+    }
 
     <p-paginator
         [first]="first()"
         [rows]="rows()"
-        [totalRecords]="filteredItems().length"
+        [totalRecords]="viewMode() === 'magazine' ? uniqueMagazineItems().length : filteredItems().length"
         (onPageChange)="onPageChange($event)"
     ></p-paginator>
 </div>
