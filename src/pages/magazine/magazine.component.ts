@@ -1,5 +1,5 @@
 import {Component, computed, signal, Signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {DetailedIndexService} from '../../services/detailed-index.service';
 import {DetailedIndex} from '../../interface';
@@ -11,11 +11,12 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {InputTextModule} from 'primeng/inputtext';
 import {MAGAZINE_URL} from '../../constants/magazine';
 import {formatMonths} from '../../util/index-mapper';
+import {ArticleViewCardsComponent} from '../../components/article-view-cards/article-view-cards.component';
 
 @Component({
     selector: 'app-magazine',
     standalone: true,
-    imports: [CommonModule, FormsModule, PaginatorModule, CardModule, AutoCompleteModule, SliderModule, CheckboxModule, InputTextModule],
+    imports: [CommonModule, FormsModule, PaginatorModule, CardModule, AutoCompleteModule, SliderModule, CheckboxModule, InputTextModule, ArticleViewCardsComponent, NgOptimizedImage],
     templateUrl: './magazine.component.html',
     styleUrls: ['./magazine.component.css']
 })
@@ -279,41 +280,6 @@ export class MagazineComponent {
         }
     }
 
-    hasScore(item: DetailedIndex): boolean {
-        return !!(item.scoreIn100 || item.scoreIn10 || item.scoreIn5);
-    }
-
-    getDisplayScore(item: DetailedIndex): number | null {
-        if (item.scoreIn100) return item.scoreIn100;
-        if (item.scoreIn10) return item.scoreIn10;
-        if (item.scoreIn5) return item.scoreIn5;
-        return null;
-    }
-
-    getNormalizedScore(item: DetailedIndex): number | null {
-        if (item.scoreIn100) return item.scoreIn100 / 10;
-        if (item.scoreIn10) return item.scoreIn10;
-        if (item.scoreIn5) return item.scoreIn5 * 2;
-        return null;
-    }
-
-    getScoreColorClass(item: DetailedIndex): string {
-        const score = this.getNormalizedScore(item);
-
-        if (score === null || score === undefined) {
-            return 'score-none';
-        }
-
-        if (score >= 8) {
-            return 'score-excellent';
-        } else if (score >= 6.5) {
-            return 'score-good';
-        } else if (score >= 5) {
-            return 'score-average';
-        } else {
-            return 'score-poor';
-        }
-    }
 
     protected readonly formatMonths = formatMonths;
 }

@@ -115,32 +115,10 @@
 
     <!-- Article View -->
     @if (viewMode() === 'article') {
-        <div class="review-grid">
-            @for (group of groupedPaginatedItems(); track group.year) {
-                <div class="year-divider">
-                    <h2>{{ group.year }}</h2>
-                </div>
-                @for (item of group.items; track $index) {
-                    <p-card class="review-card" (click)="openMagazine(item.id)">
-                        <div class="card-content-wrapper">
-                            @if (hasScore(item)) {
-                                <div class="score-circle" [ngClass]="getScoreColorClass(item)">
-                                    <span>{{ getDisplayScore(item) }}</span>
-                                </div>
-                            }
-                            <div class="card-details" [class.no-score]="!hasScore(item)">
-                                <h3 class="card-title">{{ item.title }}</h3>
-                                @if (item.authors && item.authors.length > 0) {
-                                    <p class="card-author"><span class="icon">👤</span> {{ item.authors.join(', ') }}</p>
-                                }
-                                <p class="card-section"><span class="icon">🗂️</span> {{ item.section }}</p>
-                                <p class="card-issue"><span class="icon">📅</span> #{{ item.id }} - {{ formatMonths(item.releaseMonthYear.months) }} {{ item.releaseMonthYear.year }}</p>
-                            </div>
-                        </div>
-                    </p-card>
-                }
-            }
-        </div>
+        <app-article-view-cards
+            [groupedItems]="groupedPaginatedItems()"
+            [onCardClick]="openMagazine.bind(this)">
+        </app-article-view-cards>
     }
 
     <p-paginator
