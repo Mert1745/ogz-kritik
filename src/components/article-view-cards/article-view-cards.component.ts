@@ -14,6 +14,7 @@ import {formatMonths} from '../../util/index-mapper';
 export class ArticleViewCardsComponent {
     @Input() groupedItems: { year: string; items: DetailedIndex[] }[] = [];
     @Input() onCardClick: (id: number) => void = () => {};
+    @Input() dividerOn!: boolean;
 
     hasScore(item: DetailedIndex): boolean {
         return !!(item.scoreIn100 || item.scoreIn10 || item.scoreIn5);

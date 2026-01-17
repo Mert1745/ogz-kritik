@@ -1,6 +1,7 @@
-import {Component, computed, signal, Signal} from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {Component, computed, OnInit, signal, Signal, PLATFORM_ID, Inject} from '@angular/core';
+import {CommonModule, isPlatformBrowser} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {Router} from '@angular/router';
 import {DetailedIndexService} from '../../services/detailed-index.service';
 import {DetailedIndex} from '../../interface';
 import {PaginatorModule, PaginatorState} from 'primeng/paginator';
@@ -9,18 +10,17 @@ import {AutoCompleteModule, AutoCompleteCompleteEvent} from 'primeng/autocomplet
 import {SliderModule} from 'primeng/slider';
 import {CheckboxModule} from 'primeng/checkbox';
 import {InputTextModule} from 'primeng/inputtext';
-import {MAGAZINE_URL} from '../../constants/magazine';
 import {formatMonths} from '../../util/index-mapper';
 import {ArticleViewCardsComponent} from '../../components/article-view-cards/article-view-cards.component';
 
 @Component({
     selector: 'app-magazine',
     standalone: true,
-    imports: [CommonModule, FormsModule, PaginatorModule, CardModule, AutoCompleteModule, SliderModule, CheckboxModule, InputTextModule, ArticleViewCardsComponent, NgOptimizedImage],
+    imports: [CommonModule, FormsModule, PaginatorModule, CardModule, AutoCompleteModule, SliderModule, CheckboxModule, InputTextModule, ArticleViewCardsComponent],
     templateUrl: './magazine.component.html',
     styleUrls: ['./magazine.component.css']
 })
-export class MagazineComponent {
+export class MagazineComponent implements OnInit {
     allMagazineItems: Signal<DetailedIndex[]>;
     first = signal(0);
     rows = signal(50);
@@ -60,7 +60,7 @@ export class MagazineComponent {
     paginatedMagazineItems: Signal<DetailedIndex[]>;
     groupedPaginatedMagazineItems: Signal<{ year: string; items: DetailedIndex[] }[]>;
 
-    constructor(private detailedIndexService: DetailedIndexService) {
+    constructor(private detailedIndexService: DetailedIndexService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
         this.allMagazineItems = this.detailedIndexService.detailedIndex;
 
         // Extract unique sections for autocomplete
@@ -207,6 +207,25 @@ export class MagazineComponent {
         });
     }
 
+    ngOnInit(): void {
+        // Get filters from navigation state (when returning from detail page)
+        // Only access history in browser environment
+        if (!isPlatformBrowser(this.platformId)) {
+            return;
+        }
+
+        const navigation = this.router.getCurrentNavigation();
+        const state = navigation?.extras?.state || (history.state as any);
+
+        if (state?.filters) {
+            this.sectionFilter.set(state.filters.sections || []);
+            this.titleFilter.set(state.filters.title || '');
+            this.authorFilter.set(state.filters.author || '');
+            this.yearRange.set(state.filters.yearRange || [2007, 2025]);
+            this.excludeReviews.set(state.filters.excludeReviews || false);
+        }
+    }
+
     toggleFilter() {
         this.isFilterVisible.set(!this.isFilterVisible());
     }
@@ -274,10 +293,17 @@ export class MagazineComponent {
     }
 
     openMagazine(id: number): void {
-        const magazine = MAGAZINE_URL.find(m => m.index === id);
-        if (magazine?.url) {
-            window.open(magazine.url, '_blank');
-        }
+        this.router.navigate(['/magazine', id], {
+            state: {
+                filters: {
+                    sections: this.sectionFilter(),
+                    title: this.titleFilter(),
+                    author: this.authorFilter(),
+                    yearRange: this.yearRange(),
+                    excludeReviews: this.excludeReviews()
+                }
+            }
+        });
     }
 
 

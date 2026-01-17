@@ -1,8 +1,10 @@
 <div class="review-grid">
     @for (group of groupedItems; track group.year) {
-        <div class="year-divider">
-            <h2>{{ group.year }}</h2>
-        </div>
+        @if (this.dividerOn) {
+            <div class="year-divider">
+                <h2>{{ group.year }}</h2>
+            </div>
+        }
         @for (item of group.items; track $index) {
             <p-card class="review-card" (click)="onCardClick(item.id)">
                 <div class="card-content-wrapper">

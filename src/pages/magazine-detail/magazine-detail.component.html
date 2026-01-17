@@ -1,0 +1,39 @@
+<div class="magazine-detail-page">
+    @if (magazineInfo(); as info) {
+        <div class="header-section">
+            <button class="back-button" (click)="goBack()">
+                ← Dergilere Dön
+            </button>
+
+            <div class="magazine-header">
+                <div class="magazine-cover">
+                    <img
+                        [src]="'https://storage.oyungezer.com.tr/ogz-public/images/covers/' + info.id + '.jpg'"
+                        [alt]="'Magazine Cover ' + info.id"
+                        class="cover-image" />
+                </div>
+                <div class="magazine-info">
+                    <h1 class="magazine-title">{{ info.title }}</h1>
+                    <p class="article-count">{{ filteredItems().length }} yazı</p>
+                    @if (info.url) {
+                        <button class="pdf-button" (click)="openMagazinePdf()">
+                            📄 PDF'i Aç
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="articles-section">
+            <app-article-view-cards
+                [dividerOn] = false
+                [groupedItems]="groupedItems()"
+                [onCardClick]="openMagazine.bind(this)">
+            </app-article-view-cards>
+        </div>
+    } @else {
+        <div class="loading-section">
+            <p>Yükleniyor...</p>
+        </div>
+    }
+</div>
