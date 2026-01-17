@@ -93,7 +93,7 @@
 }
 
 .slider-field {
-    margin:auto;
+    margin: auto;
 }
 
 :host ::ng-deep .filter-field .p-slider {
@@ -139,6 +139,16 @@
     background: #4d6481;
     color: white;
     border-color: #4d6481;
+}
+
+@media (max-width: 767px) {
+    .view-toggle {
+        margin-top: 1rem;
+    }
+
+    .view-toggle-btn {
+        padding: 0.5rem 1rem;
+    }
 }
 
 .magazine-grid {
