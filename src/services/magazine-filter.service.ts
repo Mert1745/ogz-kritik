@@ -2,14 +2,6 @@ import {Injectable, signal, computed, inject} from '@angular/core';
 import {DetailedIndexService} from './detailed-index.service';
 import {DetailedIndex} from '../interface';
 
-export interface MagazineFilterState {
-    sections: string[];
-    title: string;
-    author: string;
-    yearRange: [number, number];
-    excludeReviews: boolean;
-}
-
 @Injectable({
     providedIn: 'root'
 })
@@ -74,9 +66,8 @@ export class MagazineFilterService {
         return [...authors].sort((a, b) => a.localeCompare(b, 'tr-TR'));
     });
 
-    // Apply all filters
-    readonly filteredItems = computed(() => {
-        const items = this.allItems();
+    // Private method to apply filter logic to items
+    private applyFilters(items: DetailedIndex[], includeYearFilter: boolean = true): DetailedIndex[] {
         const sections = this.sectionFilter();
         const title = this.titleFilter().toLocaleLowerCase('tr-TR').trim();
         const author = this.authorFilter().toLocaleLowerCase('tr-TR').trim();
@@ -104,10 +95,21 @@ export class MagazineFilterService {
                 return false;
             }
 
-            // Year filter
-            const year = parseInt(item.releaseMonthYear.year, 10);
-            return !(!isNaN(year) && (year < minYr || year > maxYr));
+            // Year filter (optional)
+            if (includeYearFilter) {
+                const year = parseInt(item.releaseMonthYear.year, 10);
+                if (!isNaN(year) && (year < minYr || year > maxYr)) {
+                    return false;
+                }
+            }
+
+            return true;
         });
+    }
+
+    // Apply all filters
+    readonly filteredItems = computed(() => {
+        return this.applyFilters(this.allItems(), true);
     });
 
     // Magazine view - get unique items by id (one per magazine issue)
@@ -129,35 +131,8 @@ export class MagazineFilterService {
 
         const items = this.allItems().filter(item => item.id === magazineId);
 
-        // Apply global filters
-        const sections = this.sectionFilter();
-        const title = this.titleFilter().toLocaleLowerCase('tr-TR').trim();
-        const author = this.authorFilter().toLocaleLowerCase('tr-TR').trim();
-        const excludeReviewItems = this.excludeReviews();
-
-        return items.filter(item => {
-            // Exclude reviews filter
-            if (excludeReviewItems && item.section?.toLocaleLowerCase('tr-TR') === 'inceleme') {
-                return false;
-            }
-
-            // Section filter (multi-select)
-            if (sections.length > 0 && !sections.includes(item.section)) {
-                return false;
-            }
-
-            // Title filter
-            if (title && !item.title.toLocaleLowerCase('tr-TR').includes(title)) {
-                return false;
-            }
-
-            // Author filter
-            if (author && !item.authors?.some(a => a.toLocaleLowerCase('tr-TR').includes(author))) {
-                return false;
-            }
-
-            return true;
-        });
+        // Apply global filters (excluding year filter since all items in a magazine have the same year)
+        return this.applyFilters(items, false);
     }
 
     // Group items by year
@@ -191,15 +166,6 @@ export class MagazineFilterService {
             maxYr !== dataMax ||
             this.excludeReviews();
     });
-
-    // Get all filter values as an object
-    readonly filterState = computed<MagazineFilterState>(() => ({
-        sections: this.sectionFilter(),
-        title: this.titleFilter(),
-        author: this.authorFilter(),
-        yearRange: this.yearRange(),
-        excludeReviews: this.excludeReviews()
-    }));
 
     // Update methods
     setSectionFilter(sections: string[]): void {
@@ -245,10 +211,5 @@ export class MagazineFilterService {
         this.authorFilter.set('');
         this.yearRange.set([this.dataMinYear(), this.dataMaxYear()]);
         this.excludeReviews.set(false);
-    }
-
-    // Get default year range
-    getDefaultYearRange(): [number, number] {
-        return [this.defaultMinYear, this.defaultMaxYear];
     }
 }
