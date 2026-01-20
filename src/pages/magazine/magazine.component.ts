@@ -1,5 +1,5 @@
-import {Component, computed, OnInit, signal, Signal, PLATFORM_ID, Inject} from '@angular/core';
-import {CommonModule, isPlatformBrowser} from '@angular/common';
+import {Component, computed, OnInit, signal, Signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {DetailedIndexService} from '../../services/detailed-index.service';
@@ -60,7 +60,7 @@ export class MagazineComponent implements OnInit {
     paginatedMagazineItems: Signal<DetailedIndex[]>;
     groupedPaginatedMagazineItems: Signal<{ year: string; items: DetailedIndex[] }[]>;
 
-    constructor(private detailedIndexService: DetailedIndexService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
+    constructor(private detailedIndexService: DetailedIndexService, private router: Router) {
         this.allMagazineItems = this.detailedIndexService.detailedIndex;
 
         // Extract unique sections for autocomplete
@@ -208,22 +208,6 @@ export class MagazineComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // Get filters from navigation state (when returning from detail page)
-        // Only access history in browser environment
-        if (!isPlatformBrowser(this.platformId)) {
-            return;
-        }
-
-        const navigation = this.router.getCurrentNavigation();
-        const state = navigation?.extras?.state || (history.state as any);
-
-        if (state?.filters) {
-            this.sectionFilter.set(state.filters.sections || []);
-            this.titleFilter.set(state.filters.title || '');
-            this.authorFilter.set(state.filters.author || '');
-            this.yearRange.set(state.filters.yearRange || [2007, 2025]);
-            this.excludeReviews.set(state.filters.excludeReviews || false);
-        }
     }
 
     toggleFilter() {
@@ -293,17 +277,7 @@ export class MagazineComponent implements OnInit {
     }
 
     openMagazine(id: number): void {
-        this.router.navigate(['/magazine', id], {
-            state: {
-                filters: {
-                    sections: this.sectionFilter(),
-                    title: this.titleFilter(),
-                    author: this.authorFilter(),
-                    yearRange: this.yearRange(),
-                    excludeReviews: this.excludeReviews()
-                }
-            }
-        });
+        this.router.navigate(['/magazine', id]);
     }
 
 

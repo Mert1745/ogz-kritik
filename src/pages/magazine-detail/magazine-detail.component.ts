@@ -1,5 +1,5 @@
-import {Component, computed, OnInit, signal, Signal, PLATFORM_ID, Inject} from '@angular/core';
-import {CommonModule, isPlatformBrowser} from '@angular/common';
+import {Component, computed, OnInit, signal, Signal} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DetailedIndexService} from '../../services/detailed-index.service';
 import {DetailedIndex} from '../../interface';
@@ -18,13 +18,6 @@ export class MagazineDetailComponent implements OnInit {
     magazineId = signal<number | null>(null);
     allMagazineItems: Signal<DetailedIndex[]>;
 
-    // Filters from magazine page
-    sectionFilter = signal<string[]>([]);
-    titleFilter = signal('');
-    authorFilter = signal('');
-    yearRange = signal<[number, number]>([2007, 2025]);
-    excludeReviews = signal(false);
-
     // Filtered items by magazine ID
     filteredItems: Signal<DetailedIndex[]>;
     groupedItems: Signal<{ year: string; items: DetailedIndex[] }[]>;
@@ -35,52 +28,16 @@ export class MagazineDetailComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private detailedIndexService: DetailedIndexService,
-        @Inject(PLATFORM_ID) private platformId: Object
+        private detailedIndexService: DetailedIndexService
     ) {
         this.allMagazineItems = this.detailedIndexService.detailedIndex;
 
-        // Filter items by magazine ID and other filters
+        // Filter items by magazine ID
         this.filteredItems = computed(() => {
             const id = this.magazineId();
             if (id === null) return [];
 
-            const sections = this.sectionFilter();
-            const title = this.titleFilter().toLocaleLowerCase('tr-TR').trim();
-            const author = this.authorFilter().toLocaleLowerCase('tr-TR').trim();
-            const [minYr, maxYr] = this.yearRange();
-            const excludeReviewItems = this.excludeReviews();
-
-            return this.allMagazineItems().filter(item => {
-                // First filter: magazine ID
-                if (item.id !== id) {
-                    return false;
-                }
-
-                // Exclude reviews filter
-                if (excludeReviewItems && item.section?.toLocaleLowerCase('tr-TR') === 'inceleme') {
-                    return false;
-                }
-
-                // Section filter (multi-select)
-                if (sections.length > 0 && !sections.includes(item.section)) {
-                    return false;
-                }
-
-                // Title filter
-                if (title && !item.title.toLocaleLowerCase('tr-TR').includes(title)) {
-                    return false;
-                }
-
-                // Author filter
-                if (author && !item.authors?.some(a => a.toLocaleLowerCase('tr-TR').includes(author))) {
-                    return false;
-                }
-
-                // Year filter
-                const year = parseInt(item.releaseMonthYear.year, 10);
-                return !(!isNaN(year) && (year < minYr || year > maxYr));
-            });
+            return this.allMagazineItems().filter(item => item.id === id);
         });
 
         // Group items by year (though all will be same year for single magazine)
@@ -129,23 +86,6 @@ export class MagazineDetailComponent implements OnInit {
                 this.router.navigate(['/magazine']);
             }
         });
-
-        // Get filters from navigation state
-        // Only access history in browser environment
-        if (!isPlatformBrowser(this.platformId)) {
-            return;
-        }
-
-        const navigation = this.router.getCurrentNavigation();
-        const state = navigation?.extras?.state || (history.state as any);
-
-        if (state?.filters) {
-            this.sectionFilter.set(state.filters.sections || []);
-            this.titleFilter.set(state.filters.title || '');
-            this.authorFilter.set(state.filters.author || '');
-            this.yearRange.set(state.filters.yearRange || [2007, 2025]);
-            this.excludeReviews.set(state.filters.excludeReviews || false);
-        }
     }
 
     openMagazine(id: number): void {
@@ -156,17 +96,7 @@ export class MagazineDetailComponent implements OnInit {
     }
 
     goBack(): void {
-        this.router.navigate(['/magazine'], {
-            state: {
-                filters: {
-                    sections: this.sectionFilter(),
-                    title: this.titleFilter(),
-                    author: this.authorFilter(),
-                    yearRange: this.yearRange(),
-                    excludeReviews: this.excludeReviews()
-                }
-            }
-        });
+        this.router.navigate(['/magazine']);
     }
 
     openMagazinePdf(): void {
