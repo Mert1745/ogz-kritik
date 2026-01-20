@@ -2,6 +2,7 @@ import {Component, computed, OnInit, signal, Signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DetailedIndexService} from '../../services/detailed-index.service';
+import {MagazineFilterService} from '../../services/magazine-filter.service';
 import {DetailedIndex} from '../../interface';
 import {ArticleViewCardsComponent} from '../../components/article-view-cards/article-view-cards.component';
 import {MAGAZINE_URL} from '../../constants/magazine';
@@ -16,9 +17,11 @@ import {formatMonths} from '../../util/index-mapper';
 })
 export class MagazineDetailComponent implements OnInit {
     magazineId = signal<number | null>(null);
-    allMagazineItems: Signal<DetailedIndex[]>;
 
-    // Filtered items by magazine ID
+    // Filter signals from service
+    hasActiveFilters: Signal<boolean>;
+
+    // Filtered items by magazine ID and global filters
     filteredItems: Signal<DetailedIndex[]>;
     groupedItems: Signal<{ year: string; items: DetailedIndex[] }[]>;
 
@@ -28,42 +31,28 @@ export class MagazineDetailComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private detailedIndexService: DetailedIndexService
+        private detailedIndexService: DetailedIndexService,
+        private magazineFilterService: MagazineFilterService
     ) {
-        this.allMagazineItems = this.detailedIndexService.detailedIndex;
+        // Bind hasActiveFilters from service
+        this.hasActiveFilters = this.magazineFilterService.hasActiveFilters;
 
-        // Filter items by magazine ID
+        // Filter items by magazine ID and apply global filters
         this.filteredItems = computed(() => {
-            const id = this.magazineId();
-            if (id === null) return [];
-
-            return this.allMagazineItems().filter(item => item.id === id);
+            return this.magazineFilterService.getFilteredItemsByMagazineId(this.magazineId());
         });
 
-        // Group items by year (though all will be same year for single magazine)
+        // Group items by year
         this.groupedItems = computed(() => {
-            const items = this.filteredItems();
-            const grouped = new Map<string, DetailedIndex[]>();
-
-            items.forEach(item => {
-                const year = item.releaseMonthYear.year;
-                if (!grouped.has(year)) {
-                    grouped.set(year, []);
-                }
-                grouped.get(year)!.push(item);
-            });
-
-            return Array.from(grouped.entries())
-                .map(([year, items]) => ({year, items}))
-                .sort((a, b) => parseInt(b.year) - parseInt(a.year));
+            return this.magazineFilterService.groupItemsByYear(this.filteredItems());
         });
 
-        // Get magazine info
+        // Get magazine info (uses unfiltered items to always show magazine info)
         this.magazineInfo = computed(() => {
             const id = this.magazineId();
             if (id === null) return null;
 
-            const firstItem = this.filteredItems()[0];
+            const firstItem = this.magazineFilterService.allItems().find(item => item.id === id);
             if (!firstItem) return null;
 
             const magazineUrl = MAGAZINE_URL.find(m => m.index === id);
@@ -104,5 +93,9 @@ export class MagazineDetailComponent implements OnInit {
         if (info?.url) {
             window.open(info.url, '_blank');
         }
+    }
+
+    clearFilters(): void {
+        this.magazineFilterService.resetFilters();
     }
 }

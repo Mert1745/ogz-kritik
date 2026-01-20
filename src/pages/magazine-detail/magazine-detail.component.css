@@ -98,6 +98,45 @@
     margin: 0;
 }
 
+.filter-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+    .filter-indicator {
+        justify-content: center;
+    }
+}
+
+.filter-badge {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.clear-filters-button {
+    background: transparent;
+    color: #4d6481;
+    border: 1px solid #4d6481;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.clear-filters-button:hover {
+    background: #4d6481;
+    color: white;
+}
+
 .pdf-button {
     background: #4d6481;
     color: white;

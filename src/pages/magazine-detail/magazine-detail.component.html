@@ -15,6 +15,14 @@
                 <div class="magazine-info">
                     <h1 class="magazine-title">{{ info.title }}</h1>
                     <p class="article-count">{{ filteredItems().length }} yazı</p>
+                    @if (hasActiveFilters()) {
+                        <div class="filter-indicator">
+                            <span class="filter-badge">Filtreler Aktif</span>
+                            <button class="clear-filters-button" (click)="clearFilters()">
+                                Filtreleri Temizle
+                            </button>
+                        </div>
+                    }
                     @if (info.url) {
                         <button class="pdf-button" (click)="openMagazinePdf()">
                             📄 PDF'i Aç

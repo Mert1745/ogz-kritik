@@ -2,7 +2,7 @@ import {Component, computed, OnInit, signal, Signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
-import {DetailedIndexService} from '../../services/detailed-index.service';
+import {MagazineFilterService} from '../../services/magazine-filter.service';
 import {DetailedIndex} from '../../interface';
 import {PaginatorModule, PaginatorState} from 'primeng/paginator';
 import {CardModule} from 'primeng/card';
@@ -31,15 +31,17 @@ export class MagazineComponent implements OnInit {
     // View mode: 'article' or 'magazine'
     viewMode = signal<'article' | 'magazine'>('magazine');
 
-    // Filters
-    sectionFilter = signal<string[]>([]);
+    // Filter signals from service (for template binding)
+    sectionFilter: Signal<string[]>;
+    titleFilter: Signal<string>;
+    authorFilter: Signal<string>;
+    yearRange: Signal<[number, number]>;
+    excludeReviews: Signal<boolean>;
+
+    // Autocomplete suggestions (local state)
     sectionSuggestions = signal<string[]>([]);
-    titleFilter = signal('');
     titleSuggestions = signal<string[]>([]);
-    authorFilter = signal('');
     authorSuggestions = signal<string[]>([]);
-    yearRange = signal<[number, number]>([2007, 2025]);
-    excludeReviews = signal(false);
 
     // All unique values for autocomplete
     allSections: Signal<string[]>;
@@ -60,86 +62,26 @@ export class MagazineComponent implements OnInit {
     paginatedMagazineItems: Signal<DetailedIndex[]>;
     groupedPaginatedMagazineItems: Signal<{ year: string; items: DetailedIndex[] }[]>;
 
-    constructor(private detailedIndexService: DetailedIndexService, private router: Router) {
-        this.allMagazineItems = this.detailedIndexService.detailedIndex;
+    constructor(
+        private router: Router,
+        private magazineFilterService: MagazineFilterService
+    ) {
+        // Bind filter signals from service
+        this.sectionFilter = this.magazineFilterService.sectionFilter;
+        this.titleFilter = this.magazineFilterService.titleFilter;
+        this.authorFilter = this.magazineFilterService.authorFilter;
+        this.yearRange = this.magazineFilterService.yearRange;
+        this.excludeReviews = this.magazineFilterService.excludeReviews;
 
-        // Extract unique sections for autocomplete
-        this.allSections = computed(() => {
-            const sections = new Set<string>();
-            this.allMagazineItems().forEach(item => {
-                if (item.section) sections.add(item.section);
-            });
-            return [...sections].sort((a, b) => a.localeCompare(b, 'tr-TR'));
-        });
-
-        // Extract unique titles for autocomplete
-        this.allTitles = computed(() => {
-            const titles = new Set<string>();
-            this.allMagazineItems().forEach(item => {
-                if (item.title) titles.add(item.title);
-            });
-            return [...titles].sort((a, b) => a.localeCompare(b, 'tr-TR'));
-        });
-
-        // Extract unique authors for autocomplete
-        this.allAuthors = computed(() => {
-            const authors = new Set<string>();
-            this.allMagazineItems().forEach(item => {
-                item.authors?.forEach(author => authors.add(author));
-            });
-            return [...authors].sort((a, b) => a.localeCompare(b, 'tr-TR'));
-        });
-
-        // Calculate year bounds from data
-        this.minYear = computed(() => {
-            const years = this.allMagazineItems()
-                .map(item => parseInt(item.releaseMonthYear.year, 10))
-                .filter(y => !isNaN(y));
-            return years.length > 0 ? Math.min(...years) : 2007;
-        });
-
-        this.maxYear = computed(() => {
-            const years = this.allMagazineItems()
-                .map(item => parseInt(item.releaseMonthYear.year, 10))
-                .filter(y => !isNaN(y));
-            return years.length > 0 ? Math.max(...years) : new Date().getFullYear();
-        });
-
-        // Apply all filters
-        this.filteredItems = computed(() => {
-            const items = this.allMagazineItems();
-            const sections = this.sectionFilter();
-            const title = this.titleFilter().toLocaleLowerCase('tr-TR').trim();
-            const author = this.authorFilter().toLocaleLowerCase('tr-TR').trim();
-            const [minYr, maxYr] = this.yearRange();
-            const excludeReviewItems = this.excludeReviews();
-
-            return items.filter(item => {
-                // Exclude reviews filter
-                if (excludeReviewItems && item.section?.toLocaleLowerCase('tr-TR') === 'inceleme') {
-                    return false;
-                }
-
-                // Section filter (multi-select)
-                if (sections.length > 0 && !sections.includes(item.section)) {
-                    return false;
-                }
-
-                // Title filter
-                if (title && !item.title.toLocaleLowerCase('tr-TR').includes(title)) {
-                    return false;
-                }
-
-                // Author filter
-                if (author && !item.authors?.some(a => a.toLocaleLowerCase('tr-TR').includes(author))) {
-                    return false;
-                }
-
-                // Year filter
-                const year = parseInt(item.releaseMonthYear.year, 10);
-                return !(!isNaN(year) && (year < minYr || year > maxYr));
-            });
-        });
+        // Bind data from service
+        this.allMagazineItems = this.magazineFilterService.allItems;
+        this.allSections = this.magazineFilterService.allSections;
+        this.allTitles = this.magazineFilterService.allTitles;
+        this.allAuthors = this.magazineFilterService.allAuthors;
+        this.minYear = this.magazineFilterService.minYear;
+        this.maxYear = this.magazineFilterService.maxYear;
+        this.filteredItems = this.magazineFilterService.filteredItems;
+        this.uniqueMagazineItems = this.magazineFilterService.uniqueMagazineItems;
 
         // Paginated items based on current page
         this.paginatedItems = computed(() => {
@@ -152,32 +94,7 @@ export class MagazineComponent implements OnInit {
         // Group items by year
         this.groupedPaginatedItems = computed(() => {
             const items = this.paginatedItems();
-            const grouped = new Map<string, DetailedIndex[]>();
-
-            items.forEach(item => {
-                const year = item.releaseMonthYear.year;
-                if (!grouped.has(year)) {
-                    grouped.set(year, []);
-                }
-                grouped.get(year)!.push(item);
-            });
-
-            return Array.from(grouped.entries())
-                .map(([year, items]) => ({year, items}))
-                .sort((a, b) => parseInt(b.year) - parseInt(a.year));
-        });
-
-        // Magazine view - get unique items by id (one per magazine issue)
-        this.uniqueMagazineItems = computed(() => {
-            const items = this.filteredItems();
-            const seen = new Set<number>();
-            return items.filter(item => {
-                if (seen.has(item.id)) {
-                    return false;
-                }
-                seen.add(item.id);
-                return true;
-            });
+            return this.magazineFilterService.groupItemsByYear(items);
         });
 
         // Paginated magazine items
@@ -191,23 +108,19 @@ export class MagazineComponent implements OnInit {
         // Group magazine items by year
         this.groupedPaginatedMagazineItems = computed(() => {
             const items = this.paginatedMagazineItems();
-            const grouped = new Map<string, DetailedIndex[]>();
-
-            items.forEach(item => {
-                const year = item.releaseMonthYear.year;
-                if (!grouped.has(year)) {
-                    grouped.set(year, []);
-                }
-                grouped.get(year)!.push(item);
-            });
-
-            return Array.from(grouped.entries())
-                .map(([year, items]) => ({year, items}))
-                .sort((a, b) => parseInt(b.year) - parseInt(a.year));
+            return this.magazineFilterService.groupItemsByYear(items);
         });
     }
 
     ngOnInit(): void {
+        // Update year bounds after initial data load
+        setTimeout(() => {
+            const min = this.minYear();
+            const max = this.maxYear();
+            if (min && max) {
+                this.magazineFilterService.updateYearBounds(min, max);
+            }
+        }, 0);
     }
 
     toggleFilter() {
@@ -221,7 +134,7 @@ export class MagazineComponent implements OnInit {
 
     // Section filter methods
     onSectionFilterChange(value: string[]) {
-        this.sectionFilter.set(value ?? []);
+        this.magazineFilterService.setSectionFilter(value ?? []);
         this.first.set(0);
     }
 
@@ -234,7 +147,7 @@ export class MagazineComponent implements OnInit {
 
     // Title filter methods
     onTitleFilterChange(value: string | null) {
-        this.titleFilter.set(value ?? '');
+        this.magazineFilterService.setTitleFilter(value ?? '');
         this.first.set(0);
     }
 
@@ -247,7 +160,7 @@ export class MagazineComponent implements OnInit {
 
     // Author filter methods
     onAuthorFilterChange(value: string | null) {
-        this.authorFilter.set(value ?? '');
+        this.magazineFilterService.setAuthorFilter(value ?? '');
         this.first.set(0);
     }
 
@@ -260,13 +173,13 @@ export class MagazineComponent implements OnInit {
 
     // Year range filter
     onYearRangeChange(value: [number, number]) {
-        this.yearRange.set(value);
+        this.magazineFilterService.setYearRange(value);
         this.first.set(0);
     }
 
     // Exclude reviews checkbox
     onExcludeReviewsChange(value: boolean) {
-        this.excludeReviews.set(value);
+        this.magazineFilterService.setExcludeReviews(value);
         this.first.set(0);
     }
 
