@@ -47,15 +47,7 @@ export class MagazineFilterService {
         this.allItems().forEach(item => {
             if (item.section) sections.add(item.section);
         });
-        return [...sections].sort((a, b) => a.localeCompare(b, 'tr-TR'));
-    });
-
-    readonly allTitles = computed(() => {
-        const titles = new Set<string>();
-        this.allItems().forEach(item => {
-            if (item.title) titles.add(item.title);
-        });
-        return [...titles].sort((a, b) => a.localeCompare(b, 'tr-TR'));
+        return [...sections].sort((a, b) => a.localeCompare(b, ['tr-TR', 'en-US']));
     });
 
     readonly allAuthors = computed(() => {
@@ -63,20 +55,20 @@ export class MagazineFilterService {
         this.allItems().forEach(item => {
             item.authors?.forEach(author => authors.add(author));
         });
-        return [...authors].sort((a, b) => a.localeCompare(b, 'tr-TR'));
+        return [...authors].sort((a, b) => a.localeCompare(b, ['tr-TR', 'en-US']));
     });
 
     // Private method to apply filter logic to items
     private applyFilters(items: DetailedIndex[], includeYearFilter: boolean = true): DetailedIndex[] {
         const sections = this.sectionFilter();
-        const title = this.titleFilter().toLocaleLowerCase('tr-TR').trim();
-        const author = this.authorFilter().toLocaleLowerCase('tr-TR').trim();
+        const title = this.titleFilter().toLocaleLowerCase(['tr-TR', 'en-US']).trim();
+        const author = this.authorFilter().toLocaleLowerCase(['tr-TR', 'en-US']).trim();
         const [minYr, maxYr] = this.yearRange();
         const excludeReviewItems = this.excludeReviews();
 
         return items.filter(item => {
             // Exclude reviews filter
-            if (excludeReviewItems && item.section?.toLocaleLowerCase('tr-TR') === 'inceleme') {
+            if (excludeReviewItems && item.section?.toLocaleLowerCase(['tr-TR', 'en-US']) === 'inceleme') {
                 return false;
             }
 
@@ -86,12 +78,15 @@ export class MagazineFilterService {
             }
 
             // Title filter
-            if (title && !item.title.toLocaleLowerCase('tr-TR').includes(title)) {
-                return false;
+            if (title && item.title) {
+                const itemTitle = String(item.title).toLocaleLowerCase(['tr-TR', 'en-US']);
+                if (!itemTitle.includes(title)) {
+                    return false;
+                }
             }
 
             // Author filter
-            if (author && !item.authors?.some(a => a.toLocaleLowerCase('tr-TR').includes(author))) {
+            if (author && !item.authors?.some(a => a.toLocaleLowerCase(['tr-TR', 'en-US']).includes(author))) {
                 return false;
             }
 

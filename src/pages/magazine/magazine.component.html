@@ -25,16 +25,13 @@
             </div>
             <div class="filter-field">
                 <label for="titleFilter">Başlık ile Ara</label>
-                <p-autoComplete
+                <input
+                    pInputText
                     id="titleFilter"
-                    [suggestions]="titleSuggestions()"
+                    type="text"
                     [ngModel]="titleFilter()"
                     (ngModelChange)="onTitleFilterChange($event)"
-                    (completeMethod)="searchTitles($event)"
-                    placeholder="Başlık yazın.."
-                    [dropdown]="true"
-                    [showClear]="true"
-                    [forceSelection]="false"></p-autoComplete>
+                    placeholder="Başlık yazın.." />
             </div>
         </div>
         <div class="filter-row">

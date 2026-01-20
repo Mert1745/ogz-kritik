@@ -84,19 +84,19 @@ export class ReviewComponent {
         // Apply all filters
         this.filteredItems = computed(() => {
             const items = this.allReviewItems();
-            const author = this.authorFilter().toLocaleLowerCase('tr-TR').trim();
-            const title = this.titleFilter().toLocaleLowerCase('tr-TR').trim();
+            const author = this.authorFilter().toLocaleLowerCase(['tr-TR', 'en-US']).trim();
+            const title = this.titleFilter().toLocaleLowerCase(['tr-TR', 'en-US']).trim();
             const [minScore, maxScore] = this.scoreRange();
             const [minYr, maxYr] = this.yearRange();
 
             return items.filter(item => {
                 // Author filter
-                if (author && !item.authors?.some(a => a.toLocaleLowerCase('tr-TR').includes(author))) {
+                if (author && !item.authors?.some(a => a.toLocaleLowerCase(['tr-TR', 'en-US']).includes(author))) {
                     return false;
                 }
 
                 // Title filter
-                if (title && !item.title.toLocaleLowerCase('tr-TR').includes(title)) {
+                if (title && !item.title.toLocaleLowerCase(['tr-TR', 'en-US']).includes(title)) {
                     return false;
                 }
 
@@ -181,9 +181,9 @@ export class ReviewComponent {
     }
 
     searchAuthors(event: AutoCompleteCompleteEvent) {
-        const query = event.query.toLocaleLowerCase('tr-TR');
+        const query = event.query.toLocaleLowerCase(['tr-TR', 'en-US']);
         this.authorSuggestions.set(
-            this.allAuthors().filter(author => author.toLocaleLowerCase('tr-TR').includes(query))
+            this.allAuthors().filter(author => author.toLocaleLowerCase(['tr-TR', 'en-US']).includes(query))
         );
     }
 

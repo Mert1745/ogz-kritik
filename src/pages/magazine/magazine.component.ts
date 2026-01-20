@@ -40,12 +40,10 @@ export class MagazineComponent implements OnInit {
 
     // Autocomplete suggestions (local state)
     sectionSuggestions = signal<string[]>([]);
-    titleSuggestions = signal<string[]>([]);
     authorSuggestions = signal<string[]>([]);
 
     // All unique values for autocomplete
     allSections: Signal<string[]>;
-    allTitles: Signal<string[]>;
     allAuthors: Signal<string[]>;
 
     // Year bounds
@@ -76,7 +74,6 @@ export class MagazineComponent implements OnInit {
         // Bind data from service
         this.allMagazineItems = this.magazineFilterService.allItems;
         this.allSections = this.magazineFilterService.allSections;
-        this.allTitles = this.magazineFilterService.allTitles;
         this.allAuthors = this.magazineFilterService.allAuthors;
         this.minYear = this.magazineFilterService.minYear;
         this.maxYear = this.magazineFilterService.maxYear;
@@ -113,14 +110,6 @@ export class MagazineComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // Update year bounds after initial data load
-        setTimeout(() => {
-            const min = this.minYear();
-            const max = this.maxYear();
-            if (min && max) {
-                this.magazineFilterService.updateYearBounds(min, max);
-            }
-        }, 0);
     }
 
     toggleFilter() {
@@ -139,9 +128,9 @@ export class MagazineComponent implements OnInit {
     }
 
     searchSections(event: AutoCompleteCompleteEvent) {
-        const query = event.query.toLocaleLowerCase('tr-TR');
+        const query = event.query.toLocaleLowerCase(['tr-TR', 'en-US']);
         this.sectionSuggestions.set(
-            this.allSections().filter(section => section.toLocaleLowerCase('tr-TR').includes(query))
+            this.allSections().filter(section => section.toLocaleLowerCase(['tr-TR', 'en-US']).includes(query))
         );
     }
 
@@ -151,13 +140,6 @@ export class MagazineComponent implements OnInit {
         this.first.set(0);
     }
 
-    searchTitles(event: AutoCompleteCompleteEvent) {
-        const query = event.query.toLocaleLowerCase('tr-TR');
-        this.titleSuggestions.set(
-            this.allTitles().filter(title => title.toLocaleLowerCase('tr-TR').includes(query))
-        );
-    }
-
     // Author filter methods
     onAuthorFilterChange(value: string | null) {
         this.magazineFilterService.setAuthorFilter(value ?? '');
@@ -165,9 +147,9 @@ export class MagazineComponent implements OnInit {
     }
 
     searchAuthors(event: AutoCompleteCompleteEvent) {
-        const query = event.query.toLocaleLowerCase('tr-TR');
+        const query = event.query.toLocaleLowerCase(['tr-TR', 'en-US']);
         this.authorSuggestions.set(
-            this.allAuthors().filter(author => author.toLocaleLowerCase('tr-TR').includes(query))
+            this.allAuthors().filter(author => author.toLocaleLowerCase(['tr-TR', 'en-US']).includes(query))
         );
     }
 
