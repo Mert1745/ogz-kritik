@@ -10,31 +10,31 @@
                     <img
                         [src]="'https://storage.oyungezer.com.tr/ogz-public/images/covers/' + info.id + '.jpg'"
                         [alt]="'Magazine Cover ' + info.id"
-                        class="cover-image" />
+                        class="cover-image"/>
                 </div>
                 <div class="magazine-info">
                     <h1 class="magazine-title">{{ info.title }}</h1>
                     <p class="article-count">{{ filteredItems().length }} yazı</p>
-                    @if (hasActiveFilters()) {
-                        <div class="filter-indicator">
-                            <span class="filter-badge">Filtreler Aktif</span>
+                    <div class="filter-indicator">
+                        @if (hasActiveFilters()) {
                             <button class="clear-filters-button" (click)="clearFilters()">
                                 Filtreleri Temizle
                             </button>
-                        </div>
-                    }
-                    @if (info.url) {
-                        <button class="pdf-button" (click)="openMagazinePdf()">
-                            📄 PDF'i Aç
-                        </button>
-                    }
+                        }
+                        @if (info.url) {
+                            <button class="pdf-button" (click)="openMagazinePdf()">
+                                📄 PDF'i Aç
+                            </button>
+                        }
+                    </div>
+
                 </div>
             </div>
         </div>
 
         <div class="articles-section">
             <app-article-view-cards
-                [dividerOn] = false
+                [dividerOn]=false
                 [groupedItems]="groupedItems()"
                 [onCardClick]="openMagazine.bind(this)">
             </app-article-view-cards>

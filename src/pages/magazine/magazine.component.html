@@ -116,6 +116,7 @@
     <!-- Article View -->
     @if (viewMode() === 'article') {
         <app-article-view-cards
+            [dividerOn]=true
             [groupedItems]="groupedPaginatedItems()"
             [onCardClick]="openMagazine.bind(this)">
         </app-article-view-cards>
