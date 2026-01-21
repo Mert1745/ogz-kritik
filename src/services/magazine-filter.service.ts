@@ -1,6 +1,7 @@
 import {Injectable, signal, computed, inject} from '@angular/core';
 import {DetailedIndexService} from './detailed-index.service';
 import {DetailedIndex} from '../interface';
+import {REVIEW} from '../constants';
 
 @Injectable({
     providedIn: 'root'
@@ -47,7 +48,7 @@ export class MagazineFilterService {
         this.allItems().forEach(item => {
             if (item.section) sections.add(item.section);
         });
-        return [...sections].sort((a, b) => a.localeCompare(b, ['tr-TR', 'en-US']));
+        return [...sections].sort((a, b) => a.localeCompare(b, 'tr-TR'));
     });
 
     readonly allAuthors = computed(() => {
@@ -55,20 +56,20 @@ export class MagazineFilterService {
         this.allItems().forEach(item => {
             item.authors?.forEach(author => authors.add(author));
         });
-        return [...authors].sort((a, b) => a.localeCompare(b, ['tr-TR', 'en-US']));
+        return [...authors].sort((a, b) => a.localeCompare(b, 'tr-TR'));
     });
 
     // Private method to apply filter logic to items
     private applyFilters(items: DetailedIndex[], includeYearFilter: boolean = true): DetailedIndex[] {
         const sections = this.sectionFilter();
-        const title = this.titleFilter().toLocaleLowerCase(['tr-TR', 'en-US']).trim();
-        const author = this.authorFilter().toLocaleLowerCase(['tr-TR', 'en-US']).trim();
+        const title = this.titleFilter().toLocaleLowerCase('tr-TR').trim();
+        const author = this.authorFilter().toLocaleLowerCase('tr-TR').trim();
         const [minYr, maxYr] = this.yearRange();
         const excludeReviewItems = this.excludeReviews();
 
         return items.filter(item => {
             // Exclude reviews filter
-            if (excludeReviewItems && item.section?.toLocaleLowerCase(['tr-TR', 'en-US']) === 'inceleme') {
+            if (excludeReviewItems && item.section?.toLocaleLowerCase('tr-TR') === REVIEW.toLocaleLowerCase('tr-TR')) {
                 return false;
             }
 
@@ -79,14 +80,14 @@ export class MagazineFilterService {
 
             // Title filter
             if (title && item.title) {
-                const itemTitle = String(item.title).toLocaleLowerCase(['tr-TR', 'en-US']);
+                const itemTitle = String(item.title).toLocaleLowerCase('tr-TR');
                 if (!itemTitle.includes(title)) {
                     return false;
                 }
             }
 
             // Author filter
-            if (author && !item.authors?.some(a => a.toLocaleLowerCase(['tr-TR', 'en-US']).includes(author))) {
+            if (author && !item.authors?.some(a => a.toLocaleLowerCase('tr-TR').includes(author))) {
                 return false;
             }
 
@@ -181,22 +182,6 @@ export class MagazineFilterService {
 
     setExcludeReviews(exclude: boolean): void {
         this.excludeReviews.set(exclude);
-    }
-
-    // Update year range bounds (called when data is loaded)
-    updateYearBounds(minYear: number, maxYear: number): void {
-        const currentRange = this.yearRange();
-        const prevDataMin = this.dataMinYear();
-        const prevDataMax = this.dataMaxYear();
-
-        // Update data bounds
-        this.dataMinYear.set(minYear);
-        this.dataMaxYear.set(maxYear);
-
-        // Only update year range if current range equals previous data bounds (meaning user hasn't changed it)
-        if (currentRange[0] === prevDataMin && currentRange[1] === prevDataMax) {
-            this.yearRange.set([minYear, maxYear]);
-        }
     }
 
     // Reset all filters

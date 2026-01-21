@@ -28,7 +28,7 @@ export class ArticleViewCardsComponent {
     }
 
     getNormalizedScore(item: DetailedIndex): number | null {
-        if (item.scoreIn100) return item.scoreIn100 / 10;
+        if (item.scoreIn100) return item.scoreIn100;
         if (item.scoreIn10) return item.scoreIn10;
         if (item.scoreIn5) return item.scoreIn5 * 2;
         return null;
