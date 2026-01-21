@@ -1,59 +1,108 @@
-# OgzKritik
+# OGZ Kritik
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.2.
+🌐 **[ogzkritik.com](https://ogzkritik.com)**
 
-## Development server
+**OGZ Kritik** is a web application for browsing and analyzing video game reviews and articles from Turkish gaming magazine **Oyungezer**. The application provides an interactive interface to explore game reviews, magazines, and authors with advanced filtering and search capabilities.
 
-To start a local development server, run:
+## 🎮 About
+
+This application allows users to:
+- **Browse Reviews**: Search and filter through video game reviews with advanced criteria including scores, sections, authors, and more
+- **Explore Magazines**: View magazine issues and their contents with detailed filtering options
+- **Discover Authors**: Find reviews by specific authors and explore their work
+- **Analyze Data**: Interactive charts and statistics for game reviews and ratings
+
+The data is loaded from Excel files stored in AWS S3.
+
+## 🚀 Features
+
+- **Advanced Filtering System**: Filter reviews by:
+  - Game title
+  - Author
+  - Score ranges
+  - Magazine sections
+  - Issue numbers and years
+  
+- **Magazine Browser**: Browse through magazine issues with:
+  - Issue-specific filtering
+  - Detailed magazine information
+  - Cross-page filter persistence using signal-based service
+  
+- **Responsive Design**: Mobile-friendly interface built with PrimeNG components
+- **Server-Side Rendering (SSR)**: Fast initial page loads with Angular Universal
+- **Excel Data Integration**: Automatic loading and caching of review data from S3
+
+## 🛠️ Tech Stack
+
+- **Framework**: Angular 21 with standalone components
+- **UI Library**: PrimeNG 21 (Aura theme)
+- **Styling**: TailwindCSS
+- **Charts**: Chart.js
+- **Data Processing**: XLSX (SheetJS)
+- **Backend**: Express.js for SSR
+- **State Management**: Angular Signals
+
+## 📋 Prerequisites
+
+Before running this project, ensure you have the following installed:
+- **Node.js**: v18.x or higher
+- **npm**: v11.6.2 or higher (included with Node.js)
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
 
 ```bash
+git clone <repository-url>
+cd ogz-kritik
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Run the development server
+
+For desktop development:
+
+```bash
+npm start
+# or
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+For mobile testing (accessible from other devices on your network):
 
 ```bash
-ng generate component component-name
+npm run start:mobile
+# or
+ng serve --host 0.0.0.0
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The application will be available at:
+- **Desktop**: `http://localhost:4200/`
+- **Mobile**: `http://<your-ip-address>:4200/`
 
-```bash
-ng generate --help
-```
+The application will automatically reload when you modify source files.
 
-## Building
 
-To build the project run:
+## 📝 Development Notes
 
-```bash
-ng build
-```
+- The application uses **Angular Signals** for reactive state management
+- **Magazine filter state** is shared between magazine and magazine-detail pages using `MagazineFilterService`
+- **Review page filters** are independent and separate from magazine filters
+- Excel data is automatically fetched from AWS S3 and cached for performance
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🤝 Contributing
 
-## Running unit tests
+When contributing to this project:
+1. Follow the existing code style (Prettier configuration is included)
+2. Use Angular standalone components
+3. Maintain signal-based state management
+4. Test responsive design on both desktop and mobile
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+---
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Built with ❤️ using Angular 21 and PrimeNG
