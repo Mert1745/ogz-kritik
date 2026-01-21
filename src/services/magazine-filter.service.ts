@@ -19,6 +19,7 @@ export class MagazineFilterService {
     readonly authorFilter = signal<string>('');
     readonly yearRange = signal<[number, number]>([this.defaultMinYear, this.defaultMaxYear]);
     readonly excludeReviews = signal<boolean>(false);
+    readonly viewMode = signal<'article' | 'magazine'>('magazine');
 
     // Track actual data bounds
     private dataMinYear = signal<number>(this.defaultMinYear);
@@ -182,6 +183,10 @@ export class MagazineFilterService {
 
     setExcludeReviews(exclude: boolean): void {
         this.excludeReviews.set(exclude);
+    }
+
+    setViewMode(mode: 'article' | 'magazine'): void {
+        this.viewMode.set(mode);
     }
 
     // Reset all filters

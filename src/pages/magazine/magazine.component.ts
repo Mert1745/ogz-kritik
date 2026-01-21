@@ -28,15 +28,13 @@ export class MagazineComponent implements OnInit {
     // Filter visibility for mobile
     isFilterVisible = signal(false);
 
-    // View mode: 'article' or 'magazine'
-    viewMode = signal<'article' | 'magazine'>('magazine');
-
     // Filter signals from service (for template binding)
     sectionFilter: Signal<string[]>;
     titleFilter: Signal<string>;
     authorFilter: Signal<string>;
     yearRange: Signal<[number, number]>;
     excludeReviews: Signal<boolean>;
+    viewMode: Signal<'article' | 'magazine'>;
 
     // Autocomplete suggestions (local state)
     sectionSuggestions = signal<string[]>([]);
@@ -70,6 +68,7 @@ export class MagazineComponent implements OnInit {
         this.authorFilter = this.magazineFilterService.authorFilter;
         this.yearRange = this.magazineFilterService.yearRange;
         this.excludeReviews = this.magazineFilterService.excludeReviews;
+        this.viewMode = this.magazineFilterService.viewMode;
 
         // Bind data from service
         this.allMagazineItems = this.magazineFilterService.allItems;
@@ -117,7 +116,7 @@ export class MagazineComponent implements OnInit {
     }
 
     toggleViewMode() {
-        this.viewMode.set(this.viewMode() === 'article' ? 'magazine' : 'article');
+        this.magazineFilterService.setViewMode(this.viewMode() === 'article' ? 'magazine' : 'article');
         this.first.set(0);
     }
 
