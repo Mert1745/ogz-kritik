@@ -112,11 +112,13 @@
 
     <!-- Article View -->
     @if (viewMode() === 'article') {
-        <app-article-view-cards
-            [dividerOn]=true
-            [groupedItems]="groupedPaginatedItems()"
-            [onCardClick]="openMagazine.bind(this)">
-        </app-article-view-cards>
+        <div class="article-view-cards">
+            <app-article-view-cards
+                [dividerOn]=true
+                [groupedItems]="groupedPaginatedItems()"
+                [onCardClick]="openMagazine.bind(this)">
+            </app-article-view-cards>
+        </div>
     }
 
     <p-paginator

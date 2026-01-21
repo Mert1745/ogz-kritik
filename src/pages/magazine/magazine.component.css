@@ -218,6 +218,14 @@
     align-items: center;
 }
 
+.article-view-cards {
+    display: block;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .magazine-cover-img {
     width: 130px;
     height: 180px;
