@@ -50,9 +50,9 @@
         </div>
         <div class="filter-row">
             <div class="filter-field slider-field">
-                <label>Puan Aralığı: {{ scoreRange()[0] }} - {{ scoreRange()[1] }}</label>
+                <label>Puan Aralığı: {{ scoreRangeDisplay()[0] }} - {{ scoreRangeDisplay()[1] }}</label>
                 <p-slider
-                    [ngModel]="scoreRange()"
+                    [ngModel]="scoreRangeDisplay()"
                     (ngModelChange)="onScoreRangeChange($event)"
                     [range]="true"
                     [min]="0"
@@ -60,9 +60,9 @@
                     [step]="0.5"></p-slider>
             </div>
             <div class="filter-field slider-field">
-                <label>Yıl Aralığı: {{ yearRange()[0] }} - {{ yearRange()[1] }}</label>
+                <label>Yıl Aralığı: {{ yearRangeDisplay()[0] }} - {{ yearRangeDisplay()[1] }}</label>
                 <p-slider
-                    [ngModel]="yearRange()"
+                    [ngModel]="yearRangeDisplay()"
                     (ngModelChange)="onYearRangeChange($event)"
                     [range]="true"
                     [min]="minYear()"
@@ -83,6 +83,12 @@
                         <div class="score-circle" [ngClass]="getScoreColorClass(item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5)">
                             <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>
                         </div>
+                        @if (getAppIdByTitle(item.title); as appId) {
+                            <img
+                                [ngSrc]="'https://cdn.steamstatic.com/steam/apps/' + appId + '/library_600x900.jpg'"
+                                [alt]="item.title + ' cover'"
+                                class="cover-image" height="200" width="100"/>
+                        }
                         <div class="card-details">
                             <h3 class="card-title">{{ item.title }}</h3>
                             <p class="card-author"><span class="icon">👤</span> {{ item.authors?.join(', ') }}</p>

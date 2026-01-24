@@ -6,6 +6,7 @@ import {CommonModule} from '@angular/common';
 import {TooltipModule} from 'primeng/tooltip';
 import {RippleModule} from 'primeng/ripple';
 import {ExcelCacheService} from '../services/excel-cache.service';
+import {GameMappingService} from '../services/game-mapping.service';
 import {HeaderComponent} from '../components/header/header.component';
 import {LoadingComponent} from '../components/loading/loading.component';
 import {FooterComponent} from '../components/footer/footer.component';
@@ -21,14 +22,20 @@ export class App implements OnInit {
     protected readonly title = signal('ogz-kritik');
     excelData: any[] = [];
 
-    constructor(private excelCache: ExcelCacheService) {
+    constructor(
+        private excelCache: ExcelCacheService,
+        private gameMappingService: GameMappingService
+    ) {
     }
 
     async ngOnInit() {
         try {
-            this.excelData = await this.excelCache.getExcelData();
+            await Promise.all([
+                this.excelCache.getExcelData().then(data => this.excelData = data),
+                this.gameMappingService.fetchGameMapping()
+            ]);
         } catch (error) {
-            console.error('Failed to load Excel data:', error);
+            console.error('Failed to load data:', error);
         }
     }
 }

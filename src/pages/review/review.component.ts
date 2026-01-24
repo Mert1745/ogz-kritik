@@ -1,7 +1,8 @@
 import {Component, computed, signal, Signal} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {DetailedIndexService} from '../../services/detailed-index.service';
+import {GameMappingService} from '../../services/game-mapping.service';
 import {DetailedIndex} from '../../interface';
 import {PaginatorModule, PaginatorState} from 'primeng/paginator';
 import {CardModule} from 'primeng/card';
@@ -15,14 +16,14 @@ import {formatMonths} from '../../util/index-mapper';
 @Component({
     selector: 'app-review',
     standalone: true,
-    imports: [CommonModule, FormsModule, PaginatorModule, CardModule, InputTextModule, SliderModule, AutoCompleteModule],
+    imports: [CommonModule, FormsModule, PaginatorModule, CardModule, InputTextModule, SliderModule, AutoCompleteModule, NgOptimizedImage],
     templateUrl: './review.component.html',
     styleUrls: ['./review.component.css']
 })
 export class ReviewComponent {
     allReviewItems: Signal<DetailedIndex[]>;
     first = signal(0);
-    rows = signal(50);
+    rows = signal(30);
 
     // Filter visibility for mobile
     isFilterVisible = signal(false);
@@ -31,8 +32,18 @@ export class ReviewComponent {
     authorFilter = signal('');
     authorSuggestions = signal<string[]>([]);
     titleFilter = signal('');
+
+    // Display values (update immediately)
+    scoreRangeDisplay = signal<[number, number]>([0, 10]);
+    yearRangeDisplay = signal<[number, number]>([2007, 2025]);
+
+    // Actual filter values (debounced)
     scoreRange = signal<[number, number]>([0, 10]);
     yearRange = signal<[number, number]>([2007, 2025]);
+
+    // Debounce timers for sliders
+    private scoreDebounceTimer: any;
+    private yearDebounceTimer: any;
 
     // All unique authors for autocomplete
     allAuthors: Signal<string[]>;
@@ -51,7 +62,10 @@ export class ReviewComponent {
     totalAuthors: Signal<number>;
     averageScore: Signal<number | null>;
 
-    constructor(private detailedIndexService: DetailedIndexService) {
+    constructor(
+        private detailedIndexService: DetailedIndexService,
+        private gameMappingService: GameMappingService
+    ) {
         this.allReviewItems = computed(() =>
             this.detailedIndexService.detailedIndex()
                 .filter(item => item.section === REVIEW)
@@ -193,13 +207,31 @@ export class ReviewComponent {
     }
 
     onScoreRangeChange(value: [number, number]) {
-        this.scoreRange.set(value);
-        this.first.set(0);
+        // Update display immediately
+        this.scoreRangeDisplay.set(value);
+
+        // Debounce the actual filter
+        if (this.scoreDebounceTimer) {
+            clearTimeout(this.scoreDebounceTimer);
+        }
+        this.scoreDebounceTimer = setTimeout(() => {
+            this.scoreRange.set(value);
+            this.first.set(0);
+        }, 300);
     }
 
     onYearRangeChange(value: [number, number]) {
-        this.yearRange.set(value);
-        this.first.set(0);
+        // Update display immediately
+        this.yearRangeDisplay.set(value);
+
+        // Debounce the actual filter
+        if (this.yearDebounceTimer) {
+            clearTimeout(this.yearDebounceTimer);
+        }
+        this.yearDebounceTimer = setTimeout(() => {
+            this.yearRange.set(value);
+            this.first.set(0);
+        }, 300);
     }
 
     onPageChange(event: PaginatorState) {
@@ -235,6 +267,16 @@ export class ReviewComponent {
         } else {
             return 'score-poor';
         }
+    }
+
+    getAppIdByTitle(title: string): number | null {
+        const gameMap = this.gameMappingService.gameMapping();
+        for (const [appid, gameName] of gameMap.entries()) {
+            if (gameName.toLocaleLowerCase('en-US').trim() === title.toLocaleLowerCase('en-US').trim()) {
+                return appid;
+            }
+        }
+        return null;
     }
 
     protected readonly formatMonths = formatMonths;
