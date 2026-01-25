@@ -6,6 +6,7 @@ import {DetailedIndex} from '../../interface';
 import {ChartModule} from 'primeng/chart';
 import {AutoCompleteModule, AutoCompleteCompleteEvent} from 'primeng/autocomplete';
 import {CardModule} from 'primeng/card';
+import {SliderModule} from 'primeng/slider';
 import {REVIEW} from '../../constants';
 import {formatMonths} from '../../util/index-mapper';
 
@@ -24,7 +25,7 @@ interface AuthorCardData {
 @Component({
     selector: 'app-author',
     standalone: true,
-    imports: [CommonModule, FormsModule, ChartModule, AutoCompleteModule, CardModule],
+    imports: [CommonModule, FormsModule, ChartModule, AutoCompleteModule, CardModule, SliderModule],
     templateUrl: './author.component.html',
     styleUrls: ['./author.component.css']
 })
@@ -43,8 +44,51 @@ export class AuthorComponent {
     allAuthors: Signal<string[]>;
     authorCards: Signal<AuthorCardData[]>;
 
+    // Year range filter for charts
+    allAuthorsYearRange = signal<[number, number]>([2007, 2025]);
+    reviewAuthorsYearRange = signal<[number, number]>([2007, 2025]);
+    minYear: Signal<number>;
+    maxYear: Signal<number>;
+    filteredItemsForAllAuthors: Signal<DetailedIndex[]>;
+    filteredItemsForReviewAuthors: Signal<DetailedIndex[]>;
+
     constructor(private detailedIndexService: DetailedIndexService) {
         this.allItems = this.detailedIndexService.detailedIndex;
+
+        // Calculate year bounds
+        this.minYear = computed(() => {
+            const years = this.allItems()
+                .map(item => parseInt(item.releaseMonthYear.year, 10))
+                .filter(y => !isNaN(y));
+            return years.length > 0 ? Math.min(...years) : 2007;
+        });
+
+        this.maxYear = computed(() => {
+            const years = this.allItems()
+                .map(item => parseInt(item.releaseMonthYear.year, 10))
+                .filter(y => !isNaN(y));
+            return years.length > 0 ? Math.max(...years) : new Date().getFullYear();
+        });
+
+        // Filter items by year range for all authors chart
+        this.filteredItemsForAllAuthors = computed(() => {
+            const items = this.allItems();
+            const [minYr, maxYr] = this.allAuthorsYearRange();
+            return items.filter(item => {
+                const year = parseInt(item.releaseMonthYear.year, 10);
+                return !isNaN(year) && year >= minYr && year <= maxYr;
+            });
+        });
+
+        // Filter items by year range for review authors chart
+        this.filteredItemsForReviewAuthors = computed(() => {
+            const items = this.allItems();
+            const [minYr, maxYr] = this.reviewAuthorsYearRange();
+            return items.filter(item => {
+                const year = parseInt(item.releaseMonthYear.year, 10);
+                return !isNaN(year) && year >= minYr && year <= maxYr;
+            });
+        });
 
         // Get all unique authors
         this.allAuthors = computed(() => {
@@ -96,9 +140,9 @@ export class AuthorComponent {
             });
         });
 
-        // Calculate top 10 authors by number of items
+        // Calculate top 10 authors by number of items (filtered by year)
         this.topAuthors = computed(() => {
-            const items = this.allItems();
+            const items = this.filteredItemsForAllAuthors();
             const authorCounts = new Map<string, number>();
 
             // Count items per author
@@ -120,9 +164,9 @@ export class AuthorComponent {
             return authorStats;
         });
 
-        // Calculate top 10 authors from Review section only
+        // Calculate top 10 authors from Review section only (filtered by year)
         this.topReviewAuthors = computed(() => {
-            const items = this.allItems();
+            const items = this.filteredItemsForReviewAuthors();
             const authorCounts = new Map<string, number>();
 
             // Count items per author, only for review section
@@ -316,5 +360,13 @@ export class AuthorComponent {
 
     onAuthorsChange(value: string[]) {
         this.selectedAuthors.set(value || []);
+    }
+
+    onAllAuthorsYearRangeChange(value: [number, number]) {
+        this.allAuthorsYearRange.set(value);
+    }
+
+    onReviewAuthorsYearRangeChange(value: [number, number]) {
+        this.reviewAuthorsYearRange.set(value);
     }
 }

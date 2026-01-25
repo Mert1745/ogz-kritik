@@ -38,6 +38,13 @@
     gap: 1.5rem;
 }
 
+.section-divider {
+    width: 100%;
+    border: none;
+    border-top: 1px solid white;
+    margin: 0;
+}
+
 :host ::ng-deep .author-card {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-radius: 12px;
@@ -136,7 +143,28 @@
     border-radius: 12px;
     padding: 2rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
 }
+
+.chart-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.chart-filter label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+:host ::ng-deep .chart-filter .p-slider {
+    width: 100%;
+}
+
 
 @media (max-width: 768px) {
     .author-page {
@@ -156,6 +184,7 @@
     .author-cards-section {
         grid-template-columns: 1fr;
     }
+
 
     .chart-container {
         height: 560px;

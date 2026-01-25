@@ -1,7 +1,7 @@
 <div class="author-page">
     <!-- Author Search Section -->
     <div class="search-section">
-        <h2 class="section-title">Yazar Ara</h2>
+        <h2 class="section-title">Yazar İstatistikleri İçin Ara</h2>
         <p-autoComplete
             [suggestions]="authorSuggestions()"
             [ngModel]="selectedAuthors()"
@@ -50,12 +50,34 @@
         </div>
     }
 
+    <hr class="section-divider" />
+
     <!-- Charts Section -->
     <div class="chart-container">
+        <div class="chart-filter">
+            <label>Yıl Aralığı: {{ allAuthorsYearRange()[0] }} - {{ allAuthorsYearRange()[1] }}</label>
+            <p-slider
+                [ngModel]="allAuthorsYearRange()"
+                (ngModelChange)="onAllAuthorsYearRangeChange($event)"
+                [range]="true"
+                [min]="minYear()"
+                [max]="maxYear()"
+                [step]="1"></p-slider>
+        </div>
         <p-chart type="bar" [data]="chartData()" [options]="chartOptions" [style]="{'height': '100%'}"></p-chart>
     </div>
 
     <div class="chart-container">
+        <div class="chart-filter">
+            <label>Yıl Aralığı: {{ reviewAuthorsYearRange()[0] }} - {{ reviewAuthorsYearRange()[1] }}</label>
+            <p-slider
+                [ngModel]="reviewAuthorsYearRange()"
+                (ngModelChange)="onReviewAuthorsYearRangeChange($event)"
+                [range]="true"
+                [min]="minYear()"
+                [max]="maxYear()"
+                [step]="1"></p-slider>
+        </div>
         <p-chart type="bar" [data]="reviewChartData()" [options]="reviewChartOptions" [style]="{'height': '100%'}"></p-chart>
     </div>
 </div>
