@@ -115,9 +115,12 @@ export class MagazineComponent implements OnInit {
         this.isFilterVisible.set(!this.isFilterVisible());
     }
 
-    toggleViewMode() {
-        this.magazineFilterService.setViewMode(this.viewMode() === 'article' ? 'magazine' : 'article');
-        this.first.set(0);
+    toggleViewMode(targetMode: 'article' | 'magazine') {
+        // Only switch if the target mode is different from current mode
+        if (this.viewMode() !== targetMode) {
+            this.magazineFilterService.setViewMode(targetMode);
+            this.first.set(0);
+        }
     }
 
     // Section filter methods

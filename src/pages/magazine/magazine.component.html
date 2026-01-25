@@ -76,13 +76,13 @@
             <button
                 class="view-toggle-btn"
                 [class.active]="viewMode() === 'magazine'"
-                (click)="toggleViewMode()">
+                (click)="toggleViewMode('magazine')">
                 📖 Dergi Görünümü
             </button>
             <button
                 class="view-toggle-btn"
                 [class.active]="viewMode() === 'article'"
-                (click)="toggleViewMode()">
+                (click)="toggleViewMode('article')">
                 📄 Makale Görünümü
             </button>
         </div>
