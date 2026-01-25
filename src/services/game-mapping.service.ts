@@ -18,7 +18,7 @@ interface GameMappingResponse {
     providedIn: 'root'
 })
 export class GameMappingService {
-    readonly gameMapping = signal<Map<number, string>>(new Map());
+    readonly gameMapping = signal<Map<number, string[]>>(new Map());
 
     constructor(private http: HttpClient) {}
 
@@ -28,9 +28,12 @@ export class GameMappingService {
                 this.http.get<GameMappingResponse>(GAME_MAPPING_URL)
             );
 
-            const mappingMap = new Map<number, string>();
+            const mappingMap = new Map<number, string[]>();
             response.games.forEach(game => {
-                mappingMap.set(game.appid, game.name);
+                if (!mappingMap.has(game.appid)) {
+                    mappingMap.set(game.appid, []);
+                }
+                mappingMap.get(game.appid)!.push(game.name);
             });
 
             this.gameMapping.set(mappingMap);
