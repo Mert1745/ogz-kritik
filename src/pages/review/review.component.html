@@ -78,7 +78,7 @@
                 <h2>{{ group.year }}</h2>
             </div>
             @for (item of group.items; track $index) {
-                <p-card class="review-card" (click)="openMagazine(item.id)">
+                <p-card [class]="'review-card' + (getAppIdByTitle(item.title) !== null && shouldShowImage(getAppIdByTitle(item.title)) ? ' has-cover-image' : '')" (click)="openMagazine(item.id)">
                     <div class="card-content-wrapper">
                         <div class="score-circle" [ngClass]="getScoreColorClass(item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5)">
                             <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>

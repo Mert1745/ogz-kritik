@@ -7,9 +7,15 @@
     justify-items: stretch;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 700px) {
     .review-grid {
         grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 700px) and (max-width: 1024px) {
+    .review-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
