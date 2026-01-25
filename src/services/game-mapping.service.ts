@@ -30,7 +30,7 @@ export class GameMappingService {
             return;
         }
 
-        console.log("Fetching game mapping from:", GAME_MAPPING_URL);
+        console.log("Fetching game mapping from");
         try {
             const response = await firstValueFrom(
                 this.http.get<GameMappingResponse>(GAME_MAPPING_URL)

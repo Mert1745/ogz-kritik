@@ -66,6 +66,9 @@ export class ReviewComponent {
     totalAuthors: Signal<number>;
     averageScore: Signal<number | null>;
 
+    // Track failed image loads
+    failedImageAppIds = new Set<number>();
+
     constructor(
         private detailedIndexService: DetailedIndexService,
         private gameMappingService: GameMappingService
@@ -302,6 +305,14 @@ export class ReviewComponent {
             }
         }
         return null;
+    }
+
+    onImageError(appId: number): void {
+        this.failedImageAppIds.add(appId);
+    }
+
+    shouldShowImage(appId: number | null): boolean {
+        return appId !== null && !this.failedImageAppIds.has(appId);
     }
 
     protected readonly formatMonths = formatMonths;

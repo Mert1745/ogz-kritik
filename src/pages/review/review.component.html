@@ -84,10 +84,16 @@
                             <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>
                         </div>
                         @if (getAppIdByTitle(item.title); as appId) {
-                            <img
-                                [ngSrc]="'https://cdn.steamstatic.com/steam/apps/' + appId + '/library_600x900.jpg'"
-                                [alt]="item.title + ' cover'"
-                                class="cover-image" height="200" width="100" priority/>
+                            @if (shouldShowImage(appId)) {
+                                <img
+                                    [ngSrc]="'https://cdn.steamstatic.com/steam/apps/' + appId + '/library_600x900.jpg'"
+                                    [alt]="item.title + ' cover'"
+                                    class="cover-image"
+                                    height="200"
+                                    width="100"
+                                    priority
+                                    (error)="onImageError(appId)"/>
+                            }
                         }
                         <div class="card-details">
                             <h3 class="card-title">{{ item.title }}</h3>
