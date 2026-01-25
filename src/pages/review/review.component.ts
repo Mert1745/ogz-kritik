@@ -34,6 +34,8 @@ export class ReviewComponent {
     titleFilter = signal('');
 
     // Display values (update immediately)
+    authorFilterDisplay = signal('');
+    titleFilterDisplay = signal('');
     scoreRangeDisplay = signal<[number, number]>([0, 10]);
     yearRangeDisplay = signal<[number, number]>([2007, 2025]);
 
@@ -41,7 +43,9 @@ export class ReviewComponent {
     scoreRange = signal<[number, number]>([0, 10]);
     yearRange = signal<[number, number]>([2007, 2025]);
 
-    // Debounce timers for sliders
+    // Debounce timers
+    private authorDebounceTimer: any;
+    private titleDebounceTimer: any;
     private scoreDebounceTimer: any;
     private yearDebounceTimer: any;
 
@@ -190,8 +194,18 @@ export class ReviewComponent {
     }
 
     onAuthorFilterChange(value: string | null) {
-        this.authorFilter.set(value ?? '');
-        this.first.set(0);
+        const newValue = value ?? '';
+        // Update display immediately
+        this.authorFilterDisplay.set(newValue);
+
+        // Debounce the actual filter
+        if (this.authorDebounceTimer) {
+            clearTimeout(this.authorDebounceTimer);
+        }
+        this.authorDebounceTimer = setTimeout(() => {
+            this.authorFilter.set(newValue);
+            this.first.set(0);
+        }, 300);
     }
 
     searchAuthors(event: AutoCompleteCompleteEvent) {
@@ -202,8 +216,17 @@ export class ReviewComponent {
     }
 
     onTitleFilterChange(value: string) {
-        this.titleFilter.set(value);
-        this.first.set(0);
+        // Update display immediately
+        this.titleFilterDisplay.set(value);
+
+        // Debounce the actual filter
+        if (this.titleDebounceTimer) {
+            clearTimeout(this.titleDebounceTimer);
+        }
+        this.titleDebounceTimer = setTimeout(() => {
+            this.titleFilter.set(value);
+            this.first.set(0);
+        }, 300);
     }
 
     onScoreRangeChange(value: [number, number]) {
