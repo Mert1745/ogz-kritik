@@ -15,19 +15,13 @@
                 <div class="magazine-info">
                     <h1 class="magazine-title">{{ info.title }}</h1>
                     <p class="article-count">{{ filteredItems().length }} yazı</p>
-                    <div class="filter-indicator">
-                        @if (hasActiveFilters()) {
-                            <button class="clear-filters-button" (click)="clearFilters()">
-                                Filtreleri Temizle
-                            </button>
-                        }
-                        @if (info.url) {
+                    @if (info.url) {
+                        <div class="filter-indicator">
                             <button class="pdf-button" (click)="openMagazinePdf()">
                                 📄 PDF'i Aç
                             </button>
-                        }
-                    </div>
-
+                        </div>
+                    }
                 </div>
             </div>
         </div>

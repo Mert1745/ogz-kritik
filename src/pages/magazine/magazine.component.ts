@@ -35,6 +35,7 @@ export class MagazineComponent implements OnInit {
     yearRange: Signal<[number, number]>;
     excludeReviews: Signal<boolean>;
     viewMode: Signal<'article' | 'magazine'>;
+    hasActiveFilters: Signal<boolean>;
 
     // Autocomplete suggestions (local state)
     sectionSuggestions = signal<string[]>([]);
@@ -69,6 +70,7 @@ export class MagazineComponent implements OnInit {
         this.yearRange = this.magazineFilterService.yearRange;
         this.excludeReviews = this.magazineFilterService.excludeReviews;
         this.viewMode = this.magazineFilterService.viewMode;
+        this.hasActiveFilters = this.magazineFilterService.hasActiveFilters;
 
         // Bind data from service
         this.allMagazineItems = this.magazineFilterService.allItems;
@@ -177,6 +179,10 @@ export class MagazineComponent implements OnInit {
         this.router.navigate(['/magazine', id]);
     }
 
+    clearFilters(): void {
+        this.magazineFilterService.resetFilters();
+        this.first.set(0);
+    }
 
     protected readonly formatMonths = formatMonths;
 }

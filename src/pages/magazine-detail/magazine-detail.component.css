@@ -107,23 +107,6 @@
     flex-wrap: wrap;
 }
 
-.clear-filters-button {
-    background: transparent;
-    color: #33527a;
-    border: 1px solid #33527a;
-    padding: 0.375rem 0.75rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
-}
-
-.clear-filters-button:hover {
-    background: #33527a;
-    color: white;
-}
-
 .pdf-button {
     background: #f53434;
     color: white;

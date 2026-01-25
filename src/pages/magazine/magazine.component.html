@@ -68,6 +68,11 @@
                     inputId="excludeReviews"></p-checkbox>
                 <label for="excludeReviews">İncelemeleri dahil etme</label>
             </div>
+            @if (hasActiveFilters()) {
+                <button class="clear-filters-button" (click)="clearFilters()">
+                    Filtreleri Temizle
+                </button>
+            }
         </div>
     </div>
 
