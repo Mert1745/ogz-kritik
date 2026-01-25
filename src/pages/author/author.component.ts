@@ -1,19 +1,30 @@
-import {Component, computed, Signal} from '@angular/core';
+import {Component, computed, signal, Signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {DetailedIndexService} from '../../services/detailed-index.service';
 import {DetailedIndex} from '../../interface';
 import {ChartModule} from 'primeng/chart';
+import {AutoCompleteModule, AutoCompleteCompleteEvent} from 'primeng/autocomplete';
+import {CardModule} from 'primeng/card';
 import {REVIEW} from '../../constants';
+import {formatMonths} from '../../util/index-mapper';
 
 interface AuthorStats {
     author: string;
     count: number;
 }
 
+interface AuthorCardData {
+    name: string;
+    totalItems: number;
+    firstArticle: string;
+    sectionCounts: { section: string; count: number }[];
+}
+
 @Component({
     selector: 'app-author',
     standalone: true,
-    imports: [CommonModule, ChartModule],
+    imports: [CommonModule, FormsModule, ChartModule, AutoCompleteModule, CardModule],
     templateUrl: './author.component.html',
     styleUrls: ['./author.component.css']
 })
@@ -26,8 +37,64 @@ export class AuthorComponent {
     chartOptions: any;
     reviewChartOptions: any;
 
+    // Author search
+    selectedAuthors = signal<string[]>([]);
+    authorSuggestions = signal<string[]>([]);
+    allAuthors: Signal<string[]>;
+    authorCards: Signal<AuthorCardData[]>;
+
     constructor(private detailedIndexService: DetailedIndexService) {
         this.allItems = this.detailedIndexService.detailedIndex;
+
+        // Get all unique authors
+        this.allAuthors = computed(() => {
+            const items = this.allItems();
+            const authors = new Set<string>();
+            items.forEach(item => {
+                item.authors?.forEach(author => authors.add(author));
+            });
+            return [...authors].sort();
+        });
+
+        // Generate author cards for selected authors
+        this.authorCards = computed(() => {
+            const selected = this.selectedAuthors();
+            const items = this.allItems();
+
+            return selected.map(authorName => {
+                // Get all items by this author
+                const authorItems = items.filter(item =>
+                    item.authors?.includes(authorName)
+                );
+
+                // Get first article (earliest by magazine ID)
+                const firstItem = authorItems.reduce((earliest, current) =>
+                    current.id < earliest.id ? current : earliest
+                , authorItems[0]);
+
+                const firstArticle = firstItem
+                    ? `${firstItem.title} (#${firstItem.id} - ${formatMonths(firstItem.releaseMonthYear.months)} ${firstItem.releaseMonthYear.year})`
+                    : '-';
+
+                // Count articles by section
+                const sectionCountsMap = new Map<string, number>();
+                authorItems.forEach(item => {
+                    const section = item.section || 'Diğer';
+                    sectionCountsMap.set(section, (sectionCountsMap.get(section) || 0) + 1);
+                });
+
+                const sectionCounts = Array.from(sectionCountsMap.entries())
+                    .map(([section, count]) => ({ section, count }))
+                    .sort((a, b) => b.count - a.count);
+
+                return {
+                    name: authorName,
+                    totalItems: authorItems.length,
+                    firstArticle,
+                    sectionCounts
+                };
+            });
+        });
 
         // Calculate top 10 authors by number of items
         this.topAuthors = computed(() => {
@@ -237,5 +304,17 @@ export class AuthorComponent {
             }
         };
     }
-}
 
+    searchAuthors(event: AutoCompleteCompleteEvent) {
+        const query = event.query.toLocaleLowerCase('tr-TR');
+        this.authorSuggestions.set(
+            this.allAuthors().filter(author =>
+                author.toLocaleLowerCase('tr-TR').includes(query)
+            )
+        );
+    }
+
+    onAuthorsChange(value: string[]) {
+        this.selectedAuthors.set(value || []);
+    }
+}

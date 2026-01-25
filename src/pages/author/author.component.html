@@ -1,4 +1,56 @@
 <div class="author-page">
+    <!-- Author Search Section -->
+    <div class="search-section">
+        <h2 class="section-title">Yazar Ara</h2>
+        <p-autoComplete
+            [suggestions]="authorSuggestions()"
+            [ngModel]="selectedAuthors()"
+            (ngModelChange)="onAuthorsChange($event)"
+            (completeMethod)="searchAuthors($event)"
+            placeholder="Yazar adı yazın..."
+            [multiple]="true"
+            [dropdown]="true"
+            [showClear]="true"
+            [forceSelection]="false"
+            styleClass="author-autocomplete"></p-autoComplete>
+    </div>
+
+    <!-- Author Cards Section -->
+    @if (authorCards().length > 0) {
+        <div class="author-cards-section">
+            @for (card of authorCards(); track card.name) {
+                <p-card class="author-card">
+                    <ng-template pTemplate="header">
+                        <div class="card-header">
+                            <h3>{{ card.name }}</h3>
+                        </div>
+                    </ng-template>
+                    <div class="card-content">
+                        <div class="stat-item">
+                            <span class="stat-label">Toplam Yazı:</span>
+                            <span class="stat-value">{{ card.totalItems }}</span>
+                        </div>
+                        <div class="stat-item first-article">
+                            <span class="stat-label">İlk Yazısı:</span>
+                            <span class="stat-value">{{ card.firstArticle }}</span>
+                        </div>
+                        <div class="stat-item sections">
+                            <div class="section-list">
+                                @for (section of card.sectionCounts; track section.section) {
+                                    <div class="section-item">
+                                        <span class="section-count">{{ section.count }}</span>
+                                        <span class="section-name">{{ section.section }}</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </p-card>
+            }
+        </div>
+    }
+
+    <!-- Charts Section -->
     <div class="chart-container">
         <p-chart type="bar" [data]="chartData()" [options]="chartOptions" [style]="{'height': '100%'}"></p-chart>
     </div>
