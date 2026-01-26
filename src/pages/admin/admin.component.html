@@ -24,21 +24,28 @@
                 class="file-input">
         </div>
 
-        <div class="selected-file" *ngIf="selectedFile">
-            <span class="file-icon">📄</span>
-            <span class="file-name">{{ selectedFile.name }}</span>
-        </div>
+        @if (selectedFile) {
+            <div class="selected-file">
+                <span class="file-icon">📄</span>
+                <span class="file-name">{{ selectedFile.name }}</span>
+            </div>
+        }
 
         <button
             class="upload-btn"
             (click)="onUpload()"
             [disabled]="!selectedFile || !password || uploading">
-            <span *ngIf="!uploading">Yükle</span>
-            <span *ngIf="uploading">Yükleniyor...</span>
+            @if (!uploading) {
+                <span>Yükle</span>
+            } @else {
+                <span>Yükleniyor...</span>
+            }
         </button>
 
-        <p class="message" *ngIf="message" [class.success]="messageType === 'success'" [class.error]="messageType === 'error'">
-            {{ message }}
-        </p>
+        @if (message) {
+            <p class="message" [class.success]="messageType === 'success'" [class.error]="messageType === 'error'">
+                {{ message }}
+            </p>
+        }
     </div>
 </div>
