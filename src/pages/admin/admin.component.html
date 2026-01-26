@@ -1,0 +1,44 @@
+<div class="admin-page">
+    <div class="upload-container">
+        <h2>Admin - Excel Dosyası Yükle</h2>
+
+        <div class="form-field">
+            <label for="password">Admin Şifresi</label>
+            <input
+                type="password"
+                id="password"
+                [(ngModel)]="password"
+                placeholder="Şifrenizi girin"
+                [disabled]="uploading"
+                class="input-field">
+        </div>
+
+        <div class="form-field">
+            <label for="file">Excel Dosyası</label>
+            <input
+                type="file"
+                id="file"
+                accept=".xlsx,.xls"
+                (change)="onFileSelected($event)"
+                [disabled]="uploading"
+                class="file-input">
+        </div>
+
+        <div class="selected-file" *ngIf="selectedFile">
+            <span class="file-icon">📄</span>
+            <span class="file-name">{{ selectedFile.name }}</span>
+        </div>
+
+        <button
+            class="upload-btn"
+            (click)="onUpload()"
+            [disabled]="!selectedFile || !password || uploading">
+            <span *ngIf="!uploading">Yükle</span>
+            <span *ngIf="uploading">Yükleniyor...</span>
+        </button>
+
+        <p class="message" *ngIf="message" [class.success]="messageType === 'success'" [class.error]="messageType === 'error'">
+            {{ message }}
+        </p>
+    </div>
+</div>

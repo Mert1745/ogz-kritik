@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import * as XLSX from 'xlsx';
-import {S3_URL} from '../constants/aws';
+import {CLOUDFRONT_URL} from '../constants/aws';
 import {getObjectArrayBuffer, headObject} from '../client/aws-client';
 import {CachedExcelData} from '../interface/excel';
 import {mapIndexToDetailedIndex} from '../util/index-mapper';
@@ -71,7 +71,7 @@ export class ExcelCacheService {
     private async checkIfFileChanged(): Promise<boolean> {
         try {
             // Use helper that performs HEAD and returns metadata
-            const {etag: newEtag, lastModified: newLastModified} = await headObject(this.http, S3_URL);
+            const {etag: newEtag, lastModified: newLastModified} = await headObject(this.http, CLOUDFRONT_URL);
 
             const cached = await this.getCachedData();
 
@@ -90,7 +90,7 @@ export class ExcelCacheService {
     private async downloadAndCacheExcel(): Promise<any[]> {
         try {
             // Use helper to download file as arraybuffer and metadata
-            const {arrayBuffer, etag, lastModified} = await getObjectArrayBuffer(this.http, S3_URL);
+            const {arrayBuffer, etag, lastModified} = await getObjectArrayBuffer(this.http, CLOUDFRONT_URL);
 
             if (!arrayBuffer) throw new Error('Downloaded empty arrayBuffer');
 
