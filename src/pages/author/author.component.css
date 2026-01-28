@@ -52,7 +52,7 @@
 }
 
 :host ::ng-deep .author-card .p-card-header {
-    background: linear-gradient(135deg, #5b9bd5 0%, #4a90e2 100%);
+    background: linear-gradient(135deg, #6291bb, #58614e);
     padding: 0;
 }
 
@@ -90,11 +90,9 @@
 }
 
 .stat-label {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     font-weight: 600;
     color: #6b7280;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
 .stat-value {
@@ -114,14 +112,14 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: #e3f2fd;
+    background: #ebebeb;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.875rem;
 }
 
 .section-count {
-    background: #5b9bd5;
+    background: #4d84b7;
     color: white;
     font-weight: 700;
     padding: 0.25rem 0.5rem;
