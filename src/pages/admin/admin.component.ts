@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UploadService } from '../../services/upload-service';
@@ -13,7 +13,7 @@ import { UploadService } from '../../services/upload-service';
 export class AdminComponent {
     password = '';
     selectedFile: File | null = null;
-    uploading = false;
+    uploading = signal(false);
     message = '';
     messageType: 'success' | 'error' | '' = '';
 
@@ -33,7 +33,7 @@ export class AdminComponent {
             return;
         }
 
-        this.uploading = true;
+        this.uploading.set(true);
         this.message = '';
         this.messageType = '';
 
@@ -49,10 +49,10 @@ export class AdminComponent {
                 fileInput.value = '';
             }
         } catch (error) {
-            this.message = error instanceof Error ? error.message : 'Yükleme başarısız oldu';
+            this.message = 'Yükleme başarısız oldu';
             this.messageType = 'error';
         } finally {
-            this.uploading = false;
+            this.uploading.set(false);
         }
     }
 }

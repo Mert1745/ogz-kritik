@@ -9,7 +9,7 @@
                 id="password"
                 [(ngModel)]="password"
                 placeholder="Şifrenizi girin"
-                [disabled]="uploading"
+                [disabled]="uploading()"
                 class="input-field">
         </div>
 
@@ -20,7 +20,7 @@
                 id="file"
                 accept=".xlsx,.xls"
                 (change)="onFileSelected($event)"
-                [disabled]="uploading"
+                [disabled]="uploading()"
                 class="file-input">
         </div>
 
@@ -34,8 +34,8 @@
         <button
             class="upload-btn"
             (click)="onUpload()"
-            [disabled]="!selectedFile || !password || uploading">
-            @if (!uploading) {
+            [disabled]="!selectedFile || !password || uploading()">
+            @if (!uploading()) {
                 <span>Yükle</span>
             } @else {
                 <span>Yükleniyor...</span>
