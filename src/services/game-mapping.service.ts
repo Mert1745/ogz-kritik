@@ -1,6 +1,4 @@
 import {Injectable, signal} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {firstValueFrom} from 'rxjs';
 import {GAME_MAPPING_URL} from '../constants/aws';
 
 interface GameMapping {
@@ -21,7 +19,7 @@ export class GameMappingService {
     readonly gameMapping = signal<Map<number, string[]>>(new Map());
     private isFetched = false;
 
-    constructor(private http: HttpClient) {}
+    constructor() {}
 
     async fetchGameMapping(): Promise<void> {
         // Skip if already fetched in this session
@@ -30,14 +28,16 @@ export class GameMappingService {
             return;
         }
 
-        console.log("Fetching game mapping from");
+        console.log("Fetching game mapping from", GAME_MAPPING_URL);
         try {
-            const response = await firstValueFrom(
-                this.http.get<GameMappingResponse>(GAME_MAPPING_URL)
-            );
+            const response = await fetch(GAME_MAPPING_URL);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data: GameMappingResponse = await response.json();
 
             const mappingMap = new Map<number, string[]>();
-            response.games.forEach(game => {
+            data.games.forEach(game => {
                 if (!mappingMap.has(game.appid)) {
                     mappingMap.set(game.appid, []);
                 }
