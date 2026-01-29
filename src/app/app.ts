@@ -1,4 +1,4 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
@@ -10,6 +10,7 @@ import {GameMappingService} from '../services/game-mapping.service';
 import {HeaderComponent} from '../components/header/header.component';
 import {LoadingComponent} from '../components/loading/loading.component';
 import {FooterComponent} from '../components/footer/footer.component';
+import {AnalyticsService} from '../services/analytics.service';
 
 @Component({
     selector: 'app-root',
@@ -20,6 +21,8 @@ import {FooterComponent} from '../components/footer/footer.component';
 })
 export class App implements OnInit {
     protected readonly title = signal('ogz-kritik');
+    private analytics = inject(AnalyticsService);
+
     excelData: any[] = [];
 
     constructor(
@@ -30,6 +33,8 @@ export class App implements OnInit {
 
     async ngOnInit() {
         try {
+            this.analytics.initPageTracking();
+
             await Promise.all([
                 this.excelCache.getExcelData().then(data => this.excelData = data),
                 this.gameMappingService.fetchGameMapping()

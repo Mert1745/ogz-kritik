@@ -24,11 +24,9 @@ export class GameMappingService {
     async fetchGameMapping(): Promise<void> {
         // Skip if already fetched in this session
         if (this.isFetched && this.gameMapping().size > 0) {
-            console.log("Game mapping already loaded, skipping fetch");
             return;
         }
 
-        console.log("Fetching game mapping from", GAME_MAPPING_URL);
         try {
             const response = await fetch(GAME_MAPPING_URL);
             if (!response.ok) {
@@ -46,15 +44,9 @@ export class GameMappingService {
 
             this.gameMapping.set(mappingMap);
             this.isFetched = true;
-            console.log(`Game mapping loaded: ${mappingMap.size} unique appids`);
         } catch (error) {
             console.error('Error fetching game mapping:', error);
             throw error;
         }
-    }
-
-    clear(): void {
-        this.gameMapping.set(new Map());
-        this.isFetched = false;
     }
 }
