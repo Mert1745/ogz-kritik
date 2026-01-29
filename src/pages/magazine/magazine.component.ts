@@ -2,7 +2,6 @@ import {Component, computed, OnInit, signal, Signal} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
-import {Gtag} from 'angular-gtag';
 import {MagazineFilterService} from '../../services/magazine-filter.service';
 import {DetailedIndex} from '../../interface';
 import {PaginatorModule, PaginatorState} from 'primeng/paginator';
@@ -62,13 +61,8 @@ export class MagazineComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private magazineFilterService: MagazineFilterService,
-        private gtag: Gtag
+        private magazineFilterService: MagazineFilterService
     ) {
-        this.gtag.event('screen_view', {
-            'app_name': 'ogzKritik',
-            'screen_name': 'Magazine'
-        });
         // Bind filter signals from service
         this.sectionFilter = this.magazineFilterService.sectionFilter;
         this.titleFilter = this.magazineFilterService.titleFilter;

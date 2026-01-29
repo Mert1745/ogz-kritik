@@ -1,7 +1,5 @@
 import {Component, OnInit, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {GtagModule} from 'angular-gtag';
-import {Gtag} from 'angular-gtag';
 import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
 import {CommonModule} from '@angular/common';
@@ -16,11 +14,7 @@ import {FooterComponent} from '../components/footer/footer.component';
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [ButtonModule, CardModule, CommonModule, TooltipModule, RippleModule, HeaderComponent,
-        RouterOutlet, LoadingComponent, FooterComponent, GtagModule.forRoot({
-            trackingId: 'G-TZPG1WFMKM',
-            trackPageviews: true
-        })],
+    imports: [ButtonModule, CardModule, CommonModule, TooltipModule, RippleModule, HeaderComponent, RouterOutlet, LoadingComponent, FooterComponent],
     templateUrl: './app.html',
     styleUrl: './app.css'
 })
@@ -30,13 +24,8 @@ export class App implements OnInit {
 
     constructor(
         private excelCache: ExcelCacheService,
-        private gameMappingService: GameMappingService,
-        private gtag: Gtag
+        private gameMappingService: GameMappingService
     ) {
-        this.gtag.event('screen_view', {
-            'app_name': 'ogzKritik',
-            'screen_name': 'Home'
-        });
     }
 
     async ngOnInit() {
