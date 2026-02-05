@@ -60,13 +60,26 @@ export class MagazineFilterService {
         return [...authors].sort((a, b) => a.localeCompare(b, 'tr-TR'));
     });
 
+    // Helper method to normalize strings for Turkish/English comparison
+    // Handles the Turkish capital I issue (I vs ı)
+    private normalizeForComparison(str: string): string {
+        return str
+            .toLocaleLowerCase('tr-TR')
+            .replace(/i/g, '') // Remove lowercase i
+            .replace(/ı/g, ''); // Remove lowercase ı (Turkish dotless i)
+    }
+
     // Private method to apply filter logic to items
     private applyFilters(items: DetailedIndex[], includeYearFilter: boolean = true): DetailedIndex[] {
         const sections = this.sectionFilter();
-        const title = this.titleFilter().toLocaleLowerCase('tr-TR').trim();
-        const author = this.authorFilter().toLocaleLowerCase('tr-TR').trim();
+        const title = this.titleFilter().trim();
+        const author = this.authorFilter().trim();
         const [minYr, maxYr] = this.yearRange();
         const excludeReviewItems = this.excludeReviews();
+
+        // Normalize title and author for comparison
+        const normalizedTitle = this.normalizeForComparison(title);
+        const normalizedAuthor = this.normalizeForComparison(author);
 
         return items.filter(item => {
             // Exclude reviews filter
@@ -81,14 +94,14 @@ export class MagazineFilterService {
 
             // Title filter
             if (title && item.title) {
-                const itemTitle = String(item.title).toLocaleLowerCase('tr-TR');
-                if (!itemTitle.includes(title)) {
+                const itemTitle = this.normalizeForComparison(String(item.title));
+                if (!itemTitle.includes(normalizedTitle)) {
                     return false;
                 }
             }
 
             // Author filter
-            if (author && !item.authors?.some(a => a.toLocaleLowerCase('tr-TR').includes(author))) {
+            if (author && !item.authors?.some(a => this.normalizeForComparison(a).includes(normalizedAuthor))) {
                 return false;
             }
 
