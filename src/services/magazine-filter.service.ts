@@ -2,6 +2,7 @@ import {Injectable, signal, computed, inject} from '@angular/core';
 import {DetailedIndexService} from './detailed-index.service';
 import {DetailedIndex} from '../interface';
 import {REVIEW} from '../constants';
+import {normalizeForComparison} from '../util/text-normalizer';
 
 @Injectable({
     providedIn: 'root'
@@ -60,14 +61,6 @@ export class MagazineFilterService {
         return [...authors].sort((a, b) => a.localeCompare(b, 'tr-TR'));
     });
 
-    // Helper method to normalize strings for Turkish/English comparison
-    // Handles the Turkish capital I issue (I vs ı)
-    private normalizeForComparison(str: string): string {
-        return str
-            .toLocaleLowerCase('tr-TR')
-            .replace(/i/g, '') // Remove lowercase i
-            .replace(/ı/g, ''); // Remove lowercase ı (Turkish dotless i)
-    }
 
     // Private method to apply filter logic to items
     private applyFilters(items: DetailedIndex[], includeYearFilter: boolean = true): DetailedIndex[] {
@@ -78,8 +71,8 @@ export class MagazineFilterService {
         const excludeReviewItems = this.excludeReviews();
 
         // Normalize title and author for comparison
-        const normalizedTitle = this.normalizeForComparison(title);
-        const normalizedAuthor = this.normalizeForComparison(author);
+        const normalizedTitle = normalizeForComparison(title);
+        const normalizedAuthor = normalizeForComparison(author);
 
         return items.filter(item => {
             // Exclude reviews filter
@@ -94,14 +87,14 @@ export class MagazineFilterService {
 
             // Title filter
             if (title && item.title) {
-                const itemTitle = this.normalizeForComparison(String(item.title));
+                const itemTitle = normalizeForComparison(String(item.title));
                 if (!itemTitle.includes(normalizedTitle)) {
                     return false;
                 }
             }
 
             // Author filter
-            if (author && !item.authors?.some(a => this.normalizeForComparison(a).includes(normalizedAuthor))) {
+            if (author && !item.authors?.some(a => normalizeForComparison(a).includes(normalizedAuthor))) {
                 return false;
             }
 

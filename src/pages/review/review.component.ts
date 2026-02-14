@@ -12,6 +12,7 @@ import {AutoCompleteModule, AutoCompleteCompleteEvent} from 'primeng/autocomplet
 import {MAGAZINE_URL} from '../../constants/magazine';
 import {REVIEW} from '../../constants';
 import {formatMonths} from '../../util/index-mapper';
+import {normalizeForComparison} from '../../util/text-normalizer';
 
 @Component({
     selector: 'app-review',
@@ -116,8 +117,8 @@ export class ReviewComponent {
                     return false;
                 }
 
-                // Title filter
-                if (title && !item.title.toLocaleLowerCase('tr-TR').includes(title)) {
+                // Title filter (normalize Turkish characters)
+                if (title && !normalizeForComparison(item.title).includes(normalizeForComparison(title))) {
                     return false;
                 }
 
