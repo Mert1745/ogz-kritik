@@ -12,7 +12,7 @@ export class MagazineFilterService {
 
     // Default year range
     private readonly defaultMinYear = 2007;
-    private readonly defaultMaxYear = 2025;
+    private readonly defaultMaxYear = 2026;
 
     // Filter signals
     readonly sectionFilter = signal<string[]>([]);

@@ -45,8 +45,8 @@ export class AuthorComponent {
     authorCards: Signal<AuthorCardData[]>;
 
     // Year range filter for charts
-    allAuthorsYearRange = signal<[number, number]>([2007, 2025]);
-    reviewAuthorsYearRange = signal<[number, number]>([2007, 2025]);
+    allAuthorsYearRange = signal<[number, number]>([2007, 2026]);
+    reviewAuthorsYearRange = signal<[number, number]>([2007, 2026]);
     minYear: Signal<number>;
     maxYear: Signal<number>;
     filteredItemsForAllAuthors: Signal<DetailedIndex[]>;

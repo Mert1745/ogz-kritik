@@ -38,11 +38,11 @@ export class ReviewComponent {
     authorFilterDisplay = signal('');
     titleFilterDisplay = signal('');
     scoreRangeDisplay = signal<[number, number]>([0, 10]);
-    yearRangeDisplay = signal<[number, number]>([2007, 2025]);
+    yearRangeDisplay = signal<[number, number]>([2007, 2026]);
 
     // Actual filter values (debounced)
     scoreRange = signal<[number, number]>([0, 10]);
-    yearRange = signal<[number, number]>([2007, 2025]);
+    yearRange = signal<[number, number]>([2007, 2026]);
 
     // Debounce timers
     private authorDebounceTimer: any;
