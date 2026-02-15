@@ -2,8 +2,9 @@ import {Injectable, signal} from '@angular/core';
 import {GAME_MAPPING_URL} from '../constants/aws';
 
 interface GameMapping {
-    appid: number;
-    name: string;
+    image_id: number;
+    index_name: string;
+    igdb_name: string;
 }
 
 interface GameMappingResponse {
@@ -36,10 +37,10 @@ export class GameMappingService {
 
             const mappingMap = new Map<number, string[]>();
             data.games.forEach(game => {
-                if (!mappingMap.has(game.appid)) {
-                    mappingMap.set(game.appid, []);
+                if (!mappingMap.has(game.image_id)) {
+                    mappingMap.set(game.image_id, []);
                 }
-                mappingMap.get(game.appid)!.push(game.name);
+                mappingMap.get(game.image_id)!.push(game.index_name);
             });
 
             this.gameMapping.set(mappingMap);

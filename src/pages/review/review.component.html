@@ -83,16 +83,16 @@
                         <div class="score-circle" [ngClass]="getScoreColorClass(item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5)">
                             <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>
                         </div>
-                        @if (getAppIdByTitle(item.title); as appId) {
-                            @if (shouldShowImage(appId)) {
+                        @if (getAppIdByTitle(item.title); as imageId) {
+                            @if (shouldShowImage(imageId)) {
                                 <img
-                                    [ngSrc]="'https://cdn.steamstatic.com/steam/apps/' + appId + '/library_600x900.jpg'"
+                                    [ngSrc]="'https://images.igdb.com/igdb/image/upload/t_cover_big/'+ imageId + '.webp'"
                                     [alt]="item.title + ' cover'"
                                     class="cover-image"
                                     height="200"
                                     width="100"
                                     priority
-                                    (error)="onImageError(appId)"/>
+                                    (error)="onImageError(imageId)"/>
                             }
                         }
                         <div class="card-details">
