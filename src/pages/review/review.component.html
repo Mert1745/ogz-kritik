@@ -78,22 +78,19 @@
                 <h2>{{ group.year }}</h2>
             </div>
             @for (item of group.items; track $index) {
-                <p-card [class]="'review-card' + (getAppIdByTitle(item.title) !== null && shouldShowImage(getAppIdByTitle(item.title)) ? ' has-cover-image' : '')" (click)="openMagazine(item.id)">
+                <p-card [class]="'review-card'" (click)="openMagazine(item.id)">
                     <div class="card-content-wrapper">
                         <div class="score-circle" [ngClass]="getScoreColorClass(item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5)">
                             <span>{{ item.scoreIn100 ?? item.scoreIn10 ?? item.scoreIn5  ?? '-'}}</span>
                         </div>
                         @if (getAppIdByTitle(item.title); as imageId) {
-                            @if (shouldShowImage(imageId)) {
-                                <img
-                                    [ngSrc]="'https://images.igdb.com/igdb/image/upload/t_cover_big/'+ imageId + '.webp'"
-                                    [alt]="item.title + ' cover'"
-                                    class="cover-image"
-                                    height="200"
-                                    width="100"
-                                    priority
-                                    (error)="onImageError(imageId)"/>
-                            }
+                            <img
+                                [ngSrc]="'https://images.igdb.com/igdb/image/upload/t_cover_big/'+ imageId + '.webp'"
+                                [alt]="item.title + ' cover'"
+                                class="cover-image"
+                                height="200"
+                                width="100"
+                                priority/>
                         }
                         <div class="card-details">
                             <h3 class="card-title">{{ item.title }}</h3>
