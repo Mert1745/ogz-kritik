@@ -14,7 +14,7 @@
                         </div>
                     }
                     <div class="card-details" [class.no-score]="!hasScore(item)">
-                        <h3 class="card-title">{{ item.title }}</h3>
+                        <h3 class="card-title" [title]="item.title">{{ item.title }}</h3>
                         @if (item.authors && item.authors.length > 0) {
                             <p class="card-author"><span class="icon">👤</span> {{ item.authors.join(', ') }}</p>
                         }
