@@ -226,11 +226,23 @@
     align-items: stretch;
     gap: 0;
     height: 160px;
+
+    img {
+        margin-top: auto;
+        margin-bottom: auto;
+        width: 120px;
+    }
 }
 
 @media (max-width: 767px) {
     .card-content-wrapper {
         height: 140px;
+
+        img {
+            margin-top: auto;
+            margin-bottom: auto;
+            width: 105px;
+        }
     }
 }
 
