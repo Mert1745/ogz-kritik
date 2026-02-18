@@ -18,7 +18,10 @@ export class ArticleViewCardsComponent {
     @Input() onCardClick: (id: number) => void = () => {};
     @Input() dividerOn!: boolean;
 
+    gameMap: Map<number, string[]>;
+
     constructor(private gameMappingService: GameMappingService) {
+        this.gameMap = this.gameMappingService.gameMapping();
     }
 
     hasScore(item: DetailedIndex): boolean {
@@ -59,8 +62,7 @@ export class ArticleViewCardsComponent {
     }
 
     getAppIdByTitle(title: string): number | null {
-        const gameMap = this.gameMappingService.gameMapping();
-        for (const [appid, gameNames] of gameMap.entries()) {
+        for (const [appid, gameNames] of this.gameMap.entries()) {
             if (gameNames.some(gameName =>
                 gameName.toLocaleLowerCase('en-US').trim() === title.toLocaleLowerCase('en-US').trim()
             )) {
