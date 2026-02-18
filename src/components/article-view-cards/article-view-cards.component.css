@@ -13,7 +13,7 @@
     }
 }
 
-@media (min-width: 700px) and (max-width: 1024px) {
+@media (min-width: 700px) and (max-width: 1200px) {
     .review-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -67,11 +67,23 @@
     align-items: stretch;
     gap: 0;
     height: 180px;
+
+    img {
+        margin-top: auto;
+        margin-bottom: auto;
+        width: 135px;
+    }
 }
 
 @media (max-width: 767px) {
     .card-content-wrapper {
         height: 160px;
+    }
+
+    img {
+        margin-top: auto;
+        margin-bottom: auto;
+        width: 105px;
     }
 }
 
@@ -79,8 +91,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 80px;
-    width: 80px;
+    min-width: 60px;
+    width: 60px;
     color: white;
     font-size: 1.5rem;
     font-weight: bold;
@@ -90,8 +102,8 @@
 
 @media (max-width: 767px) {
     .score-circle {
-        min-width: 70px;
-        width: 70px;
+        min-width: 55px;
+        width: 55px;
         font-size: 1.3rem;
     }
 }

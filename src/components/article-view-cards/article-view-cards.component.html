@@ -13,6 +13,15 @@
                             <span>{{ getDisplayScore(item) }}</span>
                         </div>
                     }
+                    @if (getAppIdByTitle(item.title); as imageId) {
+                        <img
+                            [ngSrc]="'https://images.igdb.com/igdb/image/upload/t_cover_big/'+ imageId + '.webp'"
+                            [alt]="item.title + ' cover'"
+                            class="cover-image"
+                            height="200"
+                            width="100"
+                            priority/>
+                    }
                     <div class="card-details" [class.no-score]="!hasScore(item)">
                         <h3 class="card-title" [title]="item.title">{{ item.title }}</h3>
                         @if (item.authors && item.authors.length > 0) {
