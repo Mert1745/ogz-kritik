@@ -1,8 +1,10 @@
-import {Injectable, signal, computed, inject} from '@angular/core';
+import {Injectable, signal, computed, inject, effect} from '@angular/core';
 import {DetailedIndexService} from './detailed-index.service';
 import {DetailedIndex} from '../interface';
 import {REVIEW} from '../constants';
 import {normalizeForComparison} from '../util/text-normalizer';
+import {Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -21,6 +23,32 @@ export class MagazineFilterService {
     readonly yearRange = signal<[number, number]>([this.defaultMinYear, this.defaultMaxYear]);
     readonly excludeReviews = signal<boolean>(false);
     readonly viewMode = signal<'article' | 'magazine'>('magazine');
+
+    // Debounce subjects (300ms debounce)
+    private sectionFilterSubject = new Subject<string[]>();
+    private titleFilterSubject = new Subject<string>();
+    private authorFilterSubject = new Subject<string>();
+    private yearRangeSubject = new Subject<[number, number]>();
+    private readonly debounceMs = 300;
+
+    constructor() {
+        // Subscribe to debounced filter subjects
+        this.sectionFilterSubject
+            .pipe(debounceTime(this.debounceMs))
+            .subscribe(value => this.sectionFilter.set(value ?? []));
+
+        this.titleFilterSubject
+            .pipe(debounceTime(this.debounceMs))
+            .subscribe(value => this.titleFilter.set(value ?? ''));
+
+        this.authorFilterSubject
+            .pipe(debounceTime(this.debounceMs))
+            .subscribe(value => this.authorFilter.set(value ?? ''));
+
+        this.yearRangeSubject
+            .pipe(debounceTime(this.debounceMs))
+            .subscribe(value => this.yearRange.set(value));
+    }
 
     // Track actual data bounds
     private dataMinYear = signal<number>(this.defaultMinYear);
@@ -172,19 +200,19 @@ export class MagazineFilterService {
 
     // Update methods
     setSectionFilter(sections: string[]): void {
-        this.sectionFilter.set(sections ?? []);
+        this.sectionFilterSubject.next(sections ?? []);
     }
 
     setTitleFilter(title: string): void {
-        this.titleFilter.set(title ?? '');
+        this.titleFilterSubject.next(title ?? '');
     }
 
     setAuthorFilter(author: string): void {
-        this.authorFilter.set(author ?? '');
+        this.authorFilterSubject.next(author ?? '');
     }
 
     setYearRange(range: [number, number]): void {
-        this.yearRange.set(range);
+        this.yearRangeSubject.next(range);
     }
 
     setExcludeReviews(exclude: boolean): void {
@@ -197,10 +225,10 @@ export class MagazineFilterService {
 
     // Reset all filters
     resetFilters(): void {
-        this.sectionFilter.set([]);
-        this.titleFilter.set('');
-        this.authorFilter.set('');
-        this.yearRange.set([this.dataMinYear(), this.dataMaxYear()]);
+        this.sectionFilterSubject.next([]);
+        this.titleFilterSubject.next('');
+        this.authorFilterSubject.next('');
+        this.yearRangeSubject.next([this.dataMinYear(), this.dataMaxYear()]);
         this.excludeReviews.set(false);
     }
 }
