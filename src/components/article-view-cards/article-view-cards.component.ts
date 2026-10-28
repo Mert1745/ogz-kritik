@@ -18,11 +18,7 @@ export class ArticleViewCardsComponent {
     @Input() onCardClick: (id: number) => void = () => {};
     @Input() dividerOn!: boolean;
 
-    gameMap: Map<number, string[]>;
-
-    constructor(private gameMappingService: GameMappingService) {
-        this.gameMap = this.gameMappingService.gameMapping();
-    }
+    constructor(private gameMappingService: GameMappingService) {}
 
     hasScore(item: DetailedIndex): boolean {
         return item.section === REVIEW || !!(item.scoreIn100 || item.scoreIn10 || item.scoreIn5);
@@ -62,14 +58,7 @@ export class ArticleViewCardsComponent {
     }
 
     getAppIdByTitle(title: string): number | null {
-        for (const [appid, gameNames] of this.gameMap.entries()) {
-            if (gameNames.some(gameName =>
-                gameName.toLocaleLowerCase('en-US').trim() === title.toLocaleLowerCase('en-US').trim()
-            )) {
-                return appid;
-            }
-        }
-        return null;
+        return this.gameMappingService.getImageIdByTitle(title);
     }
 
     protected readonly formatMonths = formatMonths;

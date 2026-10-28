@@ -6,6 +6,13 @@ import {normalizeForComparison} from '../util/text-normalizer';
 import {Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 
+interface SearchEntry {
+    title: string | null;
+    authors: string[];
+    isReview: boolean;
+    year: number | null;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -90,6 +97,30 @@ export class MagazineFilterService {
     });
 
 
+    // Lowercased values for autocomplete search, computed once per data load
+    readonly allSectionsLower = computed(() => this.allSections().map(s => s.toLocaleLowerCase('tr-TR')));
+    readonly allAuthorsLower = computed(() => this.allAuthors().map(a => a.toLocaleLowerCase('tr-TR')));
+
+    // Pre-normalized searchable fields per item, so filtering doesn't re-normalize 10k+ strings per keystroke
+    private readonly searchIndex = computed(() => {
+        const reviewLower = REVIEW.toLocaleLowerCase('tr-TR');
+        const index = new Map<DetailedIndex, SearchEntry>();
+        for (const item of this.allItems()) {
+            index.set(item, this.buildSearchEntry(item, reviewLower));
+        }
+        return index;
+    });
+
+    private buildSearchEntry(item: DetailedIndex, reviewLower: string): SearchEntry {
+        const year = parseInt(item.releaseMonthYear.year, 10);
+        return {
+            title: item.title ? normalizeForComparison(String(item.title)) : null,
+            authors: item.authors?.map(a => normalizeForComparison(a)) ?? [],
+            isReview: item.section?.toLocaleLowerCase('tr-TR') === reviewLower,
+            year: isNaN(year) ? null : year
+        };
+    }
+
     // Private method to apply filter logic to items
     private applyFilters(items: DetailedIndex[], includeYearFilter: boolean = true): DetailedIndex[] {
         const sections = this.sectionFilter();
@@ -97,41 +128,40 @@ export class MagazineFilterService {
         const author = this.authorFilter().trim();
         const [minYr, maxYr] = this.yearRange();
         const excludeReviewItems = this.excludeReviews();
+        const searchIndex = this.searchIndex();
+        const reviewLower = REVIEW.toLocaleLowerCase('tr-TR');
+        const sectionSet = new Set(sections);
 
         // Normalize title and author for comparison
         const normalizedTitle = normalizeForComparison(title);
         const normalizedAuthor = normalizeForComparison(author);
 
         return items.filter(item => {
+            const entry = searchIndex.get(item) ?? this.buildSearchEntry(item, reviewLower);
+
             // Exclude reviews filter
-            if (excludeReviewItems && item.section?.toLocaleLowerCase('tr-TR') === REVIEW.toLocaleLowerCase('tr-TR')) {
+            if (excludeReviewItems && entry.isReview) {
                 return false;
             }
 
             // Section filter (multi-select)
-            if (sections.length > 0 && !sections.includes(item.section)) {
+            if (sectionSet.size > 0 && !sectionSet.has(item.section)) {
                 return false;
             }
 
             // Title filter
-            if (title && item.title) {
-                const itemTitle = normalizeForComparison(String(item.title));
-                if (!itemTitle.includes(normalizedTitle)) {
-                    return false;
-                }
+            if (title && entry.title !== null && !entry.title.includes(normalizedTitle)) {
+                return false;
             }
 
             // Author filter
-            if (author && !item.authors?.some(a => normalizeForComparison(a).includes(normalizedAuthor))) {
+            if (author && !entry.authors.some(a => a.includes(normalizedAuthor))) {
                 return false;
             }
 
             // Year filter (optional)
-            if (includeYearFilter) {
-                const year = parseInt(item.releaseMonthYear.year, 10);
-                if (!isNaN(year) && (year < minYr || year > maxYr)) {
-                    return false;
-                }
+            if (includeYearFilter && entry.year !== null && (entry.year < minYr || entry.year > maxYr)) {
+                return false;
             }
 
             return true;

@@ -294,15 +294,7 @@ export class ReviewComponent {
     }
 
     getAppIdByTitle(title: string): number | null {
-        const gameMap = this.gameMappingService.gameMapping();
-        for (const [appid, gameNames] of gameMap.entries()) {
-            if (gameNames.some(gameName =>
-                gameName.toLocaleLowerCase('en-US').trim() === title.toLocaleLowerCase('en-US').trim()
-            )) {
-                return appid;
-            }
-        }
-        return null;
+        return this.gameMappingService.getImageIdByTitle(title);
     }
 
     protected readonly formatMonths = formatMonths;

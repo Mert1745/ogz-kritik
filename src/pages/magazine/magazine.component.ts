@@ -133,8 +133,9 @@ export class MagazineComponent implements OnInit {
 
     searchSections(event: AutoCompleteCompleteEvent) {
         const query = event.query.toLocaleLowerCase('tr-TR');
+        const sectionsLower = this.magazineFilterService.allSectionsLower();
         this.sectionSuggestions.set(
-            this.allSections().filter(section => section.toLocaleLowerCase('tr-TR').includes(query))
+            this.allSections().filter((_, i) => sectionsLower[i].includes(query))
         );
     }
 
@@ -152,8 +153,9 @@ export class MagazineComponent implements OnInit {
 
     searchAuthors(event: AutoCompleteCompleteEvent) {
         const query = event.query.toLocaleLowerCase('tr-TR');
+        const authorsLower = this.magazineFilterService.allAuthorsLower();
         this.authorSuggestions.set(
-            this.allAuthors().filter(author => author.toLocaleLowerCase('tr-TR').includes(query))
+            this.allAuthors().filter((_, i) => authorsLower[i].includes(query))
         );
     }
 

@@ -1,4 +1,4 @@
-import {Injectable, signal} from '@angular/core';
+import {computed, Injectable, signal} from '@angular/core';
 import {GAME_MAPPING_URL} from '../constants/aws';
 
 interface GameMapping {
@@ -20,7 +20,30 @@ export class GameMappingService {
     readonly gameMapping = signal<Map<number, string[]>>(new Map());
     private isFetched = false;
 
+    // Lookup table: normalized game title -> image id (first match wins)
+    private readonly titleToImageId = computed(() => {
+        const lookup = new Map<string, number>();
+        for (const [imageId, gameNames] of this.gameMapping().entries()) {
+            for (const gameName of gameNames) {
+                const key = GameMappingService.normalizeTitle(gameName);
+                if (!lookup.has(key)) {
+                    lookup.set(key, imageId);
+                }
+            }
+        }
+        return lookup;
+    });
+
     constructor() {}
+
+    private static normalizeTitle(title: string): string {
+        return title.toLocaleLowerCase('en-US').trim();
+    }
+
+    getImageIdByTitle(title: string | null | undefined): number | null {
+        if (!title) return null;
+        return this.titleToImageId().get(GameMappingService.normalizeTitle(String(title))) ?? null;
+    }
 
     async fetchGameMapping(): Promise<void> {
         // Skip if already fetched in this session
