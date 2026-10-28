@@ -9,7 +9,7 @@ import {CardModule} from 'primeng/card';
 import {InputTextModule} from 'primeng/inputtext';
 import {SliderModule} from 'primeng/slider';
 import {AutoCompleteModule, AutoCompleteCompleteEvent} from 'primeng/autocomplete';
-import {MAGAZINE_URL} from '../../constants/magazine';
+import {getMagazineReadUrl} from '../../util/magazine-url';
 import {REVIEW} from '../../constants';
 import {formatMonths} from '../../util/index-mapper';
 import {normalizeForComparison} from '../../util/text-normalizer';
@@ -299,9 +299,9 @@ export class ReviewComponent {
     }
 
     openMagazine(itemId: number): void {
-        const magazine = MAGAZINE_URL.find(m => m.index === itemId);
-        if (magazine?.url) {
-            window.open(magazine.url, '_blank');
+        const url = getMagazineReadUrl(itemId);
+        if (url) {
+            window.open(url, '_blank');
         }
     }
 

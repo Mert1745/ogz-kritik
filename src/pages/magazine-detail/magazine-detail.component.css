@@ -118,6 +118,19 @@
     font-size: 1rem;
     transition: all 0.2s ease;
     align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Logos are black on light backgrounds, so they sit on a small white tile */
+.button-logo {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: cover;
+    border-radius: 5px;
+    background: white;
+    flex-shrink: 0;
 }
 
 @media (max-width: 767px) {
@@ -130,6 +143,14 @@
     background: #da2a2a;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(77, 100, 129, 0.3);
+}
+
+.patreon-button {
+    background: #2563eb;
+}
+
+.patreon-button:hover {
+    background: #1d4ed8;
 }
 
 .articles-section {

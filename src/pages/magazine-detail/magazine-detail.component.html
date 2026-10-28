@@ -18,7 +18,15 @@
                     @if (info.url) {
                         <div class="filter-indicator">
                             <button class="pdf-button" (click)="openMagazinePdf()">
-                                📄 PDF'i Aç
+                                <img src="/assets/images/oyungezer-logo.jpg" alt="" class="button-logo" />
+                                PDF'i Aç
+                            </button>
+                        </div>
+                    } @else if (info.patreonUrl) {
+                        <div class="filter-indicator">
+                            <button class="pdf-button patreon-button" (click)="openPatreon()">
+                                <img src="/assets/images/patreon-logo.png" alt="" class="button-logo" />
+                                Patreon'dan Oku
                             </button>
                         </div>
                     }

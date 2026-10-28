@@ -6,7 +6,9 @@ import {MagazineFilterService} from '../../services/magazine-filter.service';
 import {DetailedIndex} from '../../interface';
 import {ArticleViewCardsComponent} from '../../components/article-view-cards/article-view-cards.component';
 import {MAGAZINE_URL} from '../../constants/magazine';
+import {PATREON_URL} from '../../constants/patreon';
 import {formatMonths} from '../../util/index-mapper';
+import {getMagazineReadUrl} from '../../util/magazine-url';
 
 @Component({
     selector: 'app-magazine-detail',
@@ -26,7 +28,7 @@ export class MagazineDetailComponent implements OnInit {
     groupedItems: Signal<{ year: string; items: DetailedIndex[] }[]>;
 
     // Magazine info
-    magazineInfo: Signal<{ id: number; title: string; url?: string } | null>;
+    magazineInfo: Signal<{ id: number; title: string; url?: string; patreonUrl?: string } | null>;
 
     constructor(
         private route: ActivatedRoute,
@@ -56,11 +58,14 @@ export class MagazineDetailComponent implements OnInit {
             if (!firstItem) return null;
 
             const magazineUrl = MAGAZINE_URL.find(m => m.index === id);
+            // Issues without a free PDF (206 and above) are available on Patreon
+            const patreonUrl = PATREON_URL.find(m => m.index === id);
 
             return {
                 id: id,
                 title: `#${id} - ${formatMonths(firstItem.releaseMonthYear.months)} ${firstItem.releaseMonthYear.year}`,
-                url: magazineUrl?.url
+                url: magazineUrl?.url,
+                patreonUrl: patreonUrl?.url
             };
         });
     }
@@ -78,9 +83,9 @@ export class MagazineDetailComponent implements OnInit {
     }
 
     openMagazine(id: number): void {
-        const magazine = MAGAZINE_URL.find(m => m.index === id);
-        if (magazine?.url) {
-            window.open(magazine.url, '_blank');
+        const url = getMagazineReadUrl(id);
+        if (url) {
+            window.open(url, '_blank');
         }
     }
 
@@ -92,6 +97,13 @@ export class MagazineDetailComponent implements OnInit {
         const info = this.magazineInfo();
         if (info?.url) {
             window.open(info.url, '_blank');
+        }
+    }
+
+    openPatreon(): void {
+        const info = this.magazineInfo();
+        if (info?.patreonUrl) {
+            window.open(info.patreonUrl, '_blank');
         }
     }
 

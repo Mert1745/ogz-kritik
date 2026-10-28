@@ -45,3 +45,4 @@ Thumbs.db
 # Environment files
 /src/constants/aws.ts
 /src/constants/magazine.ts
+/src/constants/patreon.ts
