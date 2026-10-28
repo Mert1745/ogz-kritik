@@ -17,7 +17,12 @@
 
     <div class="filter-toggle-wrapper">
         <div class="filter-toggle" (click)="toggleFilter()">
-            <span>Filtrele</span>
+            <span class="filter-toggle-label">
+                Filtrele
+                @if (activeFilterCount() > 0) {
+                    <span class="filter-count-badge" [attr.aria-label]="activeFilterCount() + ' aktif filtre'">{{ activeFilterCount() }}</span>
+                }
+            </span>
             <span class="toggle-icon">{{ isFilterVisible() ? '▲' : '▼' }}</span>
         </div>
     </div>
@@ -94,7 +99,20 @@
                         }
                         <div class="card-details">
                             <h3 class="card-title" [title]="item.title">{{ item.title }}</h3>
-                            <p class="card-author"><span class="icon">👤</span> {{ item.authors?.join(', ') }}</p>
+                            <p class="card-author">
+                                <span class="icon">👤</span>
+                                <span>
+                                    @for (author of item.authors; track $index; let last = $last) {
+                                        <span
+                                            class="author-link"
+                                            role="button"
+                                            tabindex="0"
+                                            [title]="author + ' yazılarını filtrele'"
+                                            (click)="selectAuthor(author, $event)"
+                                            (keydown.enter)="selectAuthor(author, $event)">{{ author }}</span>@if (!last) {<span>, </span>}
+                                    }
+                                </span>
+                            </p>
                             <p class="card-issue"><span class="icon">📅</span> #{{ item.id }} - {{ formatMonths(item.releaseMonthYear.months) }} {{ item.releaseMonthYear.year }}</p>
                         </div>
                     </div>

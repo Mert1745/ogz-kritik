@@ -88,6 +88,34 @@
     font-size: 0.95rem;
 }
 
+.filter-toggle-label {
+    position: relative;
+}
+
+.filter-toggle .filter-count-badge {
+    position: absolute;
+    top: -0.55rem;
+    right: -1.20rem;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    padding: 0 0.3rem;
+    box-sizing: border-box;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #8dacdf, #4375e3);
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.1rem;
+    text-align: center;
+    animation: badge-pop 0.25s ease-out;
+}
+
+@keyframes badge-pop {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
 .toggle-icon {
     font-size: 0.8rem;
     transition: transform 0.3s ease;
@@ -360,6 +388,19 @@
     font-weight: 500;
     min-height: 2.2rem;
     align-items: flex-start;
+}
+
+.author-link {
+    cursor: pointer;
+    border-radius: 3px;
+    transition: color 0.15s ease;
+}
+
+.author-link:hover,
+.author-link:focus-visible {
+    color: #2563eb;
+    text-decoration: underline;
+    outline: none;
 }
 
 .card-issue {

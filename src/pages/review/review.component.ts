@@ -62,6 +62,9 @@ export class ReviewComponent {
     paginatedItems: Signal<DetailedIndex[]>;
     groupedPaginatedItems: Signal<{ year: string; items: DetailedIndex[] }[]>;
 
+    // Number of applied filters, shown on the mobile filter toggle
+    activeFilterCount: Signal<number>;
+
     // Stats (based on filtered items)
     totalReviews: Signal<number>;
     totalAuthors: Signal<number>;
@@ -161,6 +164,17 @@ export class ReviewComponent {
                 .sort((a, b) => parseInt(b.year, 10) - parseInt(a.year, 10));
         });
 
+        this.activeFilterCount = computed(() => {
+            const [minScore, maxScore] = this.scoreRange();
+            const [minYr, maxYr] = this.yearRange();
+            return [
+                this.authorFilter().trim() !== '',
+                this.titleFilter().trim() !== '',
+                minScore !== 0 || maxScore !== 10,
+                minYr > this.minYear() || maxYr < this.maxYear()
+            ].filter(Boolean).length;
+        });
+
         this.totalReviews = computed(() => this.filteredItems().length);
 
         this.totalAuthors = computed(() => {
@@ -207,6 +221,20 @@ export class ReviewComponent {
             this.authorFilter.set(newValue);
             this.first.set(0);
         }, 300);
+    }
+
+    // Clicking an author on a card fills the author filter right away (no debounce)
+    selectAuthor(author: string, event: Event) {
+        // Don't let the click open the magazine
+        event.stopPropagation();
+
+        if (this.authorDebounceTimer) {
+            clearTimeout(this.authorDebounceTimer);
+        }
+        this.authorFilterDisplay.set(author);
+        this.authorFilter.set(author);
+        this.first.set(0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     searchAuthors(event: AutoCompleteCompleteEvent) {
