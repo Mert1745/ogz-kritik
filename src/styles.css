@@ -2,8 +2,72 @@
 
 @import "tailwindcss";
 
+:root {
+    color-scheme: light;
+    --page-bg: #d4ddf7;
+    --surface: #ffffff;
+    --surface-2: #fbfbfb;
+    --surface-3: #f3f4f6;
+    --text: #1f2937;
+    --text-muted: #6b7280;
+    --text-faint: #9ca3af;
+    --accent: #4d6481;
+    --link: #2563eb;
+    --border: #e5e7eb;
+    --glass: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.9) 100%);
+    --btn-bg: #333;
+    --btn-bg-hover: #000;
+    --bg-dim: 1;
+    --pdf-btn: #f53434;
+    --pdf-btn-hover: #da2a2a;
+    --patreon-btn: #2563eb;
+    --patreon-btn-hover: #1d4ed8;
+    --score-excellent-a: #4ade80;
+    --score-excellent-b: #22c55e;
+    --score-good-a: #34d399;
+    --score-good-b: #10b981;
+    --score-average-a: #fbbf24;
+    --score-average-b: #f59e0b;
+    --score-poor-a: #fb923c;
+    --score-poor-b: #f97316;
+    --score-none-a: #cbd5e1;
+    --score-none-b: #94a3b8;
+}
+
+:root.app-dark {
+    color-scheme: dark;
+    --page-bg: #0f172a;
+    --surface: #1e293b;
+    --surface-2: #1a2333;
+    --surface-3: #273449;
+    --text: #e5e7eb;
+    --text-muted: #9ca3af;
+    --text-faint: #6b7280;
+    --accent: #9db4d6;
+    --link: #7aa7ff;
+    --border: #334155;
+    --glass: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.92) 100%);
+    --btn-bg: #4d6481;
+    --btn-bg-hover: #5f7a9c;
+    --bg-dim: 0.35;
+    --pdf-btn: #b02a2a;
+    --pdf-btn-hover: #962020;
+    --patreon-btn: #1d4fb8;
+    --patreon-btn-hover: #1a43a0;
+    --score-excellent-a: #1f9d55;
+    --score-excellent-b: #16803f;
+    --score-good-a: #1b8f6e;
+    --score-good-b: #0c6e53;
+    --score-average-a: #c8921a;
+    --score-average-b: #a8740c;
+    --score-poor-a: #c9692a;
+    --score-poor-b: #b04f12;
+    --score-none-a: #64748b;
+    --score-none-b: #475569;
+}
+
 body {
-    background-color: #d4ddf7;
+    background-color: var(--page-bg);
     margin: 0;
     padding: 0;
     overflow-x: hidden;

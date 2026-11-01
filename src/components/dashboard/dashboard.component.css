@@ -25,7 +25,7 @@
 }
 
 .score-card {
-    background: #fbfbfb;
+    background: var(--surface-2);
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -43,7 +43,7 @@
 
 .score-value {
     font-size: 1.5rem;
-    color: #646464;
+    color: var(--text-muted);
     text-align: center;
     user-select: none;
     margin-top: -15px;
@@ -67,7 +67,7 @@
 }
 
 .image {
-    background: #fbfbfb;
+    background: var(--surface-2);
     width: 100%;
     max-width: 100%;
     height: auto;
@@ -131,3 +131,10 @@
         margin-top: 2%;
     }
 }
+
+/* Dark variants of the artwork (dark text lightened, accent colour kept) */
+:host-context(.app-dark) .img-review { content: url('/assets/images/review-dark.png'); }
+:host-context(.app-dark) .img-magazine { content: url('/assets/images/magazine-dark.png'); }
+:host-context(.app-dark) .img-author { content: url('/assets/images/author-dark.png'); }
+:host-context(.app-dark) .img-what-is { content: url('/assets/images/what-is-dark.png'); }
+:host-context(.app-dark) .img-contact { content: url('/assets/images/contact-dark.png'); }

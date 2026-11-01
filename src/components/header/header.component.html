@@ -2,5 +2,14 @@
     <a routerLink="/">
         <img ngSrc="/assets/images/head-logo.png" alt="Logo" class="header-logo" height="57" width="87" priority/>
     </a>
+    <button type="button" class="theme-toggle" (click)="toggleTheme()"
+            [attr.aria-label]="theme.dark() ? 'Açık temaya geç' : 'Koyu temaya geç'">
+        <i class="pi" [class.pi-moon]="!theme.dark()" [class.pi-sun]="theme.dark()"></i>
+    </button>
+    @if (showHint()) {
+        <div class="theme-hint" role="status" (click)="dismissHint()">
+            Bakın kim gelmiş: Dark tema desteği!
+            <i class="pi pi-times theme-hint-close"></i>
+        </div>
+    }
 </header>
-

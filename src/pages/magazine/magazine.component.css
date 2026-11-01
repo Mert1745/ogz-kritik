@@ -14,8 +14,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: white;
-    color: #4d6481;
+    background: var(--surface);
+    color: var(--accent);
     padding: 0.75rem 1rem;
     border-radius: 8px;
     cursor: pointer;
@@ -40,7 +40,7 @@
 .filter-section {
     width: 100%;
     max-width: 1200px;
-    background: #fbfbfb;
+    background: var(--surface-2);
     border-radius: 8px;
     padding: 1.5rem;
     display: none;
@@ -110,7 +110,7 @@
 
 .clear-filters-button {
     background: transparent;
-    color: #33527a;
+    color: var(--accent);
     border: 1px solid #33527a;
     padding: 0.5rem 1rem;
     border-radius: 6px;
@@ -156,8 +156,8 @@
     align-items: center;
     gap: 0.5rem;
     font-size: 0.95rem;
-    color: #4d6481;
-    background: #f8f9fa;
+    color: var(--accent);
+    background: var(--surface-3);
     padding: 0.5rem 1rem;
     border-radius: 6px;
 }
@@ -168,14 +168,14 @@
 
 .total-items-count {
     font-weight: 700;
-    color: #33527a;
+    color: var(--accent);
     font-size: 1.1rem;
 }
 
 .view-toggle-btn {
-    background: white;
-    color: #4d6481;
-    border: 2px solid #e5e7eb;
+    background: var(--surface);
+    color: var(--accent);
+    border: 2px solid var(--border);
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
     cursor: pointer;
@@ -288,11 +288,11 @@
 
 .magazine-issue {
     font-size: 0.75rem;
-    color: #4d6481;
+    color: var(--accent);
     text-align: center;
     padding: 0.5rem;
     margin: 0;
-    background: white;
+    background: var(--surface);
     width: 100%;
     font-weight: 500;
 }

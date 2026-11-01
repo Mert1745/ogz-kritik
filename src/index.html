@@ -28,6 +28,16 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
 
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('theme');
+                var dark = t ? t === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (dark) document.documentElement.classList.add('app-dark');
+            } catch (e) {}
+        })();
+    </script>
+
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZPG1WFMKM"></script>
     <script>

@@ -73,7 +73,10 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay(), withIncrementalHydration()),
     providePrimeNG({
       theme: {
-        preset: MyPreset
+        preset: MyPreset,
+        options: {
+          darkModeSelector: '.app-dark'
+        }
       }
     })
   ]
