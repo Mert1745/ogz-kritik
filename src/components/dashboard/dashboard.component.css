@@ -138,3 +138,4 @@
 :host-context(.app-dark) .img-author { content: url('/assets/images/author-dark.png'); }
 :host-context(.app-dark) .img-what-is { content: url('/assets/images/what-is-dark.png'); }
 :host-context(.app-dark) .img-contact { content: url('/assets/images/contact-dark.png'); }
+:host-context(.app-dark) .image-goyun { content: url('/assets/images/goyun-dark.png'); }
